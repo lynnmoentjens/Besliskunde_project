@@ -11,45 +11,55 @@ package besliskunde_pc;
  */
 public class Procedure {
     // Jus: ik bekijk nu alles per dag, daarna zien we wel met die zaterdag en donderdag 
-    double T = 0;  //Jus: ik zou alles rekenen met minuten en niet omzetten naar uren anders gaat het verwarrend worden
+    double time = 0;  //Jus: ik zou alles rekenen met minuten en niet omzetten naar uren anders gaat het verwarrend worden
     double einduur = 540; //Jus: 15minuten per patient --> 32 slots+ 4 onbezette slots op de middag geeft: 36*15=540
-    double Tma; //Jus: call time = appointment making time
-    double Ta = 0;   // Jus: appointment time! dit is het startuur van het volgende empty slot
-    double Tr; //Jus: arrival time
-    double Td; //Jus: departure time
-    int Nu = 0; //Jus: urgent patients in system
-    int Ne = 0; //Jus: elective patients in system
-    double r;
+    double callTime; 
+    double appointmentTime = 0;   
+    double arrivalTime=600; 
+    double departureTime= 600; 
+    int numberOfUrgent = 0; 
+    int numberOfElectives = 0; 
     double interarrivaltimecall; // tijd tussen 2 bellers
+    double r;
+    Patient patient; 
     
     public void system(){
-        while((T<einduur)&&(Nu!=0)){    //Jus: het programma eindigt wanneer de tijd is verstreken maar als er nog
+        while((time<einduur)&&(numberOfUrgent!=0)){    //Jus: het programma eindigt wanneer de tijd is verstreken maar als er nog
                                             // urgent patients in de wachtrij zitten moeten die wel nog worden afgewerkt
                                             // vraag: wat als iemand belt na de slots maar ze zijn nog bezig met een urgent? 
                                                      // nemen we die dan al op voor de volgende dag?
-            if((Tma<Td)&&(Tma<Tr)){       // Jus: hierna komt een appointment maken --> signavio: "FCFS making appointment"
-                T=Tma;                   // Jus: update time
-                Ne++;
-                if((Ta==15)||(Ta==60)){ // Jus: dit is een voorbeeldje: als bv. slot 3 en slot 6 niet mogen 
-                    Ta+=30;  }                           // worden gescheduled dan zal er +30 worden gedaan ipv +15 (huidige was:15 voor de vorige appointment, om nu up te daten --> +30)
-                else if(Ta==225){
-                    Ta+=75;                              // volgende empty slot is na de namiddag
+            if((callTime<departureTime)&&(callTime<arrivalTime)){       // Jus: hierna komt een appointment maken --> signavio: "FCFS making appointment"
+                time=callTime;                   // Jus: update time
+                patient = new Patient();
+                patient.setCalltime(callTime);
+                numberOfElectives++;
+                if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 3 en slot 6 niet mogen 
+                    appointmentTime+=30;
+                    patient.setAppointmenttime(appointmentTime);
+                    }                           // worden gescheduled dan zal er +30 worden gedaan ipv +15 (huidige was:15 voor de vorige appointment, om nu up te daten --> +30)
+                else if(appointmentTime==225){
+                    appointmentTime+=75;                              // volgende empty slot is na de namiddag
+                    patient.setAppointmenttime(appointmentTime);
                 } 
-                else if(Ta==525){
-                    Ta= 0;                               // dit is dan al voor de volgende dag --> je begint terug van nul
+                else if(appointmentTime==525){
+                    appointmentTime= 0;                               // dit is dan al voor de volgende dag --> je begint terug van nul
+                     patient.setAppointmenttime(appointmentTime);
                 }
                 else{
-                    Ta+=15;                              // in de gewone gevallen
+                    appointmentTime+=15;                              // in de gewone gevallen
+                     patient.setAppointmenttime(appointmentTime);
                 }
                 // in signavio staat hier: set arrival maar ik denk niet dat we dat hier kunnen doen anders gaan we al te ver zitten met die arrival
                 r = Math.random();                       //genereer het random getal
                 interarrivaltimecall=  -Math.log(r);            // tijd tussen bellers VRAAG: welke verdeling?
-                Tma= T+interarrivaltimecall;        
+                callTime= time+interarrivaltimecall;        
             }                       
-            else if((Td<Tma)&&(Td<Tr)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
+            else if((departureTime<callTime)&&(departureTime<arrivalTime)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
+                time= departureTime;
                 
             }
-            else if((Tr<Tma)&&(Tr<Td)){  // Jus: hierna komt het arrival event --> Signavio: "Arrival event 2"
+            else if((arrivalTime<callTime)&&(arrivalTime<departureTime)){  // Jus: hierna komt het arrival event --> Signavio: "Arrival event 2"
+                time= arrivalTime; 
                 
             }
         }
