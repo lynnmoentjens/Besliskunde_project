@@ -60,7 +60,7 @@ public class Procedure {
             }
             else if((arrivalTime<callTime)&&(arrivalTime<departureTime)){  // Jus: hierna komt het arrival event --> Signavio: "Arrival event 2"
                 time= arrivalTime; 
-                
+                                  
             }
         }
     }
