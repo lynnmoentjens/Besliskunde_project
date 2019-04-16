@@ -47,8 +47,8 @@ public class Procedure {
                 appointmentTime=setAppointmentElective(appointmentTime);
                 patient.setAppointmenttime(appointmentTime);
                 // in signavio staat hier: set arrival maar ik denk niet dat we dat hier kunnen doen anders gaan we al te ver zitten met die arrival
-                r = Math.random();                       //genereer het random getal
-                interarrivaltimecall=  -Math.log(r);            // tijd tussen bellers VRAAG: welke verdeling?
+                //r = Math.random();                       //genereer het random getal --> niet nodig, zit al in de distribution
+                interarrivaltimecall= Distributions.Poisson_distribution(28.345);    //-Math.log(r); // tijd tussen bellers VRAAG: welke verdeling? -->  Poisson distribution with lambda =	28.345
                 callTime= time+interarrivaltimecall;        
             }                       
             else if((departureTimeUrgent<callTime)&&(departureTimeUrgent<arrivalTimeUrgent)&&(departureTimeUrgent<arrivalTimeElective)&&(departureTimeUrgent<departureTimeElective)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
