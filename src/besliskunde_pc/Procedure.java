@@ -17,19 +17,22 @@ public class Procedure {
     double einduur = 540; //Jus: 15minuten per patient --> 32 slots+ 4 onbezette slots op de middag geeft: 36*15=540
     double callTime; 
     double appointmentTime = 0;   
-    double arrivalTimeUrgent= 600; 
-    double arrivalTimeElective=600;
-    double departureTimeElective= 600; 
-    double departureTimeUrgent=600;
+    double arrivalTimeUrgent = 600; 
+    double arrivalTimeElective = 600;
+    double departureTimeElective = 600; 
+    double departureTimeUrgent = 600;
     int numberOfUrgent = 0; 
     int numberOfElectives = 0; 
-    int numberOfPatients=0;
+    int numberOfPatients = 0;
+    int electivesQueue = 0;
+    int urgentQueue = 0;
     double interarrivaltimecall; // tijd tussen 2 bellers
-    double r;
     Patient patient; 
-    ArrayList<Patient> electivePatients= new ArrayList<>();
-    String change= "No";
-    int accountDelay=0;
+    ArrayList<Patient> electivePatients = new ArrayList<>();
+    ArrayList<Patient> urgentPatients = new ArrayList<>();
+    String change = "No";
+    int accountDelay = 0;
+    
     
     public void system(){
         while((time<einduur)&&(numberOfUrgent!=0)){    //Jus: het programma eindigt wanneer de tijd is verstreken maar als er nog
@@ -41,22 +44,24 @@ public class Procedure {
                 patient = new Patient();
                 electivePatients.add(patient);
                 patient.setCalltime(callTime);
+                numberOfPatients++;
                 numberOfElectives++;
                 patient.setCategory("Elective");
-                numberOfPatients++;
                 appointmentTime=setAppointmentElective(appointmentTime);
                 patient.setAppointmenttime(appointmentTime);
                 // in signavio staat hier: set arrival maar ik denk niet dat we dat hier kunnen doen anders gaan we al te ver zitten met die arrival
-                //r = Math.random();                       //genereer het random getal --> niet nodig, zit al in de distribution
                 interarrivaltimecall= Distributions.Poisson_distribution(28.345);    //-Math.log(r); // tijd tussen bellers VRAAG: welke verdeling? -->  Poisson distribution with lambda =	28.345
-                callTime= time+interarrivaltimecall;        
+                callTime = time+interarrivaltimecall;        
             }                       
             else if((departureTimeUrgent<callTime)&&(departureTimeUrgent<arrivalTimeUrgent)&&(departureTimeUrgent<arrivalTimeElective)&&(departureTimeUrgent<departureTimeElective)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
-                time= departureTimeUrgent;
+                time = departureTimeUrgent;
+                numberOfUrgent--;
+                
                 
             }
             else if((departureTimeElective<callTime)&&(departureTimeElective<arrivalTimeElective)&&(departureTimeElective<arrivalTimeUrgent)&&(departureTimeElective<departureTimeUrgent)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
-                time= departureTimeElective;
+                time = departureTimeElective;
+                numberOfElectives--;
                 
             }
             else if((arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){  // Jus: hierna komt het arrival event --> Signavio: "Arrival event 2"
@@ -74,10 +79,10 @@ public class Procedure {
                 double patientAppointmentTime=0;
                 do{
                     for(int x=0;x<electivePatients.size();x++){
-                        Patient pat= electivePatients.get(x);
+                        Patient pat = electivePatients.get(x);
                         if(pat.getArrivaltime()==0){
                             electivePatients.get(x).setArrivaltime(arrivalTimeElective);
-                            patientAppointmentTime= electivePatients.get(x).getAppointmenttime();
+                            patientAppointmentTime = electivePatients.get(x).getAppointmenttime();
                             
                             change= "YES";
                            
