@@ -16,8 +16,12 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-    
         
+    
+        Simulation simulatie1= new Simulation();
+        simulatie1.initialization();
+        simulatie1.Simulatie(2);
+       
         
         
         

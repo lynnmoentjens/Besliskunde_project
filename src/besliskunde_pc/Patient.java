@@ -15,6 +15,8 @@ public class Patient {
     private double appointmenttime;
     private double arrivaltime; 
     private double departuretime;
+    private int week;
+    private int day;
 
     public String getCategory() {
         return category;
@@ -55,7 +57,23 @@ public class Patient {
     public void setDeparturetime(double departuretime) {
         this.departuretime = departuretime;
     }
-       
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     
     
 }
