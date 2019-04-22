@@ -62,8 +62,13 @@ public class Simulation {
             }
             appointmentTime+=(scheduledAppointmentsAtBeginDay*15);
             
-            while((time<lengthDay)&&(numberOfUrgentInSystem!=0))
+            int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
+            double timeThatDay=540;
+            double interCallingTime= timeThatDay/amountOfElectivesCallingThatDay;
+            
+            while((time<lengthDay)&&(numberOfUrgentInSystem!=0)) //electives
             {
+                //AppointmentMaken
                 if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
                     numberOfElectives++;
@@ -71,20 +76,22 @@ public class Simulation {
                     numberOfCallersThatDay++;
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day);
                     electivePatients[numberOfElectives]= nieuwePatient;
-                    double interarrivaltimecall= Distributions.Poisson_distribution(28.345);    //-Math.log(r); // tijd tussen bellers VRAAG: welke verdeling? -->  Poisson distribution with lambda =	28.345
-                    callTime = time+interarrivaltimecall;  
+                    callTime = time+interCallingTime;  
                     
                 }
+                //departureTimeUrgent
                 else if((departureTimeUrgent<callTime)&&(departureTimeUrgent<arrivalTimeUrgent)&&(departureTimeUrgent<arrivalTimeElective)&&(departureTimeUrgent<departureTimeElective)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
                 //anneleen
                 
                 
                 }
+                //departureTimeElective
                 else if((departureTimeElective<callTime)&&(departureTimeElective<arrivalTimeElective)&&(departureTimeElective<arrivalTimeUrgent)&&(departureTimeElective<departureTimeUrgent)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
                 //anneleen 
                 
                 
                 }
+                //arrivalTimeUrgent
                 else if((arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
                     time= arrivalTimeUrgent; 
                     numberOfUrgent++;
@@ -94,6 +101,7 @@ public class Simulation {
                     double interarrivalTime= Distributions.Poisson_distribution(1.25);   
                     arrivalTimeUrgent = time+interarrivalTime;
                 }
+                //arrivalTimeElective
                 else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
                     numberOfElectivesArrived++;
                     int rightNumber= numberOfElectives-numberOfCallersThatDay+numberOfElectivesArrived;
