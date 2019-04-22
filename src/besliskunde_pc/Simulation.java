@@ -235,4 +235,182 @@ public class Simulation {
     private void makeCalculationsUrgent(){
         //nog verder aanvullen
     }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public double getLengthDay() {
+        return lengthDay;
+    }
+
+    public void setLengthDay(double lengthDay) {
+        this.lengthDay = lengthDay;
+    }
+
+    public double getTime() {
+        return time;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Patient[] getElectivePatients() {
+        return electivePatients;
+    }
+
+    public void setElectivePatients(Patient[] electivePatients) {
+        this.electivePatients = electivePatients;
+    }
+
+    public Patient[] getUrgentPatients() {
+        return urgentPatients;
+    }
+
+    public void setUrgentPatients(Patient[] urgentPatients) {
+        this.urgentPatients = urgentPatients;
+    }
+
+    public int getNumberOfUrgent() {
+        return numberOfUrgent;
+    }
+
+    public void setNumberOfUrgent(int numberOfUrgent) {
+        this.numberOfUrgent = numberOfUrgent;
+    }
+
+    public int getNumberOfUrgentInSystem() {
+        return numberOfUrgentInSystem;
+    }
+
+    public void setNumberOfUrgentInSystem(int numberOfUrgentInSystem) {
+        this.numberOfUrgentInSystem = numberOfUrgentInSystem;
+    }
+
+    public int getNumberOfElectives() {
+        return numberOfElectives;
+    }
+
+    public void setNumberOfElectives(int numberOfElectives) {
+        this.numberOfElectives = numberOfElectives;
+    }
+
+    public int getNumberOfElectivesArrived() {
+        return numberOfElectivesArrived;
+    }
+
+    public void setNumberOfElectivesArrived(int numberOfElectivesArrived) {
+        this.numberOfElectivesArrived = numberOfElectivesArrived;
+    }
+
+    public int getNumberOfElectivesInSystem() {
+        return numberOfElectivesInSystem;
+    }
+
+    public void setNumberOfElectivesInSystem(int numberOfElectivesInSystem) {
+        this.numberOfElectivesInSystem = numberOfElectivesInSystem;
+    }
+
+    public double getCallTime() {
+        return callTime;
+    }
+
+    public void setCallTime(double callTime) {
+        this.callTime = callTime;
+    }
+
+    public double getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(double appointmentTime) {
+        this.appointmentTime = appointmentTime;
+    }
+
+    public double getScheduleTimeUrgent() {
+        return scheduleTimeUrgent;
+    }
+
+    public void setScheduleTimeUrgent(double scheduleTimeUrgent) {
+        this.scheduleTimeUrgent = scheduleTimeUrgent;
+    }
+
+    public double getArrivalTimeElective() {
+        return arrivalTimeElective;
+    }
+
+    public void setArrivalTimeElective(double arrivalTimeElective) {
+        this.arrivalTimeElective = arrivalTimeElective;
+    }
+
+    public double getArrivalTimeUrgent() {
+        return arrivalTimeUrgent;
+    }
+
+    public void setArrivalTimeUrgent(double arrivalTimeUrgent) {
+        this.arrivalTimeUrgent = arrivalTimeUrgent;
+    }
+
+    public double getDepartureTimeElective() {
+        return departureTimeElective;
+    }
+
+    public void setDepartureTimeElective(double departureTimeElective) {
+        this.departureTimeElective = departureTimeElective;
+    }
+
+    public double getDepartureTimeUrgent() {
+        return departureTimeUrgent;
+    }
+
+    public void setDepartureTimeUrgent(double departureTimeUrgent) {
+        this.departureTimeUrgent = departureTimeUrgent;
+    }
+
+    public double getServiceTime() {
+        return serviceTime;
+    }
+
+    public void setServiceTime(double serviceTime) {
+        this.serviceTime = serviceTime;
+    }
+
+    public int getNumberOfCallersThatDay() {
+        return numberOfCallersThatDay;
+    }
+
+    public void setNumberOfCallersThatDay(int numberOfCallersThatDay) {
+        this.numberOfCallersThatDay = numberOfCallersThatDay;
+    }
+
+    public int getAantalSlotsElectives() {
+        return aantalSlotsElectives;
+    }
+
+    public void setAantalSlotsElectives(int aantalSlotsElectives) {
+        this.aantalSlotsElectives = aantalSlotsElectives;
+    }
+    
 }
+
