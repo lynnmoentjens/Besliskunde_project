@@ -16,13 +16,14 @@ public class Simulation {
     private double time;
     
     private Patient patient;
-    Patient electivePatients[] = new Patient[100000];
-    Patient urgentPatients[] = new Patient[100000];
+    Patient electivePatients[] = new Patient[1000000000];
+    Patient urgentPatients[] = new Patient[1000000000];
     
     private int numberOfUrgent;
-    private int numberOfUrgentInSystem;
+    private int numberOfUrgentInSystem; //moet worden verminderd bij departure
     private int numberOfElectives;
     private int numberOfElectivesArrived;
+    private int numberOfElectivesInSystem; // moet worden verminderd bij departure
    
     private double callTime;
     private double appointmentTime; //appointmentTime van de vorige die belt elective
@@ -66,15 +67,16 @@ public class Simulation {
             double timeThatDay=540;
             double interCallingTime= timeThatDay/amountOfElectivesCallingThatDay;
             
-            while((time<lengthDay)&&(numberOfUrgentInSystem!=0)) //electives
+            while((time<lengthDay)&&(numberOfUrgentInSystem!=0)&&(numberOfElectivesInSystem!=0)) //electives
             {
                 //AppointmentMaken
                 if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
                     numberOfElectives++;
+                    numberOfElectivesInSystem++;
                     Patient nieuwePatient=new Patient();
-                    numberOfCallersThatDay++;
-                    nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day);
+                    numberOfCallersThatDay++; //bekijken of dit nodig is
+                    nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
                     electivePatients[numberOfElectives]= nieuwePatient;
                     callTime = time+interCallingTime;  
                     
@@ -146,8 +148,8 @@ public class Simulation {
         
     }
     
-    private Patient setPatientDataCall(double appointmentTimePrevious, double lengthDay,double timeMomentCalling, int day){
-        Patient nieuwePatient= new Patient();
+    public Patient setPatientDataCall(double appointmentTimePrevious, double lengthDay,double timeMomentCalling, int day, Patient nieuwePatient){
+        
         nieuwePatient.setCalltime(timeMomentCalling);
         nieuwePatient.setCategory("Elective");
         

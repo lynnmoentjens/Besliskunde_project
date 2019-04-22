@@ -17,10 +17,17 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         
-    
+    /*
         Simulation simulatie1= new Simulation();
         simulatie1.initialization();
         simulatie1.Simulatie(2);
+       */ 
+       Patient patient1=new Patient();
+       Simulation simulatie1= new Simulation();
+       simulatie1.setPatientDataCall(225, 540, 115, 1, patient1);
+       System.out.println(patient1.getAppointmenttime());
+       System.out.println(patient1.getCalltime());
+       System.out.println(patient1.getCategory());
        
         
         
