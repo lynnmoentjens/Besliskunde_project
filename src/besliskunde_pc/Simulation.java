@@ -5,6 +5,9 @@
  */
 package besliskunde_pc;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  *
  * @author jwpennem
@@ -52,9 +55,8 @@ public class Simulation {
         appointmentTime=-15;
         scheduleTimeUrgent=0;
         arrivalTimeElective=5000;
-        arrivalTimeUrgent=5000;
         departureTimeUrgent=5000;
-        arrivalTimeUrgent=5000;
+        //arrivalTimeUrgent wordt bepaalt begin van de dag
         
         numberOfAlreadyCallersThatDay=0;
 
@@ -78,14 +80,22 @@ public class Simulation {
             double timeThatDayCalling=540;
             double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
             
+            ArrayList<Integer> arrayVanArrivalTimes;
+            arrayVanArrivalTimes = new ArrayList<>();
             int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
-            double timeThatDayArrivalUrgent=0;
-            if(day==4||day==6){
-                timeThatDayArrivalUrgent=240;
+            for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
+                int randomgetal= (int) (Math.random()*lengthDay);
+                arrayVanArrivalTimes.add(randomgetal);
             }
-            else{
-                timeThatDayArrivalUrgent=540;
+            Collections.sort(arrayVanArrivalTimes);
+            if(amountOfUrgentArrivingThatDay==0){
+                arrivalTimeUrgent=Double.POSITIVE_INFINITY;
+            }else{
+                arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
             }
+            
+            
+            double timeThatDayArrivalUrgent=lengthDay;
             double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
             
             while((time<lengthDay)&&(numberOfUrgentInSystem!=0)&&(numberOfElectivesInSystem!=0)) //electives
@@ -116,13 +126,11 @@ public class Simulation {
                 
                 }
                 //arrivalTimeUrgent
-                else if((arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
+                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
                     time= arrivalTimeUrgent; 
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
-                    
-                      
-                    arrivalTimeUrgent = time+interArrivalTimeUrgent;
+                    arrivalTimeUrgent= arrayVanArrivalTimes.get(numberOfUrgent);//arrivalTime van de volgende
                 }
                 //arrivalTimeElective
                 /*else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
