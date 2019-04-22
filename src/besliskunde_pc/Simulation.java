@@ -47,6 +47,7 @@ public class Simulation {
         numberOfUrgent=0;
         numberOfUrgentInSystem=0;
         appointmentTime=-15;
+        
         //nog aan te vullen
 }
     
@@ -68,7 +69,7 @@ public class Simulation {
             double interCallingTime= timeThatDay/amountOfElectivesCallingThatDay;
             
             while((time<lengthDay)&&(numberOfUrgentInSystem!=0)&&(numberOfElectivesInSystem!=0)) //electives
-            {
+            {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
                 if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
@@ -166,7 +167,7 @@ public class Simulation {
             appointmentTime+=15;
             nieuwePatient.setAppointmenttime(appointmentTime);
         }  
-        else if(appointmentTime>=540){ //dag is vol exact
+        else if(lengthDay!=240&&appointmentTime>=540){ //dag is vol exact
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
@@ -176,6 +177,12 @@ public class Simulation {
             appointmentTime=300; // volgende empty slot is na de namiddag
             nieuwePatient.setAppointmenttime(appointmentTime); 
         } 
+        else if(lengthDay==240&&appointmentTime>=240){ //dag is vol exact
+            double appointmentNextDay=0;
+            appointmentNextDay=appointmentTime-240;
+            nieuwePatient.setAppointmenttime(appointmentNextDay);
+            nieuwePatient.setDay(day+1);     
+        }
 
 
         return nieuwePatient;
