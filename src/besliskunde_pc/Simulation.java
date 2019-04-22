@@ -19,14 +19,15 @@ public class Simulation {
     private double time;
     
     private Patient patient;
-    Patient electivePatients[] = new Patient[10000];
-    Patient urgentPatients[] = new Patient[10000];
+    Patient patients[] = new Patient[10000];
     
     private int numberOfUrgent;
     private int numberOfUrgentInSystem; //moet worden verminderd bij departure
-    private int numberOfElectives;
+    private int totalNumberOfPatients;
     private int numberOfElectivesArrived;
     private int numberOfElectivesInSystem; // moet worden verminderd bij departure
+    private int numberOfElectivesForTomorrow;
+    private int numberOfPatients;
    
     private double callTime;
     private double appointmentTime; //appointmentTime van de vorige die belt elective
@@ -37,6 +38,7 @@ public class Simulation {
     private double departureTimeUrgent; 
 
     private int numberOfAlreadyCallersThatDay;
+    private double lastScheduledAppointment;
    
     public void initialization(){
         
@@ -46,10 +48,11 @@ public class Simulation {
         time=0.0;
         
         numberOfUrgent=0;
-        numberOfElectives=0;
+        totalNumberOfPatients=0;
         numberOfUrgentInSystem=0;
         numberOfElectivesArrived=0;
         numberOfElectivesInSystem=0;
+        
         
         callTime=0;
         appointmentTime=-15;
@@ -68,13 +71,11 @@ public class Simulation {
         
         while(week<=amountOfWeeksSimulation){
             //ophalen van de gegevens van de vorige dag
-            double scheduledAppointmentsAtBeginDay=0;
-            for(int i=1; i<numberOfElectives;i++){
-                if(electivePatients[i].getDay()==day){
-                    scheduledAppointmentsAtBeginDay++;
-                }
-            }
-            appointmentTime+=(scheduledAppointmentsAtBeginDay*15);
+            
+            appointmentTime+=(numberOfElectivesForTomorrow*15);
+            numberOfElectivesInSystem=numberOfElectivesForTomorrow;
+            numberOfElectivesForTomorrow=0;
+            numberOfPatients=numberOfElectivesForTomorrow; 
             
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
@@ -98,22 +99,24 @@ public class Simulation {
             double timeThatDayArrivalUrgent=lengthDay;
             double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
             
-            while((time<lengthDay)&&(numberOfUrgentInSystem!=0)&&(numberOfElectivesInSystem!=0)) //electives
+            while((time<540)) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
                 if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
-                    numberOfElectives++;
+                    totalNumberOfPatients++;
                     numberOfElectivesInSystem++;
+                    numberOfPatients++;
                     Patient nieuwePatient=new Patient();
                     numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
-                    electivePatients[numberOfElectives]= nieuwePatient;
+                    patients[numberOfPatients]= nieuwePatient;
                     callTime = time+interCallingTime;  
-                    
-                    
+                    if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
+                        lastScheduledAppointment=nieuwePatient.getAppointmenttime();
+                    }  
                 }
-                //departureTimeUrgent
+                /*//departureTimeUrgent
                 else if((departureTimeUrgent<callTime)&&(departureTimeUrgent<arrivalTimeUrgent)&&(departureTimeUrgent<arrivalTimeElective)&&(departureTimeUrgent<departureTimeElective)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
                 //anneleen
                 
@@ -124,12 +127,16 @@ public class Simulation {
                 //anneleen 
                 
                 
-                }
+                }*/
                 //arrivalTimeUrgent
                 else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
                     time= arrivalTimeUrgent; 
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
+                    patients[numberOfPatients]=nieuwePatient;
+                    if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
+                        lastScheduledAppointment=nieuwePatient.getAppointmenttime();
+                    }
                     arrivalTimeUrgent= arrayVanArrivalTimes.get(numberOfUrgent);//arrivalTime van de volgende
                 }
                 //arrivalTimeElective
@@ -142,15 +149,42 @@ public class Simulation {
                 }*/
               
             }
-            
+        double departureTimeVorige=0;
+        for(int i=0;i<lastScheduledAppointment;i=i+15){ ///tijd overlopen
+            for(int j=(totalNumberOfPatients-numberOfPatients);j<numberOfPatients-numberOfElectivesForTomorrow;j++){
+                if(patients[j].getAppointmenttime()==i){
+                    double appointmentTimeDeze;
+                    appointmentTimeDeze = patients[j].getAppointmenttime();
+                    double arrivalTimeDeze;
+                    arrivalTimeDeze= patients[j].getArrivaltime();
+                    double departureTime;
+                    String category= patients[j].getCategory();
+                    if(departureTimeVorige<appointmentTimeDeze&&departureTimeVorige<arrivalTimeDeze){
+                        departureTime=departureTimeVorige+determineServiceTime(category);
+                        patients[j].setDeparturetime(departureTime);
+                        departureTimeVorige=departureTime;
+                    }
+                    else if(arrivalTimeDeze<appointmentTimeDeze&&arrivalTimeDeze<departureTimeVorige){
+                        departureTime=arrivalTimeDeze+determineServiceTime(category);
+                        patients[j].setDeparturetime(departureTime);
+                        departureTimeVorige=departureTime;
+                    }
+                    else if(appointmentTimeDeze<arrivalTimeDeze&&appointmentTimeDeze<departureTimeVorige){
+                        departureTime=appointmentTimeDeze+determineServiceTime(category);
+                        patients[j].setDeparturetime(departureTime);
+                        departureTimeVorige=departureTime;
+                    }
+                }
+            }
+        }
         //nodige parameters op nul zetten
         updateParametersAtEndOfDay(day, week);   
             
                   
         }
         //berekeningen maken 
-        makeCalculationsElectives();
-        makeCalculationsUrgent();
+       /* makeCalculationsElectives();
+        makeCalculationsUrgent();*/
         
     }
     
@@ -195,21 +229,23 @@ public class Simulation {
             appointmentTime+=15;
             nieuwePatient.setAppointmenttime(appointmentTime);
         }  
-        else if(lengthDay!=240&&appointmentTime>=540){ //dag is vol exact
+        else if(lengthDay!=240&&appointmentTime>=540){ //voor volgende dag als vandaag volle dag
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
-            nieuwePatient.setDay(day+1);     
+            nieuwePatient.setDay(day+1); 
+            numberOfElectivesForTomorrow++;
         }
         else if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
             appointmentTime=300; // volgende empty slot is na de namiddag
             nieuwePatient.setAppointmenttime(appointmentTime); 
         } 
-        else if(lengthDay==240&&appointmentTime>=240){ //dag is vol exact
+        else if(lengthDay==240&&appointmentTime>=240){ // voor volgende dag als vandaag halve dag
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-240;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1);     
+            numberOfElectivesForTomorrow++;
         }
         double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
         nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
@@ -218,6 +254,7 @@ public class Simulation {
     }
     public Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek, Patient nieuwePatient){
         numberOfUrgent++;
+        numberOfPatients++;
         nieuwePatient.setCategory("Urgent");
         nieuwePatient.setArrivaltime(arrivalTime);
         nieuwePatient.setDay(today);
@@ -244,7 +281,18 @@ public class Simulation {
         }
         return nieuwePatient;
     }
-    private void makeCalculationsElectives(){
+    
+    public double determineServiceTime(String category){
+        double serviceTime=0;
+        if(category.equals("Elective")){
+            serviceTime= Distributions.Normal_distribution(15, 3);
+        }
+        else{
+            serviceTime= Distributions.Normal_distribution(15, 2.5);
+        }
+        return serviceTime;
+    }
+   /* private void makeCalculationsElectives(){
         double sumWaitingTillApp=0;
         double sumDelays=0;
         for(int i=1;i<electivePatients.length;i++){
@@ -266,7 +314,7 @@ public class Simulation {
     private void makeCalculationsUrgent(){
         //nog verder aanvullen
     }
-
+*/
     public int getWeek() {
         return week;
     }
@@ -307,21 +355,14 @@ public class Simulation {
         this.patient = patient;
     }
 
-    public Patient[] getElectivePatients() {
-        return electivePatients;
+    public Patient[] getpatients() {
+        return patients;
     }
 
-    public void setElectivePatients(Patient[] electivePatients) {
-        this.electivePatients = electivePatients;
+    public void setpatients(Patient[] patients) {
+        this.patients = patients;
     }
 
-    public Patient[] getUrgentPatients() {
-        return urgentPatients;
-    }
-
-    public void setUrgentPatients(Patient[] urgentPatients) {
-        this.urgentPatients = urgentPatients;
-    }
 
     public int getNumberOfUrgent() {
         return numberOfUrgent;
@@ -339,13 +380,13 @@ public class Simulation {
         this.numberOfUrgentInSystem = numberOfUrgentInSystem;
     }
 
-    public int getNumberOfElectives() {
+    /*public int getNumberOfElectives() {
         return numberOfElectives;
     }
 
     public void setNumberOfElectives(int numberOfElectives) {
         this.numberOfElectives = numberOfElectives;
-    }
+    }*/
 
     public int getNumberOfElectivesArrived() {
         return numberOfElectivesArrived;
