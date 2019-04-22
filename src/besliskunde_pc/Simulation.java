@@ -22,22 +22,22 @@ public class Simulation {
     Patient patients[] = new Patient[10000];
     
     private int numberOfUrgent;
-    private int numberOfUrgentInSystem; //moet worden verminderd bij departure
+    //private int numberOfUrgentInSystem; moet worden verminderd bij departure
     private int totalNumberOfPatients;
-    private int numberOfElectivesArrived;
-    private int numberOfElectivesInSystem; // moet worden verminderd bij departure
+    //private int numberOfElectivesArrived;
+   // private int numberOfElectivesInSystem; // moet worden verminderd bij departure
     private int numberOfElectivesForTomorrow;
     private int numberOfPatients;
    
     private double callTime;
     private double appointmentTime; //appointmentTime van de vorige die belt elective
     private double scheduleTimeUrgent;
-    private double arrivalTimeElective;
+    //private double arrivalTimeElective;
     private double arrivalTimeUrgent;
-    private double departureTimeElective;
-    private double departureTimeUrgent; 
+    //private double departureTimeElective;
+    //private double departureTimeUrgent; 
 
-    private int numberOfAlreadyCallersThatDay;
+   // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
    
     public void initialization(){
@@ -48,22 +48,23 @@ public class Simulation {
         time=0.0;
         
         numberOfUrgent=0;
+        //numberOfUrgentInSystem=0;
         totalNumberOfPatients=0;
-        numberOfUrgentInSystem=0;
-        numberOfElectivesArrived=0;
-        numberOfElectivesInSystem=0;
-        
+        //numberOfElectivesArrived=0;
+        //numberOfElectivesInSystem=0;
+        numberOfElectivesForTomorrow=0;
+        numberOfPatients=0;
         
         callTime=0;
         appointmentTime=-15;
         scheduleTimeUrgent=0;
-        arrivalTimeElective=5000;
-        departureTimeUrgent=5000;
+        //arrivalTimeElective=0;
+        //departureTimeUrgent=5000;
         //arrivalTimeUrgent wordt bepaalt begin van de dag
         
-        numberOfAlreadyCallersThatDay=0;
+        //numberOfAlreadyCallersThatDay=0;
 
-        //nog aan te vullen
+        lastScheduledAppointment=0;
 }
     
     
@@ -71,16 +72,18 @@ public class Simulation {
         
         while(week<=amountOfWeeksSimulation){
             //ophalen van de gegevens van de vorige dag
-            
+            //apppointmentTimes
             appointmentTime+=(numberOfElectivesForTomorrow*15);
-            numberOfElectivesInSystem=numberOfElectivesForTomorrow;
             numberOfElectivesForTomorrow=0;
             numberOfPatients=numberOfElectivesForTomorrow; 
             
+            //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
             double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
             
+            
+            //lijst maken met arrivaltimes van de urgent patients
             ArrayList<Integer> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
             int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
@@ -102,13 +105,13 @@ public class Simulation {
             while((time<540)) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
-                if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
+                if((day!=6)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
                     totalNumberOfPatients++;
-                    numberOfElectivesInSystem++;
+                    //numberOfElectivesInSystem++;
                     numberOfPatients++;
                     Patient nieuwePatient=new Patient();
-                    numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
+                    //numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
                     patients[numberOfPatients]= nieuwePatient;
                     callTime = time+interCallingTime;  
@@ -129,7 +132,7 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
+                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)){
                     time= arrivalTimeUrgent; 
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
@@ -210,8 +213,8 @@ public class Simulation {
             lengthDay=540;
             
         }
-        numberOfElectivesArrived=0;
-        numberOfAlreadyCallersThatDay=0;
+        //numberOfElectivesArrived=0;
+        //numberOfAlreadyCallersThatDay=0;
         appointmentTime=-15;
         
     }
@@ -377,7 +380,7 @@ public class Simulation {
         this.numberOfUrgent = numberOfUrgent;
     }
 
-    public int getNumberOfUrgentInSystem() {
+    /*public int getNumberOfUrgentInSystem() {
         return numberOfUrgentInSystem;
     }
 
@@ -385,13 +388,13 @@ public class Simulation {
         this.numberOfUrgentInSystem = numberOfUrgentInSystem;
     }
 
-    /*public int getNumberOfElectives() {
+    public int getNumberOfElectives() {
         return numberOfElectives;
     }
 
     public void setNumberOfElectives(int numberOfElectives) {
         this.numberOfElectives = numberOfElectives;
-    }*/
+    }
 
     public int getNumberOfElectivesArrived() {
         return numberOfElectivesArrived;
@@ -407,7 +410,7 @@ public class Simulation {
 
     public void setNumberOfElectivesInSystem(int numberOfElectivesInSystem) {
         this.numberOfElectivesInSystem = numberOfElectivesInSystem;
-    }
+    }*/
 
     public double getCallTime() {
         return callTime;
@@ -433,13 +436,13 @@ public class Simulation {
         this.scheduleTimeUrgent = scheduleTimeUrgent;
     }
 
-    public double getArrivalTimeElective() {
+    /*public double getArrivalTimeElective() {
         return arrivalTimeElective;
     }
 
     public void setArrivalTimeElective(double arrivalTimeElective) {
         this.arrivalTimeElective = arrivalTimeElective;
-    }
+    }*/
 
     public double getArrivalTimeUrgent() {
         return arrivalTimeUrgent;
@@ -449,7 +452,7 @@ public class Simulation {
         this.arrivalTimeUrgent = arrivalTimeUrgent;
     }
 
-    public double getDepartureTimeElective() {
+    /*public double getDepartureTimeElective() {
         return departureTimeElective;
     }
 
@@ -472,7 +475,7 @@ public class Simulation {
 
     public void setNumberOfAlreadyCallersThatDay(int numberOfCallersThatDay) {
         this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
-    }
+    }*/
 
 
     
