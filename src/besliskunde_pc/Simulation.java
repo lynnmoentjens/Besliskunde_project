@@ -174,7 +174,12 @@ public class Simulation {
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
+                    System.out.println(j);
+                    System.out.println(patients[j].getAppointmenttime());
+                    System.out.println(patients[j].getArrivaltime());
+                    System.out.println(patients[j].getDeparturetime());
                 }
+                
             }
         }
         //nodige parameters op nul zetten
