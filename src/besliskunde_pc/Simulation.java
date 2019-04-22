@@ -75,8 +75,18 @@ public class Simulation {
             appointmentTime+=(scheduledAppointmentsAtBeginDay*15);
             
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
-            double timeThatDay=540;
-            double interCallingTime= timeThatDay/amountOfElectivesCallingThatDay;
+            double timeThatDayCalling=540;
+            double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
+            
+            int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
+            double timeThatDayArrivalUrgent=0;
+            if(day==4||day==6){
+                timeThatDayArrivalUrgent=240;
+            }
+            else{
+                timeThatDayArrivalUrgent=540;
+            }
+            double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
             
             while((time<lengthDay)&&(numberOfUrgentInSystem!=0)&&(numberOfElectivesInSystem!=0)) //electives
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
@@ -90,6 +100,7 @@ public class Simulation {
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
                     electivePatients[numberOfElectives]= nieuwePatient;
                     callTime = time+interCallingTime;  
+                    
                     
                 }
                 //departureTimeUrgent
@@ -107,21 +118,20 @@ public class Simulation {
                 //arrivalTimeUrgent
                 else if((arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
                     time= arrivalTimeUrgent; 
-                    numberOfUrgent++;
                     Patient nieuwePatient = new Patient();
-                    nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week);
+                    nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
                     
-                    double interarrivalTime= Distributions.Poisson_distribution(1.25);   
-                    arrivalTimeUrgent = time+interarrivalTime;
+                      
+                    arrivalTimeUrgent = time+interArrivalTimeUrgent;
                 }
                 //arrivalTimeElective
-                else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
+                /*else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
                     numberOfElectivesArrived++;
                     int rightNumber= numberOfElectives-numberOfAlreadyCallersThatDay+numberOfElectivesArrived;
                     electivePatients[rightNumber].setArrivaltime(arrivalTimeElective);
                     double interarrivalTime= Distributions.Poisson_distribution(28.345);   
                     arrivalTimeUrgent = time+interarrivalTime;
-                }
+                }*/
               
             }
             
@@ -193,20 +203,21 @@ public class Simulation {
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1);     
         }
-
+        double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
+        nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
 
         return nieuwePatient;
     }
-    private Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek){
-        Patient nieuwePatient = new Patient();
+    public Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek, Patient nieuwePatient){
+        numberOfUrgent++;
         nieuwePatient.setCategory("Urgent");
         nieuwePatient.setArrivaltime(arrivalTime);
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
-        if(numberOfUrgent==1){
+        if(numberOfUrgent==1&&arrivalTime<=15){
             nieuwePatient.setAppointmenttime(15);
         }
-        else if(numberOfUrgent==2){
+        else if(numberOfUrgent==2&&arrivalTime<=60){
             nieuwePatient.setAppointmenttime(60);
         }
         else if(numberOfUrgent==3){

@@ -16,22 +16,26 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-    /*
-        Simulation simulatie1= new Simulation();
-        simulatie1.initialization();
-        simulatie1.Simulatie(2);
-       */ 
+
     
-    //simulatie van appointment met overslaan middag
+   // simulatie van appointment met overslaan middag
        Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
        simulatie1.initialization();
        simulatie1.setPatientDataCall(225, 540, 115, 1, patient1);
        System.out.println(patient1.getAppointmenttime());
        System.out.println(patient1.getCalltime());
-       System.out.println(patient1.getCategory());
-       
+       System.out.println(patient1.getCategory()); 
+       System.out.println(patient1.getArrivaltime());
+    
+    //simuatie urgentArrival 
+    /*Patient patient1=new Patient();
+       Simulation simulatie1= new Simulation();
+       simulatie1.initialization();
+       simulatie1.setPatientDataUrgentArrival(16, 1, 1, patient1);
+       System.out.println(patient1.getAppointmenttime());
+       System.out.println(patient1.getArrivaltime());
+       System.out.println(patient1.getCategory());*/
         
         
         
