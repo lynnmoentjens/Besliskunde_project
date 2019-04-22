@@ -52,8 +52,16 @@ public class Simulation {
     
     public void Simulatie(int amountOfWeeksSimulation){
         
-        while(week<amountOfWeeksSimulation){
+        while(week<=amountOfWeeksSimulation){
             //ophalen van de gegevens van de vorige dag
+            double scheduledAppointmentsAtBeginDay=0;
+            for(int i=1; i<numberOfElectives;i++){
+                if(electivePatients[i].getDay()==day){
+                    scheduledAppointmentsAtBeginDay++;
+                }
+            }
+            appointmentTime+=(scheduledAppointmentsAtBeginDay*15);
+            
             while((time<lengthDay)&&(numberOfUrgentInSystem!=0))
             {
                 if((day!=6)&&(callTime<departureTimeElective)&&(callTime<arrivalTimeElective)&&(callTime<departureTimeUrgent)&&(callTime<arrivalTimeUrgent)){
@@ -74,6 +82,7 @@ public class Simulation {
                 }
                 else if((departureTimeElective<callTime)&&(departureTimeElective<arrivalTimeElective)&&(departureTimeElective<arrivalTimeUrgent)&&(departureTimeElective<departureTimeUrgent)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
                 //anneleen 
+                
                 
                 }
                 else if((arrivalTimeUrgent<callTime)&&(arrivalTimeUrgent<departureTimeUrgent)&&(arrivalTimeUrgent<arrivalTimeElective)&&(arrivalTimeUrgent<departureTimeElective)){
@@ -125,6 +134,7 @@ public class Simulation {
         }
         numberOfElectivesArrived=0;
         numberOfCallersThatDay=0;
+        appointmentTime=-15;
         
     }
     
