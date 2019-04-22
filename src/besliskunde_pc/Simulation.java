@@ -132,15 +132,17 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)){
+                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)&&(numberOfUrgent<=amountOfUrgentArrivingThatDay)){
                     time= arrivalTimeUrgent; 
+                    numberOfUrgent++;
+                    numberOfPatients++;
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
                     patients[numberOfPatients]=nieuwePatient;
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
                     }
-                    arrivalTimeUrgent= arrayVanArrivalTimes.get(numberOfUrgent);//arrivalTime van de volgende
+                    arrivalTimeUrgent= arrayVanArrivalTimes.get(numberOfUrgent-1);//arrivalTime van de volgende
                 }
                 //arrivalTimeElective
                 /*else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
@@ -153,7 +155,8 @@ public class Simulation {
               
             }
         double departureTimeVorige=0;
-        for(int i=0;i<lastScheduledAppointment;i=i+15){ ///tijd overlopen
+        for(int i=0;i<=lastScheduledAppointment-1;i=i+15){ ///tijd overlopen
+            System.out.println(totalNumberOfPatients-numberOfPatients);
             for(int j=(totalNumberOfPatients-numberOfPatients);j<numberOfPatients-numberOfElectivesForTomorrow;j++){
                 if(patients[j].getAppointmenttime()==i){
                     double appointmentTimeDeze;
@@ -216,6 +219,10 @@ public class Simulation {
         //numberOfElectivesArrived=0;
         //numberOfAlreadyCallersThatDay=0;
         appointmentTime=-15;
+        numberOfUrgent=0;
+        numberOfPatients=0;
+        callTime=0;
+        scheduleTimeUrgent=0;
         
     }
     
@@ -261,8 +268,7 @@ public class Simulation {
         return nieuwePatient;
     }
     public Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek, Patient nieuwePatient){
-        numberOfUrgent++;
-        numberOfPatients++;
+        
         nieuwePatient.setCategory("Urgent");
         nieuwePatient.setArrivaltime(arrivalTime);
         nieuwePatient.setDay(today);
