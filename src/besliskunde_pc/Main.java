@@ -24,6 +24,7 @@ public class Main {
        */ 
        Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
+       simulatie1.setNumberOfAlreadyCallersThatDay(0);
        simulatie1.setPatientDataCall(225, 540, 115, 1, patient1);
        System.out.println(patient1.getAppointmenttime());
        System.out.println(patient1.getCalltime());

@@ -34,7 +34,7 @@ public class Simulation {
     private double departureTimeUrgent; 
     private double serviceTime;
     
-    private int numberOfCallersThatDay;
+    private int numberOfAlreadyCallersThatDay;
     private int aantalSlotsElectives;
     
     public void initialization(){
@@ -75,7 +75,7 @@ public class Simulation {
                     numberOfElectives++;
                     numberOfElectivesInSystem++;
                     Patient nieuwePatient=new Patient();
-                    numberOfCallersThatDay++; //bekijken of dit nodig is
+                    numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
                     electivePatients[numberOfElectives]= nieuwePatient;
                     callTime = time+interCallingTime;  
@@ -106,7 +106,7 @@ public class Simulation {
                 //arrivalTimeElective
                 else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
                     numberOfElectivesArrived++;
-                    int rightNumber= numberOfElectives-numberOfCallersThatDay+numberOfElectivesArrived;
+                    int rightNumber= numberOfElectives-numberOfAlreadyCallersThatDay+numberOfElectivesArrived;
                     electivePatients[rightNumber].setArrivaltime(arrivalTimeElective);
                     double interarrivalTime= Distributions.Poisson_distribution(28.345);   
                     arrivalTimeUrgent = time+interarrivalTime;
@@ -143,7 +143,7 @@ public class Simulation {
             aantalSlotsElectives=30;
         }
         numberOfElectivesArrived=0;
-        numberOfCallersThatDay=0;
+        numberOfAlreadyCallersThatDay=0;
         appointmentTime=-15;
         
     }
@@ -155,33 +155,28 @@ public class Simulation {
         
         appointmentTime= appointmentTimePrevious;
         appointmentTime+=15;
-        while(numberOfCallersThatDay<=aantalSlotsElectives&&appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
+        while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
-        
+        nieuwePatient.setDay(day);
         
         //Speciale gevallen --> middag/avond en urgent slots
         if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 2 en slot 5 niet mogen 
             appointmentTime+=15;
             nieuwePatient.setAppointmenttime(appointmentTime);
         }  
-        else if(numberOfCallersThatDay==aantalSlotsElectives+1){ //dag is vol exact
-            appointmentTime=0;
-            nieuwePatient.setAppointmenttime(appointmentTime);
+        else if(appointmentTime>=540){ //dag is vol exact
+            double appointmentNextDay=0;
+            appointmentNextDay=appointmentTime-540;
+            nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1);     
         }
         else if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
             appointmentTime=300; // volgende empty slot is na de namiddag
-            nieuwePatient.setAppointmenttime(appointmentTime);                        
+            nieuwePatient.setAppointmenttime(appointmentTime); 
         } 
 
-        if(numberOfCallersThatDay>aantalSlotsElectives){
-            nieuwePatient.setDay(day+1);
-        }
-        else{
-            nieuwePatient.setDay(day);
-        }
 
         return nieuwePatient;
     }
@@ -396,12 +391,12 @@ public class Simulation {
         this.serviceTime = serviceTime;
     }
 
-    public int getNumberOfCallersThatDay() {
-        return numberOfCallersThatDay;
+    public int getNumberOfAlreadyCallersThatDay() {
+        return numberOfAlreadyCallersThatDay;
     }
 
-    public void setNumberOfCallersThatDay(int numberOfCallersThatDay) {
-        this.numberOfCallersThatDay = numberOfCallersThatDay;
+    public void setNumberOfAlreadyCallersThatDay(int numberOfCallersThatDay) {
+        this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
     }
 
     public int getAantalSlotsElectives() {
