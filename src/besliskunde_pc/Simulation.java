@@ -16,8 +16,8 @@ public class Simulation {
     private double time;
     
     private Patient patient;
-    Patient electivePatients[] = new Patient[1000000000];
-    Patient urgentPatients[] = new Patient[1000000000];
+    Patient electivePatients[] = new Patient[10000];
+    Patient urgentPatients[] = new Patient[10000];
     
     private int numberOfUrgent;
     private int numberOfUrgentInSystem; //moet worden verminderd bij departure
@@ -32,22 +32,32 @@ public class Simulation {
     private double arrivalTimeUrgent;
     private double departureTimeElective;
     private double departureTimeUrgent; 
-    private double serviceTime;
-    
+
     private int numberOfAlreadyCallersThatDay;
-    private int aantalSlotsElectives;
-    
+   
     public void initialization(){
         
         week=1;
         day=1;
         lengthDay= 540; // we beginnen op maandag
         time=0.0;
-        numberOfElectives=0;
-        numberOfUrgent=0;
-        numberOfUrgentInSystem=0;
-        appointmentTime=-15;
         
+        numberOfUrgent=0;
+        numberOfElectives=0;
+        numberOfUrgentInSystem=0;
+        numberOfElectivesArrived=0;
+        numberOfElectivesInSystem=0;
+        
+        callTime=0;
+        appointmentTime=-15;
+        scheduleTimeUrgent=0;
+        arrivalTimeElective=5000;
+        arrivalTimeUrgent=5000;
+        departureTimeUrgent=5000;
+        arrivalTimeUrgent=5000;
+        
+        numberOfAlreadyCallersThatDay=0;
+
         //nog aan te vullen
 }
     
@@ -133,15 +143,15 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            aantalSlotsElectives=30;
+            
         }
         else if(today==3||today==5){
             lengthDay=240; 
-            aantalSlotsElectives=14;
+            
         }
         else{
             lengthDay=540;
-            aantalSlotsElectives=30;
+            
         }
         numberOfElectivesArrived=0;
         numberOfAlreadyCallersThatDay=0;
@@ -156,7 +166,7 @@ public class Simulation {
         
         appointmentTime= appointmentTimePrevious;
         appointmentTime+=15;
-        while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
+        while(appointmentTime<=timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
@@ -209,7 +219,7 @@ public class Simulation {
                 scheduleTimeUrgent=240;
             }
         }
-        else if(numberOfUrgent>2){
+        else if(numberOfUrgent>3){
             scheduleTimeUrgent+=15;
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
         }
@@ -390,13 +400,6 @@ public class Simulation {
         this.departureTimeUrgent = departureTimeUrgent;
     }
 
-    public double getServiceTime() {
-        return serviceTime;
-    }
-
-    public void setServiceTime(double serviceTime) {
-        this.serviceTime = serviceTime;
-    }
 
     public int getNumberOfAlreadyCallersThatDay() {
         return numberOfAlreadyCallersThatDay;
@@ -406,13 +409,7 @@ public class Simulation {
         this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
     }
 
-    public int getAantalSlotsElectives() {
-        return aantalSlotsElectives;
-    }
 
-    public void setAantalSlotsElectives(int aantalSlotsElectives) {
-        this.aantalSlotsElectives = aantalSlotsElectives;
-    }
     
 }
 

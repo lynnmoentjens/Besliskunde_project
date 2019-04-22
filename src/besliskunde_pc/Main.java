@@ -22,9 +22,11 @@ public class Main {
         simulatie1.initialization();
         simulatie1.Simulatie(2);
        */ 
+    
+    //simulatie van appointment met overslaan middag
        Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
-       simulatie1.setNumberOfAlreadyCallersThatDay(0);
+       simulatie1.initialization();
        simulatie1.setPatientDataCall(225, 540, 115, 1, patient1);
        System.out.println(patient1.getAppointmenttime());
        System.out.println(patient1.getCalltime());
