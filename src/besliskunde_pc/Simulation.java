@@ -19,7 +19,7 @@ public class Simulation {
     private double time;
     
     private Patient patient;
-    Patient patients[] = new Patient[10000];
+    Patient[] patients = new Patient[10000];
     
     private int numberOfUrgent;
     //private int numberOfUrgentInSystem; moet worden verminderd bij departure
@@ -37,6 +37,7 @@ public class Simulation {
     //private double departureTimeElective;
     //private double departureTimeUrgent; 
 
+   
    // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
    
@@ -323,29 +324,65 @@ public class Simulation {
         }
         return serviceTime;
     }
-   /* private void makeCalculationsElectives(){
+    private double averageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
+        
         double sumWaitingTillApp=0;
-        double sumDelays=0;
+        double averageAppointmentWaitingTime = 0;
+        //double sumDelays=0;
+        
+        
         for(int i=1;i<electivePatients.length;i++){
-            double waitingTillAppointment= electivePatients[i].getAppointmenttime()-electivePatients[i].getCalltime();
+/*begint een array niet bij 0?*/   double waitingTillAppointment= electivePatients[i].getAppointmenttime()-electivePatients[i].getCalltime();
             sumWaitingTillApp+=waitingTillAppointment;
-            double ServiceTime= (electivePatients[i].getDeparturetime()-electivePatients[i-1].getDeparturetime());
-            double waitingAfterAppointment= electivePatients[i-1].getDeparturetime()-electivePatients[i].getAppointmenttime(); 
-            if(waitingAfterAppointment<0){
-                waitingAfterAppointment=0;
-            }
-            sumDelays+=waitingAfterAppointment; 
-            //nog verder aanvullen met wat nodig is
-
         }
-        System.out.println(sumWaitingTillApp);
-        System.out.println(sumDelays); 
+            
+            //double ServiceTime= (electivePatients[i].getDeparturetime()-electivePatients[i-1].getDeparturetime());
+            //double waitingAfterAppointment= electivePatients[i-1].getDeparturetime()-electivePatients[i].getAppointmenttime(); 
+            //if(waitingAfterAppointment<0){
+            //    waitingAfterAppointment=0;
+            //sumDelays+=waitingAfterAppointment; 
+            //System.out.println(sumWaitingTillApp);
+            //System.out.println(sumDelays); 
+            
+            return averageAppointmentWaitingTime = sumWaitingTillApp/electivePatients.length;
+            
+        }
+        
+    
+    
+    private double scanWaitingTimeUrgent(){ //performance measure 2
+        double sumScanTime=0;
+        double averageScanTime = 0;
+        
+        Patient[] urgentPatients = new Patient[1000];
+        
+        for(int i = 0 ; i<patients.length ; i++){
+            for(int j = 0 ; j<urgentPatients.length ; j++){
+                if(patients[i].getCategory().equals("Urgent"))
+                    urgentPatients[j] = patients[i];
+                //WEET NIET OF DIT KLOPT
+            }
+            
+        }
+        
+        for(int i=0;i<urgentPatients.length;i++){
+            double waitingForScanTime= urgentPatients[i].getArrivaltime()-urgentPatients[i].getScanTime();;
+            sumScanTime+=waitingForScanTime;
+        }
+        //HEB HIERVOOR "GETSCANTIME" GEBRUIKT, MAAR DAT MOET NOG AANGEPAST WORDEN
+        
+        return averageScanTime = sumScanTime/urgentPatients.length;
+    }
+
+    
+    private int overtimeRequired(){ // minder belangrijk --> used to break ties
+        
     }
     
-    private void makeCalculationsUrgent(){
-        //nog verder aanvullen
+    private int scanWaitingTimeElectives(){ // minder belangrijk --> used to break ties
     }
-*/
+    
+    
     public int getWeek() {
         return week;
     }
