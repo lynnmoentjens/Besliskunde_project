@@ -86,7 +86,7 @@ public class Simulation {
             //lijst maken met arrivaltimes van de urgent patients
             ArrayList<Integer> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
-            int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
+/* andere distributie?*/  int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
             for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                 int randomgetal= (int) (Math.random()*lengthDay);
                 arrayVanArrivalTimes.add(randomgetal);
@@ -302,7 +302,24 @@ public class Simulation {
             serviceTime= Distributions.Normal_distribution(15, 3);
         }
         else{
-            serviceTime= Distributions.Normal_distribution(15, 2.5);
+            //service time for urgents patients
+            double numberFrequency = Math.random(); //getal aanmaken tussen [0.0 ; 1.0[
+            
+            if(numberFrequency>=0.0 && numberFrequency<0.7) // brain scan
+                serviceTime = Distributions.Normal_distribution(15, 2.5);
+            
+            else if(numberFrequency>=0.7 && numberFrequency<0.8) //spine lumbar scan
+                serviceTime= Distributions.Normal_distribution(17.5, 1);
+            
+            else if (numberFrequency>=0.8 && numberFrequency<0.9) //spine cervical scan
+                serviceTime= Distributions.Normal_distribution(22.5, 2.5);
+            
+            else if (numberFrequency>=0.9 && numberFrequency<0.95) // abdomen scan
+                serviceTime= Distributions.Normal_distribution(30,1);
+            
+            else
+                serviceTime= Distributions.Normal_distribution(30, 4.5); //others
+            
         }
         return serviceTime;
     }
