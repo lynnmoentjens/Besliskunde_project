@@ -18,6 +18,8 @@ public class Patient {
     private int week;
     private int day;
 
+    
+
     public String getCategory() {
         return category;
     }
@@ -75,5 +77,5 @@ public class Patient {
     }
 
     
-    
+
 }
