@@ -100,7 +100,7 @@ public class Simulation {
             
             
             double timeThatDayArrivalUrgent=lengthDay;
-            double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
+/*voor wat wordt dit gebruikt?*/ double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
             
             while((time<540)) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 

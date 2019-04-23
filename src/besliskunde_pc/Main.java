@@ -5,6 +5,8 @@
  */
 package besliskunde_pc;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Lynn
@@ -17,9 +19,36 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
 
+
+
+        
+        //VOORBEELD: ophalen strategieen van urgent slots voorbeeld --> kan nu van elke strategie en van elke dag
+        int day = 1;
+        
+        if(day == 1){
+        int[] slotsDay1 = UrgentSlots.getUrgentSlotsStrategy1().get(0); // krijg de array met slots MAANDAG
+        int numberOfSlots1 = slotsDay1.length; //krijg het aantal urgent slots op die MAANDAG
+        System.out.println("Eerste urgent slot maandag: "+slotsDay1[1]);
+            
+        int[] slotsDay3 = UrgentSlots.getUrgentSlotsStrategy1().get(2); // krijg de array met slots WOENSDAG
+        int numberOfSlots3 = slotsDay3.length; 
+        System.out.println("Derde urgent slot woensdag: "+slotsDay3[2]); 
+        }
+        
+        else if (day == 2){
+        //...
+        }
+       
+        
+        
+        
+        
+    /*    
     Simulation simulation1=new Simulation();
     simulation1.initialization();
-    simulation1.Simulatie(1);
+    simulation1.Simulatie(1);*/
+    
+    
    // simulatie van appointment met overslaan middag
       /* Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
