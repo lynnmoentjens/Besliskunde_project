@@ -77,7 +77,7 @@ public class Simulation {
             appointmentTime+=(numberOfElectivesForTomorrow*15);
             numberOfPatients=numberOfElectivesForTomorrow; 
             numberOfElectivesForTomorrow=0;
-            System.out.println("AppointmentTIme door gisteren algepland:"+appointmentTime);
+            System.out.println("AppointmentTime door gisteren algepland:"+appointmentTime);
             System.out.println("NumberOfPatientsThatDay al door vorige dag schedule"+numberOfPatients);
             
             //electives intercallingtime per dag berekening
@@ -123,10 +123,11 @@ public class Simulation {
             System.out.println("ArrivalTimeEeersteUrgent"+arrivalTimeUrgent);
             int numberOfPatientsThatHaveToUrgentArriveOrElectiveCall=amountOfUrgentArrivingThatDay+amountOfElectivesCallingThatDay;
             
-            while(time<540) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
+            while(time<540||numberOfPatients<numberOfPatientsThatHaveToUrgentArriveOrElectiveCall) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
                 if((day!=6)&&(callTime<arrivalTimeUrgent)){
+                    System.out.println("Dag in de week"+day);
                     time=callTime; 
                     System.out.println("Elective Belt");
                     System.out.println( "time = " + time);
@@ -284,7 +285,7 @@ public class Simulation {
         
         appointmentTime= appointmentTimePrevious;
         appointmentTime+=15;
-        while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
+        while(appointmentTime<=timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
