@@ -216,19 +216,19 @@ public class Simulation {
                     double departureTime;
                     String category= patients[j].getCategory();
                     double serviceLength= determineServiceTime(category);
-                    if(departureTimeVorige<appointmentTimeDeze&&departureTimeVorige<arrivalTimeDeze){
+                    if(departureTimeVorige>=appointmentTimeDeze&&departureTimeVorige>=arrivalTimeDeze){
                         patients[j].setServiceLength(serviceLength);
                         departureTime=departureTimeVorige+serviceLength;
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
-                    else if(arrivalTimeDeze<appointmentTimeDeze&&arrivalTimeDeze<departureTimeVorige){
+                    else if(arrivalTimeDeze>=appointmentTimeDeze&&arrivalTimeDeze>=departureTimeVorige){
                         patients[j].setServiceLength(serviceLength);
                         departureTime=arrivalTimeDeze+serviceLength;
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
-                    else if(appointmentTimeDeze<arrivalTimeDeze&&appointmentTimeDeze<departureTimeVorige){
+                    else if(appointmentTimeDeze>=arrivalTimeDeze&&appointmentTimeDeze>=departureTimeVorige){
                         patients[j].setServiceLength(serviceLength);
                         departureTime=appointmentTimeDeze+determineServiceTime(category);
                         patients[j].setDeparturetime(departureTime);
