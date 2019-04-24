@@ -114,7 +114,7 @@ public class Simulation {
                     Patient nieuwePatient=new Patient();
                     //numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
-                    patients[numberOfPatients]= nieuwePatient;
+                    patients[numberOfPatients-1]= nieuwePatient;
                     callTime = time+interCallingTime;  
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
@@ -139,7 +139,7 @@ public class Simulation {
                     numberOfPatients++;
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
-                    patients[numberOfPatients]=nieuwePatient;
+                    patients[numberOfPatients-1]=nieuwePatient;
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
                     }
