@@ -17,8 +17,15 @@ public class Patient {
     private double departuretime;
     private int week;
     private int day;
+    private double serviceLength;
 
-    
+    public double getServiceLength() {
+        return serviceLength;
+    }
+
+    public void setServiceLength(double serviceLength) {
+        this.serviceLength = serviceLength;
+    }
 
     public String getCategory() {
         return category;

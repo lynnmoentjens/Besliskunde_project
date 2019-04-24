@@ -87,8 +87,9 @@ public class Simulation {
             //lijst maken met arrivaltimes van de urgent patients
             ArrayList<Integer> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
+            int amountOfUrgentArrivingThatDay;
             if(day==4&&day==6){
-                int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
+                amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     int randomgetal= (int) (Math.random()*lengthDay);
                     arrayVanArrivalTimes.add(randomgetal);
@@ -102,7 +103,7 @@ public class Simulation {
                 }
             }
             else{
-                int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
+                amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     int randomgetal= (int) (Math.random()*lengthDay);
                     arrayVanArrivalTimes.add(randomgetal);
@@ -120,13 +121,13 @@ public class Simulation {
                 //AppointmentMaken
                 if((day!=6)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
-                    totalNumberOfPatients++;
+                    totalNumberOfPatients++; //over het hele programma/alle weken
                     //numberOfElectivesInSystem++;
-                    numberOfPatients++;
+                    numberOfPatients++; // per dag 
                     Patient nieuwePatient=new Patient();
                     //numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
-                    patients[numberOfPatients-1]= nieuwePatient;
+                    patients[numberOfPatients-1]= nieuwePatient; // je begint op 0
                     callTime = time+interCallingTime;  
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
@@ -178,17 +179,21 @@ public class Simulation {
                     arrivalTimeDeze= patients[j].getArrivaltime();
                     double departureTime;
                     String category= patients[j].getCategory();
+                    double serviceLength= determineServiceTime(category);
                     if(departureTimeVorige<appointmentTimeDeze&&departureTimeVorige<arrivalTimeDeze){
-                        departureTime=departureTimeVorige+determineServiceTime(category);
+                        patients[j].setServiceLength(serviceLength);
+                        departureTime=departureTimeVorige+serviceLength;
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
                     else if(arrivalTimeDeze<appointmentTimeDeze&&arrivalTimeDeze<departureTimeVorige){
-                        departureTime=arrivalTimeDeze+determineServiceTime(category);
+                        patients[j].setServiceLength(serviceLength);
+                        departureTime=arrivalTimeDeze+serviceLength;
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
                     else if(appointmentTimeDeze<arrivalTimeDeze&&appointmentTimeDeze<departureTimeVorige){
+                        patients[j].setServiceLength(serviceLength);
                         departureTime=appointmentTimeDeze+determineServiceTime(category);
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
