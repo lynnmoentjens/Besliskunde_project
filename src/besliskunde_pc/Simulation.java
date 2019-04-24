@@ -343,7 +343,7 @@ public class Simulation {
             
         }
         return serviceTime;
-    }
+    }/*
     private double averageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
         
         double sumWaitingTillApp=0;
@@ -352,7 +352,7 @@ public class Simulation {
         
         
         for(int i=1;i<electivePatients.length;i++){
-/*begint een array niet bij 0?*/   double waitingTillAppointment= electivePatients[i].getAppointmenttime()-electivePatients[i].getCalltime();
+/*begint een array niet bij 0?   double waitingTillAppointment= electivePatients[i].getAppointmenttime()-electivePatients[i].getCalltime();
             sumWaitingTillApp+=waitingTillAppointment;
         }
             
@@ -401,7 +401,7 @@ public class Simulation {
     
     private int scanWaitingTimeElectives(){ // minder belangrijk --> used to break ties
     }
-    
+    */
     
     public int getWeek() {
         return week;
