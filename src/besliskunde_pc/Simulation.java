@@ -58,7 +58,7 @@ public class Simulation {
         
         callTime=0;
         appointmentTime=-15;
-        scheduleTimeUrgent=0;
+        //scheduleTimeUrgent=0;
         //arrivalTimeElective=0;
         //departureTimeUrgent=5000;
         //arrivalTimeUrgent wordt bepaalt begin van de dag
@@ -77,18 +77,22 @@ public class Simulation {
             appointmentTime+=(numberOfElectivesForTomorrow*15);
             numberOfPatients=numberOfElectivesForTomorrow; 
             numberOfElectivesForTomorrow=0;
+            System.out.println("AppointmentTIme door gisteren algepland:"+appointmentTime);
+            System.out.println("NumberOfPatientsThatDay al door vorige dag schedule"+numberOfPatients);
             
             //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
             double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
+            System.out.println("AantalElectivesBellendiedag"+amountOfElectivesCallingThatDay);
+            System.out.println("TijdTussenBellen"+interCallingTime);
             
             
             //lijst maken met arrivaltimes van de urgent patients
             ArrayList<Integer> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
             int amountOfUrgentArrivingThatDay;
-            if(day==4&&day==6){
+            if(day==4||day==6){
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     int randomgetal= (int) (Math.random()*lengthDay);
@@ -115,20 +119,33 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
+            System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
+            System.out.println("ArrivalTimeEeersteUrgent"+arrivalTimeUrgent);
+            
             
             while((time<540)) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
                 if((day!=6)&&(callTime<arrivalTimeUrgent)){
                     time=callTime; 
+                    System.out.println("Elective Belt");
+                    System.out.println( "time = " + time);
                     totalNumberOfPatients++; //over het hele programma/alle weken
                     //numberOfElectivesInSystem++;
                     numberOfPatients++; // per dag 
+                    System.out.println("numberof patients = " + numberOfPatients);
+                    System.out.println("total = " + totalNumberOfPatients);
                     Patient nieuwePatient=new Patient();
                     //numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
                     patients[totalNumberOfPatients-1]= nieuwePatient; // je begint op 0
+                    System.out.println("Appointmenttime"+nieuwePatient.getAppointmenttime());
+                    System.out.println("ArrivalTime"+nieuwePatient.getArrivaltime());
+                    System.out.println("CallTime"+nieuwePatient.getCalltime());
+                    
                     callTime = time+interCallingTime;  
+                    System.out.println("calltime = " + callTime);
+                    System.out.println("___________________________________________");
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
                     }  
@@ -146,13 +163,23 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((amountOfUrgentArrivingThatDay!=0)&&(arrivalTimeUrgent<callTime)&&(numberOfUrgent<=amountOfUrgentArrivingThatDay)){
+                else if((numberOfUrgent<amountOfUrgentArrivingThatDay)&&(arrivalTimeUrgent<callTime)&&(numberOfUrgent<=amountOfUrgentArrivingThatDay)){
                     time= arrivalTimeUrgent; 
+                    System.out.println("Urgent patient komt aan");
+                    System.out.println("TimeUrgentArrival="+time);
                     numberOfUrgent++;
                     numberOfPatients++;
+                    totalNumberOfPatients++;
+                    System.out.println("totalUrgentThatday="+numberOfUrgent);
+                    System.out.println("totalThatday="+numberOfPatients);
+                    System.out.println("total="+totalNumberOfPatients);
                     Patient nieuwePatient = new Patient();
                     nieuwePatient = setPatientDataUrgentArrival(arrivalTimeUrgent, day, week, nieuwePatient);
                     patients[totalNumberOfPatients-1]=nieuwePatient;
+                    System.out.println("Appointmenttime Urgent"+nieuwePatient.getAppointmenttime());
+                    System.out.println("ArrivalTime Urgent"+nieuwePatient.getArrivaltime());
+                    
+                    System.out.println("___________________________________________");
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
                     }

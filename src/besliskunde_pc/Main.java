@@ -21,7 +21,7 @@ public class Main {
 
 
 
-        
+        /*
         //VOORBEELD: ophalen strategieen van urgent slots voorbeeld --> kan nu van elke strategie en van elke dag
         int day = 1;
         
@@ -38,15 +38,15 @@ public class Main {
         else if (day == 2){
         //...
         }
-       
+       */
         
         
         
         
-    /*    
+      
     Simulation simulation1=new Simulation();
     simulation1.initialization();
-    simulation1.Simulatie(1);*/
+    simulation1.Simulatie(1);
     
     
    // simulatie van appointment met overslaan middag
