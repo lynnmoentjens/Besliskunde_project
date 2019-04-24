@@ -44,6 +44,9 @@ public class Distributions {
     
     
 }
+    public static double Exponential_distribution(double lambda){
+        return  Math.log(1-Math.random())/(-lambda);    
+    }
 
     public static int Poisson_distribution(double lambda){      // INVERSION METHOD POISSON DISTRIBUTION
     
