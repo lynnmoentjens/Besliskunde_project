@@ -50,7 +50,7 @@ public class Simulation {
     //private double departureTimeUrgent; 
 
     private double scheduleTimeElective;
-    private double scheduledTimeElectivePrevious;
+
     
     
    // private int numberOfAlreadyCallersThatDay;
@@ -94,7 +94,7 @@ public class Simulation {
             
             //EXTRA CODE INDIEN PATIENT MEER DAN EEN DAGEN LATER GESCHEDULED WORDT
             
-            /* CODE INDIEN ER APPOINTMENTS ZIJN VOOR DE VOLGENDE DAG
+            /*CODE INDIEN ER APPOINTMENTS ZIJN VOOR DE VOLGENDE DAG --> HOE DOEN MET BAILEY WELSH?
             appointmentTime+=(numberOfElectivesForTomorrow*15);
             numberOfPatients=numberOfElectivesForTomorrow; 
             numberOfElectivesForTomorrow=0;
@@ -326,30 +326,51 @@ public class Simulation {
         
         while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
+            scheduleTimeElective+=15;
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
+        nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
         nieuwePatient.setDay(day);
         
         //Speciale gevallen --> middag/avond en urgent slots
-        if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 2 en slot 5 niet mogen 
+        //GEEN ELSE IF GEBRUIKEN, HET KAN ZIJN DAT JE EERST URGENT SLOT HEBT EN DAARNA LUNCH
+        
+        /*if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 2 en slot 5 niet mogen 
             appointmentTime+=15;
             nieuwePatient.setAppointmenttime(appointmentTime);
-        }  
-        else if(lengthDay!=240&&appointmentTime>=540){ //voor volgende dag als vandaag volle dag
+        }  */
+        
+        if(lengthDay!=240&&scheduleTimeElective>=540){ //NIET ZEKER OF DIT KLOPT
             double appointmentNextDay=0;
-            appointmentNextDay=appointmentTime-540;
+            double scheduledTimeNextDay=0;
+            appointmentNextDay=appointmentTime-525;
+            scheduledTimeNextDay=scheduleTimeElective-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
+            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
             nieuwePatient.setDay(day+1); 
             numberOfElectivesForTomorrow++;
         }
-        else if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
-            appointmentTime=300; // volgende empty slot is na de namiddag
+        
+        if(lengthDay!=240&&(scheduleTimeElective==240||scheduleTimeElective==255||scheduleTimeElective==270||scheduleTimeElective==285)){ //alleen voor volle dagen
+            scheduleTimeElective=300; // volgende empty slot is na de namiddag
+            appointmentTime=225; 
             nieuwePatient.setAppointmenttime(appointmentTime); 
+            nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
         } 
-        else if(lengthDay==240&&appointmentTime>=240){ // voor volgende dag als vandaag halve dag
+        
+        if(lengthDay!=240&&(scheduleTimeElective==315)){ //DE SPRONG MOET OOK GEMAAKT WORDEN VOOR APPOINTMENTTIME
+            appointmentTime=300;
+            nieuwePatient.setAppointmenttime(appointmentTime);
+        }
+        
+        if(lengthDay==240&&scheduleTimeElective>=240){ //NIET ZEKER OF DIT KLOPT
             double appointmentNextDay=0;
-            appointmentNextDay=appointmentTime-240;
+            double scheduledTimeNextDay=0;
+            appointmentNextDay=appointmentTime-225;
+            scheduledTimeNextDay=scheduleTimeElective-240;
+            
             nieuwePatient.setAppointmenttime(appointmentNextDay);
+            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
             nieuwePatient.setDay(day+1);     
             numberOfElectivesForTomorrow++;
         }

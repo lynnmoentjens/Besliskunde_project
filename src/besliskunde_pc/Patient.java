@@ -18,6 +18,15 @@ public class Patient {
     private int week;
     private int day;
     private double serviceLength;
+    private double scheduleTimeElective;
+
+    public double getScheduleTimeElective() {
+        return scheduleTimeElective;
+    }
+
+    public void setScheduleTimeElective(double scheduleTimeElective) {
+        this.scheduleTimeElective = scheduleTimeElective;
+    }
 
     public double getServiceLength() {
         return serviceLength;

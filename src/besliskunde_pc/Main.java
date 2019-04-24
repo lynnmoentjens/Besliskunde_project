@@ -20,6 +20,9 @@ public class Main {
         // TODO code application logic here
 
 
+        double getal=1.25;
+        System.out.println(Distributions.Exponential_distribution(getal));
+        
 
         /*
         //VOORBEELD: ophalen strategieen van urgent slots voorbeeld --> kan nu van elke strategie en van elke dag
@@ -43,10 +46,11 @@ public class Main {
         
         
         
-      
+     /* 
     Simulation simulation1=new Simulation();
     simulation1.initialization();
-    simulation1.Simulatie(1);
+    simulation1.Simulatie(1);*/
+     
     
     
    // simulatie van appointment met overslaan middag
