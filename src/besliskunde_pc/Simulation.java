@@ -75,8 +75,8 @@ public class Simulation {
             //ophalen van de gegevens van de vorige dag
             //apppointmentTimes
             appointmentTime+=(numberOfElectivesForTomorrow*15);
-            numberOfElectivesForTomorrow=0;
             numberOfPatients=numberOfElectivesForTomorrow; 
+            numberOfElectivesForTomorrow=0;
             
             //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
@@ -87,17 +87,34 @@ public class Simulation {
             //lijst maken met arrivaltimes van de urgent patients
             ArrayList<Integer> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
-/* andere distributie?*/  int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
-            for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
-                int randomgetal= (int) (Math.random()*lengthDay);
-                arrayVanArrivalTimes.add(randomgetal);
+            if(day==4&&day==6){
+                int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
+                for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
+                    int randomgetal= (int) (Math.random()*lengthDay);
+                    arrayVanArrivalTimes.add(randomgetal);
+                }
+                Collections.sort(arrayVanArrivalTimes);
+                if(amountOfUrgentArrivingThatDay==0){
+                    arrivalTimeUrgent=Double.POSITIVE_INFINITY;
+                }
+                else{
+                    arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
+                }
             }
-            Collections.sort(arrayVanArrivalTimes);
-            if(amountOfUrgentArrivingThatDay==0){
-                arrivalTimeUrgent=Double.POSITIVE_INFINITY;
-            }else{
-                arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
+            else{
+                int amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
+                for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
+                    int randomgetal= (int) (Math.random()*lengthDay);
+                    arrayVanArrivalTimes.add(randomgetal);
+                }
+                Collections.sort(arrayVanArrivalTimes);
+                if(amountOfUrgentArrivingThatDay==0){
+                    arrivalTimeUrgent=Double.POSITIVE_INFINITY;
+                }else{
+                    arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
+                }
             }
+/* andere distributie?*/  
             
             
             double timeThatDayArrivalUrgent=lengthDay;
