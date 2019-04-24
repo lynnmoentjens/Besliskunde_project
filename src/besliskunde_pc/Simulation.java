@@ -69,7 +69,7 @@ public class Simulation {
 }
     
     
-    public void Simulatie(int amountOfWeeksSimulation){
+      public void Simulatie(int amountOfWeeksSimulation){
         
         while(week<=amountOfWeeksSimulation){
             //ophalen van de gegevens van de vorige dag
@@ -77,7 +77,7 @@ public class Simulation {
             appointmentTime+=(numberOfElectivesForTomorrow*15);
             numberOfPatients=numberOfElectivesForTomorrow; 
             numberOfElectivesForTomorrow=0;
-            System.out.println("AppointmentTime door gisteren algepland:"+appointmentTime);
+            System.out.println("AppointmentTIme door gisteren algepland:"+appointmentTime);
             System.out.println("NumberOfPatientsThatDay al door vorige dag schedule"+numberOfPatients);
             
             //electives intercallingtime per dag berekening
@@ -89,13 +89,14 @@ public class Simulation {
             
             
             //lijst maken met arrivaltimes van de urgent patients
-            ArrayList<Integer> arrayVanArrivalTimes;
+            ArrayList<Double> arrayVanArrivalTimes;
             arrayVanArrivalTimes = new ArrayList<>();
             int amountOfUrgentArrivingThatDay;
             if(day==4||day==6){
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
-                    int randomgetal= (int) (Math.random()*lengthDay);
+                    double randomgetal;
+                    randomgetal = Distributions.Exponential_distribution(1.25)*lengthDay;
                     arrayVanArrivalTimes.add(randomgetal);
                 }
                 Collections.sort(arrayVanArrivalTimes);
@@ -109,7 +110,8 @@ public class Simulation {
             else{
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
-                    int randomgetal= (int) (Math.random()*lengthDay);
+                    double randomgetal;
+                    randomgetal = Distributions.Exponential_distribution(2.5)*lengthDay;
                     arrayVanArrivalTimes.add(randomgetal);
                 }
                 Collections.sort(arrayVanArrivalTimes);
@@ -122,7 +124,7 @@ public class Simulation {
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
             System.out.println("ArrivalTimeEeersteUrgent"+arrivalTimeUrgent);
             int numberOfPatientsThatHaveToUrgentArriveOrElectiveCall=amountOfUrgentArrivingThatDay+amountOfElectivesCallingThatDay;
-            
+
             while(time<540||numberOfPatients<numberOfPatientsThatHaveToUrgentArriveOrElectiveCall) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
