@@ -83,7 +83,7 @@ public class Simulation {
             //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
-            double interCallingTime= (double) (timeThatDayCalling/amountOfElectivesCallingThatDay);
+            double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
             System.out.println("AantalElectivesBellendiedag"+amountOfElectivesCallingThatDay);
             System.out.println("TijdTussenBellen"+interCallingTime);
             
@@ -125,7 +125,7 @@ public class Simulation {
             System.out.println("ArrivalTimeEeersteUrgent"+arrivalTimeUrgent);
             int numberOfPatientsThatHaveToUrgentArriveOrElectiveCall=amountOfUrgentArrivingThatDay+amountOfElectivesCallingThatDay;
 
-            while(time<540||numberOfPatients<numberOfPatientsThatHaveToUrgentArriveOrElectiveCall) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
+            while(time<540) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
                 if((day!=6)&&(callTime<arrivalTimeUrgent)){
@@ -147,7 +147,7 @@ public class Simulation {
                     System.out.println("ArrivalTime"+nieuwePatient.getArrivaltime());
                     System.out.println("CallTime"+nieuwePatient.getCalltime());
                     
-                    callTime = (double) (time+interCallingTime);  
+                    callTime = time+interCallingTime;  
                     System.out.println("calltime = " + callTime);
                     System.out.println("___________________________________________");
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
@@ -234,10 +234,10 @@ public class Simulation {
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
-                    System.out.println(j);
-                    System.out.println(patients[j].getAppointmenttime());
-                    System.out.println(patients[j].getArrivaltime());
-                    System.out.println(patients[j].getDeparturetime());
+                    System.out.println("Number"+j);
+                    System.out.println("appointmentTime"+patients[j].getAppointmenttime());
+                    System.out.println("ArrivalTime"+patients[j].getArrivaltime());
+                    System.out.println("DepartureTime"+patients[j].getDeparturetime());
                 }
                 
             }
