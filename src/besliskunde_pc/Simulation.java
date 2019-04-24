@@ -83,7 +83,7 @@ public class Simulation {
             //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
-            double interCallingTime= timeThatDayCalling/amountOfElectivesCallingThatDay;
+            double interCallingTime= (double) (timeThatDayCalling/amountOfElectivesCallingThatDay);
             System.out.println("AantalElectivesBellendiedag"+amountOfElectivesCallingThatDay);
             System.out.println("TijdTussenBellen"+interCallingTime);
             
@@ -147,7 +147,7 @@ public class Simulation {
                     System.out.println("ArrivalTime"+nieuwePatient.getArrivaltime());
                     System.out.println("CallTime"+nieuwePatient.getCalltime());
                     
-                    callTime = time+interCallingTime;  
+                    callTime = (double) (time+interCallingTime);  
                     System.out.println("calltime = " + callTime);
                     System.out.println("___________________________________________");
                     if(lastScheduledAppointment<nieuwePatient.getAppointmenttime()){
