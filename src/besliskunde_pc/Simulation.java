@@ -173,7 +173,7 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((numberOfUrgent<=arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
+                else if((numberOfUrgent<arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
                     time= arrivalTimeUrgent; 
                     System.out.println("Urgent patient komt aan");
                     System.out.println("TimeUrgentArrival="+time);
