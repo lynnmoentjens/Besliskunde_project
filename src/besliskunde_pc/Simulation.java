@@ -430,16 +430,18 @@ public class Simulation {
             
         }
         return serviceTime;
-    }/*
+    }
+    
+    
     private double averageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
         
         double sumWaitingTillApp=0;
         double averageAppointmentWaitingTime = 0;
         //double sumDelays=0;
         
-        
-        for(int i=1;i<electivePatients.length;i++){
-/*begint een array niet bij 0?   double waitingTillAppointment= electivePatients[i].getAppointmenttime()-electivePatients[i].getCalltime();
+        //Aanpassing nodig --> moet electives alleen zijn 
+        for(int i=0;i<patients.length;i++){
+            double waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
             sumWaitingTillApp+=waitingTillAppointment;
         }
             
@@ -451,7 +453,7 @@ public class Simulation {
             //System.out.println(sumWaitingTillApp);
             //System.out.println(sumDelays); 
             
-            return averageAppointmentWaitingTime = sumWaitingTillApp/electivePatients.length;
+            return averageAppointmentWaitingTime = sumWaitingTillApp/patients.length;
             
         }
         
@@ -467,13 +469,13 @@ public class Simulation {
             for(int j = 0 ; j<urgentPatients.length ; j++){
                 if(patients[i].getCategory().equals("Urgent"))
                     urgentPatients[j] = patients[i];
-                //WEET NIET OF DIT KLOPT
             }
             
         }
         
         for(int i=0;i<urgentPatients.length;i++){
-            double waitingForScanTime= urgentPatients[i].getArrivaltime()-urgentPatients[i].getScanTime();;
+            
+            double waitingForScanTime= urgentPatients[i].getArrivaltime()-(urgentPatients[i].getDeparturetime()-urgentPatients[i].getServiceLength());
             sumScanTime+=waitingForScanTime;
         }
         //HEB HIERVOOR "GETSCANTIME" GEBRUIKT, MAAR DAT MOET NOG AANGEPAST WORDEN
@@ -483,12 +485,13 @@ public class Simulation {
 
     
     private int overtimeRequired(){ // minder belangrijk --> used to break ties
-        
+        return 2;
     }
     
     private int scanWaitingTimeElectives(){ // minder belangrijk --> used to break ties
+        return 2;
     }
-    */
+    
     
     public int getWeek() {
         return week;
