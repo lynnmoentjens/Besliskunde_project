@@ -346,7 +346,7 @@ public class Simulation {
             while(scheduleTimeUrgent==vorigeScheduleTime){
                 for(int j=0;j<a.length;j++){
                 if(a[i-1]>time&&a[i-1]>scheduleTimeUrgent){
-                    
+                    scheduleTimeUrgent=a[i-1];
                 }
             }
             if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
@@ -362,6 +362,7 @@ public class Simulation {
             
         }
             }
+            nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
             return nieuwePatient;
     }
         /*
