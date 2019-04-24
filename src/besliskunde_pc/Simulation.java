@@ -114,11 +114,6 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
-/* andere distributie?*/  
-            
-            
-            double timeThatDayArrivalUrgent=lengthDay;
-/*voor wat wordt dit gebruikt?*/ double interArrivalTimeUrgent= timeThatDayArrivalUrgent/amountOfUrgentArrivingThatDay;
             
             while((time<540)) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
