@@ -122,12 +122,18 @@ public class Simulation {
                 }
             }
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
-            System.out.println("ArrivalTimeEeersteUrgent"+arrivalTimeUrgent);
+            for(int i=0;i<arrayVanArrivalTimes.size();i++){
+                System.out.println("getallenUrgent"+arrayVanArrivalTimes.get(i));
+            }
+            System.out.println("ArrivalTimeEersteUrgent"+arrivalTimeUrgent);
             int numberOfPatientsThatHaveToUrgentArriveOrElectiveCall=amountOfUrgentArrivingThatDay+amountOfElectivesCallingThatDay;
 
             while(time<540) // maakt niet uit 240 want u urgentArrivals zijn al bepaald en je mag bellen in namiddag op donderdag
             {// lengthDay --> opnieuw bekijken want je kan op halve ook nog bellen --> oplossing zoeken 
                 //AppointmentMaken
+                System.out.println("________________________________________");
+                System.out.println("calltime"+callTime);
+                System.out.println("arrivalTimeUrgent"+arrivalTimeUrgent);
                 if((day!=6)&&(callTime<arrivalTimeUrgent)){
                     System.out.println("Dag in de week"+day);
                     time=callTime; 
@@ -167,7 +173,7 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((numberOfUrgent<=amountOfUrgentArrivingThatDay)&&(arrivalTimeUrgent<callTime)){
+                else if((numberOfUrgent<=arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
                     time= arrivalTimeUrgent; 
                     System.out.println("Urgent patient komt aan");
                     System.out.println("TimeUrgentArrival="+time);
@@ -327,6 +333,7 @@ public class Simulation {
         nieuwePatient.setArrivaltime(arrivalTime);
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
+        
         if(numberOfUrgent==1){
             if(arrivalTime<=15){
                 nieuwePatient.setAppointmenttime(15);
@@ -351,13 +358,14 @@ public class Simulation {
         else if(numberOfUrgent==2){
             if(arrivalTime<=60&&scheduleTimeUrgent!=60){
                 nieuwePatient.setAppointmenttime(60);
+                scheduleTimeUrgent=60;
             }
             else if(arrivalTime>60){
-                if((scheduleTimeUrgent<=540)&&(today==1||today==2||today==3||today==5)){
+                if((scheduleTimeUrgent<540)&&(today==1||today==2||today==3||today==5)){
                 nieuwePatient.setAppointmenttime(540);
                 scheduleTimeUrgent=540;
                 }
-                else if((scheduleTimeUrgent<=240)&&(today==4||today==6)){
+                else if((scheduleTimeUrgent<240)&&(today==4||today==6)){
                 nieuwePatient.setAppointmenttime(240);
                 scheduleTimeUrgent=240;
                 }
@@ -372,11 +380,11 @@ public class Simulation {
             }
         }
         else if(numberOfUrgent==3){
-            if((scheduleTimeUrgent<=540)&&(today==1||today==2||today==3||today==5)){
+            if((scheduleTimeUrgent<540)&&(today==1||today==2||today==3||today==5)){
                 nieuwePatient.setAppointmenttime(540);
                 scheduleTimeUrgent=540;
                 }
-                else if((scheduleTimeUrgent<=240)&&(today==4||today==6)){
+                else if((scheduleTimeUrgent<240)&&(today==4||today==6)){
                 nieuwePatient.setAppointmenttime(240);
                 scheduleTimeUrgent=240;
                 }
