@@ -304,18 +304,18 @@ public class Simulation {
             appointmentTime+=15;
             nieuwePatient.setAppointmenttime(appointmentTime);
         }  
-        else if(lengthDay!=240&&appointmentTime>=540){ //voor volgende dag als vandaag volle dag
+        if(lengthDay!=240&&appointmentTime>=540){ //voor volgende dag als vandaag volle dag
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1); 
             numberOfElectivesForTomorrow++;
         }
-        else if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
+        if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
             appointmentTime=300; // volgende empty slot is na de namiddag
             nieuwePatient.setAppointmenttime(appointmentTime); 
         } 
-        else if(lengthDay==240&&appointmentTime>=240){ // voor volgende dag als vandaag halve dag
+        if(lengthDay==240&&appointmentTime>=240){ // voor volgende dag als vandaag halve dag
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-240;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
@@ -334,6 +334,37 @@ public class Simulation {
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
         
+        int[] a= new int[2];
+        a[0]=15;
+        a[1]=60;
+        
+        
+        int i= numberOfUrgent;
+        double vorigeScheduleTime=scheduleTimeUrgent;
+        
+        
+            while(scheduleTimeUrgent==vorigeScheduleTime){
+                for(int j=0;j<a.length;j++){
+                if(a[i-1]>time&&a[i-1]>scheduleTimeUrgent){
+                    
+                }
+            }
+            if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
+                    scheduleTimeUrgent+=15;
+            }
+            else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
+                    if(today==1||today==2||today==3||today==5){
+                        scheduleTimeUrgent=540;
+                    }
+                    else if(today==3||today==6){
+                        scheduleTimeUrgent=240;
+                    }
+            
+        }
+            }
+            return nieuwePatient;
+    }
+        /*
         if(numberOfUrgent==1){
             if(arrivalTime<=15){
                 nieuwePatient.setAppointmenttime(15);
@@ -401,8 +432,8 @@ public class Simulation {
             scheduleTimeUrgent+=15;
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
         }
-        return nieuwePatient;
-    }
+        return nieuwePatient;*/
+    
     
     public double determineServiceTime(String category){
         double serviceTime=0;
