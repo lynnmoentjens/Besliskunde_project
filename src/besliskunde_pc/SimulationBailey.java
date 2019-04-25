@@ -12,19 +12,9 @@ import java.util.Collections;
  *
  * @author Lynn
  */
-public class SimulationBailey {
-    
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author jwpennem
- */
-public class Simulation {
+
+public class SimulationBailey {
     private int week; 
     private int day;
     private double lengthDay;
@@ -308,18 +298,20 @@ public class Simulation {
         
     }
     
-    public Patient setPatientDataCall(double appointmentTimePrevious, double lengthDay,double timeMomentCalling, int day, Patient nieuwePatient){
+    public Patient setPatientDataCall(double serviceTimePrevious, double lengthDay,double timeMomentCalling, int day, Patient nieuwePatient){
+        
+        //numberOfPatients=2; --> voor bij het testen
         
         nieuwePatient.setCalltime(timeMomentCalling);
         nieuwePatient.setCategory("Elective");
         
         if (numberOfPatients == 2){
-            appointmentTime= appointmentTimePrevious;
-            scheduleTimeElective = appointmentTimePrevious;
+            appointmentTime= serviceTimePrevious;
+            scheduleTimeElective = serviceTimePrevious;
             scheduleTimeElective+=15;
         }
         else{
-            appointmentTime= appointmentTimePrevious;
+            appointmentTime= serviceTimePrevious;
             appointmentTime+=15;
             scheduleTimeElective+=15;
         }
@@ -335,7 +327,7 @@ public class Simulation {
         
         //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBAILEY
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3(); //STRATEGIE 1 KIEZEN
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(day-1);
         
@@ -674,10 +666,6 @@ public class Simulation {
     public void setNumberOfAlreadyCallersThatDay(int numberOfCallersThatDay) {
         this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
     }*/
-
-
-    
-}
 
 
     

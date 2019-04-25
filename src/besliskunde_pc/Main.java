@@ -19,32 +19,42 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
 
-
+       //SIMULATIE URGENT SLOTS rule 1--> WERKT! bij first come first serve wordt er rekening gehouden met wanneer de urgent slots vallen!
+       /*Patient patient1=new Patient();
+       Simulation simulatie1= new Simulation();
+       simulatie1.initialization();
+       simulatie1.setPatientDataCall(105, 540, 115, 2, patient1);
+       
+       System.out.println(patient1.getAppointmenttime());
+       System.out.println(patient1.getCalltime());
+       System.out.println(patient1.getCategory()); 
+       System.out.println(patient1.getArrivaltime());*/
+        
+       
+       
+       //SIMULATIE URGENT SLOTS rule 2 --> WERKT VOOR EEN DEEL
+       //OPM: werk volledig alleen indien in de setPatientDataCall het numberOfPatients voor die dag op 2 wordt gezet
+       //indien er een ander aantal numberOfPatients zijn wilt het niet werken, 
+       //maar denk dat het wel kan kloppen alsde de rest van de simulatie het doet
+       Patient patient2=new Patient();
+       SimulationBailey simulatie2= new SimulationBailey();
+       simulatie2.initialization();
+       simulatie2.setPatientDataCall(300, 540, 49, 1, patient2);
+       
+       System.out.println(patient2.getAppointmenttime());
+       System.out.println(patient2.getScheduleTimeElective());
+       System.out.println(patient2.getCalltime());
+       System.out.println(patient2.getCategory()); 
+       System.out.println(patient2.getArrivaltime());
+        
+       
+        
+        /*
         double getal=1.25;
         System.out.println(Distributions.Exponential_distribution(getal));
-        
+        */
 
-        /*
-        //VOORBEELD: ophalen strategieen van urgent slots voorbeeld --> kan nu van elke strategie en van elke dag
-        int day = 1;
-        
-        if(day == 1){
-        int[] slotsDay1 = UrgentSlots.getUrgentSlotsStrategy1().get(0); // krijg de array met slots MAANDAG
-        int numberOfSlots1 = slotsDay1.length; //krijg het aantal urgent slots op die MAANDAG
-        System.out.println("Eerste urgent slot maandag: "+slotsDay1[1]);
-            
-        int[] slotsDay3 = UrgentSlots.getUrgentSlotsStrategy1().get(2); // krijg de array met slots WOENSDAG
-        int numberOfSlots3 = slotsDay3.length; 
-        System.out.println("Derde urgent slot woensdag: "+slotsDay3[2]); 
-        }
-        
-        else if (day == 2){
-        //...
-        }
-       */
-        
-        
-        
+          
         
      /* 
     Simulation simulation1=new Simulation();
