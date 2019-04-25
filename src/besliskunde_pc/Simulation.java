@@ -306,7 +306,7 @@ public class Simulation {
         
         //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
@@ -356,7 +356,7 @@ public class Simulation {
         
         //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3(); //STRATEGIE 2 GEKOZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL GEKOZEN
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         

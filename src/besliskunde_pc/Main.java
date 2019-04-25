@@ -27,7 +27,7 @@ public class Main {
 
         
        // 2. SIMULATIE URGENT SLOTS rule 1--> WERKT! bij first come first serve wordt er rekening gehouden met wanneer de urgent slots vallen!
-       Patient patient1=new Patient();
+       /*Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
        simulatie1.initialization();
        simulatie1.setPatientDataCall(105, 240, 115, 4, patient1);
@@ -36,7 +36,7 @@ public class Main {
        System.out.println(patient1.getCalltime());
        System.out.println(patient1.getCategory()); 
        System.out.println(patient1.getArrivaltime());
-        
+       */ 
        
        
        // 3. SIMULATIE URGENT SLOTS rule 2 --> WERKT VOOR EEN DEEL
