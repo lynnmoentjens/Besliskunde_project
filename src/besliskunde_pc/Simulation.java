@@ -293,35 +293,52 @@ public class Simulation {
         
         appointmentTime= appointmentTimePrevious;
         appointmentTime+=15;
+        
         while(appointmentTime<=timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
         nieuwePatient.setDay(day);
         
-        //Speciale gevallen --> middag/avond en urgent slots
-        if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 2 en slot 5 niet mogen 
-            appointmentTime+=15;
-            nieuwePatient.setAppointmenttime(appointmentTime);
-        }  
-        if(lengthDay!=240&&appointmentTime>=540){ //voor volgende dag als vandaag volle dag
+        
+        //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        
+        int[] urgentSlotsForToday = urgentSlotsADay.get(day-1);
+        
+        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
+            if(appointmentTime==urgentSlotsForToday[i]){
+                appointmentTime+=15;
+                nieuwePatient.setAppointmenttime(appointmentTime);
+            }
+        }
+        
+        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
+        if(lengthDay!=240&&appointmentTime>=540){ 
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1); 
             numberOfElectivesForTomorrow++;
         }
-        if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){ //alleen voor volle dagen
+        
+        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
+        if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){
             appointmentTime=300; // volgende empty slot is na de namiddag
             nieuwePatient.setAppointmenttime(appointmentTime); 
         } 
-        if(lengthDay==240&&appointmentTime>=240){ // voor volgende dag als vandaag halve dag
+        
+        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG HALVE DAG IS
+        if(lengthDay==240&&appointmentTime>=240){ 
             double appointmentNextDay=0;
             appointmentNextDay=appointmentTime-240;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setDay(day+1);     
             numberOfElectivesForTomorrow++;
         }
+        
+        //AANMAKEN ARRIVALTIME MET AFWIJKING
         double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
         nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
 
@@ -334,19 +351,20 @@ public class Simulation {
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
         
-        int[] a= new int[2];
-        a[0]=15;
-        a[1]=60;
+        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
         
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
         
         int i= numberOfUrgent;
         double vorigeScheduleTime=scheduleTimeUrgent;
         
         
             while(scheduleTimeUrgent==vorigeScheduleTime){
-                for(int j=0;j<a.length;j++){
-                if(a[i-1]>time&&a[i-1]>scheduleTimeUrgent){
-                    scheduleTimeUrgent=a[i-1];
+                for(int j=0;j<urgentSlotsForToday.length;j++){
+                if(urgentSlotsForToday[i-1]>time&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){
+                    scheduleTimeUrgent=urgentSlotsForToday[i-1];
                 }
             }
             if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){

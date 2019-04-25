@@ -332,14 +332,23 @@ public class Simulation {
         nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
         nieuwePatient.setDay(day);
         
-        //Speciale gevallen --> middag/avond en urgent slots
-        //GEEN ELSE IF GEBRUIKEN, HET KAN ZIJN DAT JE EERST URGENT SLOT HEBT EN DAARNA LUNCH
         
-        /*if((appointmentTime==15)||(appointmentTime==60)){ // Jus: dit is een voorbeeldje: als bv. slot 2 en slot 5 niet mogen 
-            appointmentTime+=15;
-            nieuwePatient.setAppointmenttime(appointmentTime);
-        }  */
+        //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBAILEY
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
         
+        int[] urgentSlotsForToday = urgentSlotsADay.get(day-1);
+        
+        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
+            if(scheduleTimeElective==urgentSlotsForToday[i]){
+                appointmentTime+=15;
+                scheduleTimeElective+=15;
+                nieuwePatient.setAppointmenttime(appointmentTime);
+                nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
+            }
+        }
+        
+        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
         if(lengthDay!=240&&scheduleTimeElective>=540){ //NIET ZEKER OF DIT KLOPT
             double appointmentNextDay=0;
             double scheduledTimeNextDay=0;
@@ -351,6 +360,7 @@ public class Simulation {
             numberOfElectivesForTomorrow++;
         }
         
+        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (1)
         if(lengthDay!=240&&(scheduleTimeElective==240||scheduleTimeElective==255||scheduleTimeElective==270||scheduleTimeElective==285)){ //alleen voor volle dagen
             scheduleTimeElective=300; // volgende empty slot is na de namiddag
             appointmentTime=225; 
@@ -358,11 +368,13 @@ public class Simulation {
             nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
         } 
         
+        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (2)
         if(lengthDay!=240&&(scheduleTimeElective==315)){ //DE SPRONG MOET OOK GEMAAKT WORDEN VOOR APPOINTMENTTIME
             appointmentTime=300;
             nieuwePatient.setAppointmenttime(appointmentTime);
         }
         
+        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG HALVE DAG IS
         if(lengthDay==240&&scheduleTimeElective>=240){ //NIET ZEKER OF DIT KLOPT
             double appointmentNextDay=0;
             double scheduledTimeNextDay=0;
@@ -374,40 +386,53 @@ public class Simulation {
             nieuwePatient.setDay(day+1);     
             numberOfElectivesForTomorrow++;
         }
+        
+        //AANMAKEN ARRIVALTIME MET AFWIJKING
         double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
         nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
 
         return nieuwePatient;
     }
+    
     public Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek, Patient nieuwePatient){
         
         nieuwePatient.setCategory("Urgent");
         nieuwePatient.setArrivaltime(arrivalTime);
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
-        if(numberOfUrgent==1&&arrivalTime<=15){
-            nieuwePatient.setAppointmenttime(15);
-        }
-        else if(numberOfUrgent==2&&arrivalTime<=60){
-            nieuwePatient.setAppointmenttime(60);
-        }
-        else if(numberOfUrgent==3){
-            if(today==1||today==2||today==3||today==5){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent=540;
+        
+        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        
+        int i= numberOfUrgent;
+        double vorigeScheduleTime=scheduleTimeUrgent;
+        
+        
+            while(scheduleTimeUrgent==vorigeScheduleTime){
+                for(int j=0;j<urgentSlotsForToday.length;j++){
+                if(urgentSlotsForToday[i-1]>time&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){
+                    scheduleTimeUrgent=urgentSlotsForToday[i-1];
+                }
             }
-            else{
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent=240;
+            if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
+                    scheduleTimeUrgent+=15;
             }
+            else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
+                    if(today==1||today==2||today==3||today==5){
+                        scheduleTimeUrgent=540;
+                    }
+                    else if(today==3||today==6){
+                        scheduleTimeUrgent=240;
+                    }
+            
         }
-        else if(numberOfUrgent>3){
-            scheduleTimeUrgent+=15;
+            }
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
-        }
-        return nieuwePatient;
+            return nieuwePatient;
     }
-    
     
 //NIETS AAN VERANDEREN
     public double determineServiceTime(String category){
