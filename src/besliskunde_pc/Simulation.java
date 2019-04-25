@@ -98,8 +98,10 @@ public class Simulation {
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     double randomgetal;
-                    randomgetal = Distributions.Exponential_distribution(1.25)*lengthDay;
+                    randomgetal = Distributions.Exponential_distribution(1/1.25)*lengthDay;
+                    if (randomgetal <= 240){
                     arrayVanArrivalTimes.add(randomgetal);
+                    }
                 }
                 Collections.sort(arrayVanArrivalTimes);
                 if(amountOfUrgentArrivingThatDay==0){
@@ -113,8 +115,10 @@ public class Simulation {
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     double randomgetal;
-                    randomgetal = Distributions.Exponential_distribution(2.5)*lengthDay;
+                    randomgetal = Distributions.Exponential_distribution(1/2.5)*lengthDay;
+                    if (randomgetal <= 540){
                     arrayVanArrivalTimes.add(randomgetal);
+                    }
                 }
                 Collections.sort(arrayVanArrivalTimes);
                 if(amountOfUrgentArrivingThatDay==0){
