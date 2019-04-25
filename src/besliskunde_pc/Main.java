@@ -83,7 +83,7 @@ public class Main {
         Patient patient1=new Patient();
         Simulation simulatie1= new Simulation();
         simulatie1.initialization();
-        simulatie1.setPatientDataUrgentArrival(121, 1, 1, patient1);
+        simulatie1.setPatientDataUrgentArrival(3, 1, 1, patient1);
         System.out.println(patient1.getAppointmenttime());
         System.out.println(patient1.getArrivaltime());
         System.out.println(patient1.getCategory());

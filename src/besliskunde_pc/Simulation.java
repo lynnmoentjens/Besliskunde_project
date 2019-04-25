@@ -360,10 +360,15 @@ public class Simulation {
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
         
+        
+        //ZEG DAT ALLE URGENT SLOTS CLOSED ZIJN
         urgentSlotsOpenClosed = new String[urgentSlotsForToday.length];
-        //for(int i = 0;)
+        for(int i = 0; i<urgentSlotsForToday.length; i++){
+            urgentSlotsOpenClosed[i] = "Open";
+        }
         
         numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
+        scheduleTimeUrgent = 0; //ALLEEN VOOR CONTROLEREN
         int i= numberOfUrgent;
         
         double vorigeScheduleTime=scheduleTimeUrgent;
@@ -372,8 +377,9 @@ public class Simulation {
             while(scheduleTimeUrgent==vorigeScheduleTime){
                 
                 for(int j=0;j<urgentSlotsForToday.length;j++){
-                    if(urgentSlotsForToday[i-1]>arrivalTime&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){ //TIME AANGEPAST NAAR ARRIVALTIME
-                        scheduleTimeUrgent=urgentSlotsForToday[i-1];
+                    if(urgentSlotsOpenClosed[j].equals("Open")&&urgentSlotsForToday[j]>arrivalTime/*&&urgentSlotsForToday[j]>scheduleTimeUrgent*/){ //TIME AANGEPAST NAAR ARRIVALTIME
+                        scheduleTimeUrgent=urgentSlotsForToday[j];
+                        urgentSlotsOpenClosed[j] = "Closed";
                     }
                 }
                 
@@ -707,6 +713,14 @@ public class Simulation {
     public void setNumberOfAlreadyCallersThatDay(int numberOfCallersThatDay) {
         this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
     }*/
+
+    public String[] getUrgentSlotsOpenClosed() {
+        return urgentSlotsOpenClosed;
+    }
+
+    public void setUrgentSlotsOpenClosed(String[] urgentSlotsOpenClosed) {
+        this.urgentSlotsOpenClosed = urgentSlotsOpenClosed;
+    }
 
 
     
