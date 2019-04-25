@@ -45,6 +45,7 @@ public class SimulationBailey {
     
    // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
+    private String[] urgentSlotsOpenClosed; //ZEGGEN OF SLOTS OPEN ZIJN OF NIET
    
     public void initialization(){
         
@@ -73,6 +74,7 @@ public class SimulationBailey {
         lastScheduledAppointment=0;
         
         scheduleTimeElective = -15;
+        
 }
     
     
@@ -295,6 +297,7 @@ public class SimulationBailey {
         numberOfPatients=0;
         callTime=0;
         scheduleTimeUrgent=0;
+        urgentSlotsOpenClosed = null;
         
     }
     
@@ -329,7 +332,7 @@ public class SimulationBailey {
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3(); //STRATEGIE 1 KIEZEN
         
-        int[] urgentSlotsForToday = urgentSlotsADay.get(day-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
             if(scheduleTimeElective==urgentSlotsForToday[i]){
@@ -393,35 +396,51 @@ public class SimulationBailey {
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
         
-        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN
+        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3(); //STRATEGIE 2 GEKOZEN
         
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         
+        
+        //ZEG DAT ALLE URGENT SLOTS CLOSED ZIJN
+        urgentSlotsOpenClosed = new String[urgentSlotsForToday.length];
+        for(int i = 0; i<urgentSlotsForToday.length; i++){
+            urgentSlotsOpenClosed[i] = "Open";
+        }
+        
+        numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
+        //ALLEEN VOOR CONTROLEREN
         int i= numberOfUrgent;
+        
         double vorigeScheduleTime=scheduleTimeUrgent;
         
         
-            while(scheduleTimeUrgent==vorigeScheduleTime){
+            
+                
                 for(int j=0;j<urgentSlotsForToday.length;j++){
-                if(urgentSlotsForToday[i-1]>time&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){
-                    scheduleTimeUrgent=urgentSlotsForToday[i-1];
+                    if(scheduleTimeUrgent==vorigeScheduleTime){
+                        if(urgentSlotsOpenClosed[j].equals("Open")&&urgentSlotsForToday[j]>arrivalTime/*&&urgentSlotsForToday[j]>scheduleTimeUrgent*/){ //TIME AANGEPAST NAAR ARRIVALTIME
+                            scheduleTimeUrgent=urgentSlotsForToday[j];
+                            urgentSlotsOpenClosed[j] = "Closed";
+                        }
+                    }
                 }
-            }
-            if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
+                
+                if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
                     scheduleTimeUrgent+=15;
-            }
-            else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
+                }
+            
+                else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
                     if(today==1||today==2||today==3||today==5){
                         scheduleTimeUrgent=540;
                     }
-                    else if(today==3||today==6){
+                    else if(today==4||today==6){
                         scheduleTimeUrgent=240;
                     }
+                }
             
-        }
-            }
+            
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
             return nieuwePatient;
     }
