@@ -40,6 +40,8 @@ public class Simulation {
    
    // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
+    
+    private String[] urgentSlotsOpenClosed; //ZEGGEN OF SLOTS OPEN ZIJN OF NIET
    
     public void initialization(){
         
@@ -58,7 +60,7 @@ public class Simulation {
         
         callTime=0;
         appointmentTime=-15;
-        //scheduleTimeUrgent=0;
+        scheduleTimeUrgent=0;
         //arrivalTimeElective=0;
         //departureTimeUrgent=5000;
         //arrivalTimeUrgent wordt bepaalt begin van de dag
@@ -283,6 +285,7 @@ public class Simulation {
         numberOfPatients=0;
         callTime=0;
         scheduleTimeUrgent=0;
+        urgentSlotsOpenClosed = null;
         
     }
     
@@ -351,35 +354,43 @@ public class Simulation {
         nieuwePatient.setDay(today);
         nieuwePatient.setWeek(thisWeek);
         
-        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN
+        //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy2(); //STRATEGIE 2 GEKOZEN
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
         
+        urgentSlotsOpenClosed = new String[urgentSlotsForToday.length];
+        //for(int i = 0;)
+        
+        numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
         int i= numberOfUrgent;
+        
         double vorigeScheduleTime=scheduleTimeUrgent;
         
         
             while(scheduleTimeUrgent==vorigeScheduleTime){
+                
                 for(int j=0;j<urgentSlotsForToday.length;j++){
-                if(urgentSlotsForToday[i-1]>time&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){
-                    scheduleTimeUrgent=urgentSlotsForToday[i-1];
+                    if(urgentSlotsForToday[i-1]>arrivalTime&&urgentSlotsForToday[i-1]>scheduleTimeUrgent){ //TIME AANGEPAST NAAR ARRIVALTIME
+                        scheduleTimeUrgent=urgentSlotsForToday[i-1];
+                    }
                 }
-            }
-            if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
+                
+                if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime>=540){
                     scheduleTimeUrgent+=15;
-            }
-            else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
+                }
+            
+                else if((scheduleTimeUrgent==vorigeScheduleTime)&&vorigeScheduleTime<540){
                     if(today==1||today==2||today==3||today==5){
                         scheduleTimeUrgent=540;
                     }
                     else if(today==3||today==6){
                         scheduleTimeUrgent=240;
                     }
-            
-        }
+                }
             }
+            
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
             return nieuwePatient;
     }
