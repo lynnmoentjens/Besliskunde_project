@@ -308,7 +308,7 @@ public class Simulation {
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy1(); //STRATEGIE 1 KIEZEN
         
-        int[] urgentSlotsForToday = urgentSlotsADay.get(day-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
             if(appointmentTime==urgentSlotsForToday[i]){
@@ -356,9 +356,9 @@ public class Simulation {
         
         //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy2(); //STRATEGIE 2 GEKOZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3(); //STRATEGIE 2 GEKOZEN
         
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         
         
         //ZEG DAT ALLE URGENT SLOTS CLOSED ZIJN
@@ -368,18 +368,20 @@ public class Simulation {
         }
         
         numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
-        scheduleTimeUrgent = 0; //ALLEEN VOOR CONTROLEREN
+        //ALLEEN VOOR CONTROLEREN
         int i= numberOfUrgent;
         
         double vorigeScheduleTime=scheduleTimeUrgent;
         
         
-            while(scheduleTimeUrgent==vorigeScheduleTime){
+            
                 
                 for(int j=0;j<urgentSlotsForToday.length;j++){
-                    if(urgentSlotsOpenClosed[j].equals("Open")&&urgentSlotsForToday[j]>arrivalTime/*&&urgentSlotsForToday[j]>scheduleTimeUrgent*/){ //TIME AANGEPAST NAAR ARRIVALTIME
-                        scheduleTimeUrgent=urgentSlotsForToday[j];
-                        urgentSlotsOpenClosed[j] = "Closed";
+                    if(scheduleTimeUrgent==vorigeScheduleTime){
+                        if(urgentSlotsOpenClosed[j].equals("Open")&&urgentSlotsForToday[j]>arrivalTime/*&&urgentSlotsForToday[j]>scheduleTimeUrgent*/){ //TIME AANGEPAST NAAR ARRIVALTIME
+                            scheduleTimeUrgent=urgentSlotsForToday[j];
+                            urgentSlotsOpenClosed[j] = "Closed";
+                        }
                     }
                 }
                 
@@ -391,11 +393,11 @@ public class Simulation {
                     if(today==1||today==2||today==3||today==5){
                         scheduleTimeUrgent=540;
                     }
-                    else if(today==3||today==6){
+                    else if(today==4||today==6){
                         scheduleTimeUrgent=240;
                     }
                 }
-            }
+            
             
             nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
             return nieuwePatient;

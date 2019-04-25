@@ -27,15 +27,15 @@ public class Main {
 
         
        // 2. SIMULATIE URGENT SLOTS rule 1--> WERKT! bij first come first serve wordt er rekening gehouden met wanneer de urgent slots vallen!
-       /*Patient patient1=new Patient();
+       Patient patient1=new Patient();
        Simulation simulatie1= new Simulation();
        simulatie1.initialization();
-       simulatie1.setPatientDataCall(105, 540, 115, 2, patient1);
+       simulatie1.setPatientDataCall(105, 240, 115, 4, patient1);
        
        System.out.println(patient1.getAppointmenttime());
        System.out.println(patient1.getCalltime());
        System.out.println(patient1.getCategory()); 
-       System.out.println(patient1.getArrivaltime());*/
+       System.out.println(patient1.getArrivaltime());
         
        
        
@@ -79,15 +79,16 @@ public class Main {
     
 
 
-        // 6. simuatie RULE 1 urgentArrival 
+        // 6. simuatie RULE 1 urgentArrival --> WERKT!
+        /*
         Patient patient1=new Patient();
         Simulation simulatie1= new Simulation();
         simulatie1.initialization();
-        simulatie1.setPatientDataUrgentArrival(3, 1, 1, patient1);
+        simulatie1.setPatientDataUrgentArrival(240, 6, 1, patient1);
         System.out.println(patient1.getAppointmenttime());
         System.out.println(patient1.getArrivaltime());
         System.out.println(patient1.getCategory());
-        
+        */
        
         
         //VOORBEELDEN DISTRIBUTIES    
