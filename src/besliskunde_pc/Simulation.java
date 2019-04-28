@@ -127,6 +127,7 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
+            //System.out.println("Size van de array " + arrayVanArrivalTimes.size());
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
             for(int i=0;i<arrayVanArrivalTimes.size();i++){
                 System.out.println("getallenUrgent"+arrayVanArrivalTimes.get(i));
@@ -179,7 +180,7 @@ public class Simulation {
                 
                 }*/
                 //arrivalTimeUrgent
-                else if((numberOfUrgent<arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
+                else if((numberOfUrgent<=arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
                     time= arrivalTimeUrgent; 
                     System.out.println("Urgent patient komt aan");
                     System.out.println("TimeUrgentArrival="+time);
@@ -200,6 +201,7 @@ public class Simulation {
                         lastScheduledAppointment=nieuwePatient.getAppointmenttime();
                     }
                     if(numberOfUrgent<amountOfUrgentArrivingThatDay){
+                        System.out.println("number of urgent:" + numberOfUrgent);
                         arrivalTimeUrgent= arrayVanArrivalTimes.get(numberOfUrgent);//arrivalTime van de volgende
                     }
                     System.out.println("ArrivalTime volgende"+arrivalTimeUrgent);
@@ -250,6 +252,7 @@ public class Simulation {
                     System.out.println("appointmentTime"+patients[j].getAppointmenttime());
                     System.out.println("ArrivalTime"+patients[j].getArrivaltime());
                     System.out.println("DepartureTime"+patients[j].getDeparturetime());
+                    System.out.println("________________________________________________");
                 }
                 
             }
