@@ -127,6 +127,7 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
+            //er is iets mis met deze array waardoor de urgents niet werken
             //System.out.println("Size van de array " + arrayVanArrivalTimes.size());
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
             for(int i=0;i<arrayVanArrivalTimes.size();i++){
