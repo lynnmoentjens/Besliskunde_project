@@ -218,7 +218,7 @@ public class Simulation {
         System.out.println("gaat naar departure");
         double departureTimeVorige=0;
         for(int i=0;i<=lastScheduledAppointment-1;i=i+15){ ///tijd overlopen
-            System.out.println(totalNumberOfPatients-numberOfPatients);
+            //System.out.println(totalNumberOfPatients-numberOfPatients);
             for(int j=(totalNumberOfPatients-numberOfPatients);j<numberOfPatients-numberOfElectivesForTomorrow;j++){
                 if(patients[j].getAppointmenttime()==i){
                     double appointmentTimeDeze;
