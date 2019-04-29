@@ -98,7 +98,7 @@ public class Simulation {
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     double randomgetal;
-                    randomgetal = Distributions.Exponential_distribution(1/1.25)*lengthDay;
+                    randomgetal = Math.random()*lengthDay;
                     if (randomgetal <= 240){
                     arrayVanArrivalTimes.add(randomgetal);
                     }
@@ -115,7 +115,7 @@ public class Simulation {
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
                     double randomgetal;
-                    randomgetal = Distributions.Exponential_distribution(1/2.5)*lengthDay;
+                    randomgetal = Math.random()*lengthDay;
                     if (randomgetal <= 540){
                     arrayVanArrivalTimes.add(randomgetal);
                     }
@@ -127,6 +127,7 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
+            
             //er is iets mis met deze array waardoor de urgents niet werken
             //System.out.println("Size van de array " + arrayVanArrivalTimes.size());
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
