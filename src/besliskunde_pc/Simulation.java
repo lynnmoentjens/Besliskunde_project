@@ -540,12 +540,23 @@ public class Simulation {
         
         double sumWaitingTillApp=0;
         double averageAppointmentWaitingTime = 0;
+        int numberOfElectives=0;
         //double sumDelays=0;
-        
+        System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
         //Aanpassing nodig --> moet electives alleen zijn 
-        for(int i=0;i<patients.length;i++){
-            double waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
-            sumWaitingTillApp+=waitingTillAppointment;
+        for(int i=0;i<totalNumberOfPatients;i++){
+            if(patients[i].getCategory().equals("Elective")){
+                System.out.println("--------------------------------------");
+                System.out.println("Patient "+(i+1));
+                System.out.println("Appointmenttime"+patients[i].getAppointmenttime());
+                System.out.println("CallTime"+patients[i].getCalltime());
+                double waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
+                System.out.println("Wachttijd deze patient"+waitingTillAppointment);
+                sumWaitingTillApp+=waitingTillAppointment;
+                System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+                numberOfElectives++;
+            }
+            
         }
             
             //double ServiceTime= (electivePatients[i].getDeparturetime()-electivePatients[i-1].getDeparturetime());
@@ -555,8 +566,11 @@ public class Simulation {
             //sumDelays+=waitingAfterAppointment; 
             //System.out.println(sumWaitingTillApp);
             //System.out.println(sumDelays); 
+            System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+            averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
+            System.out.println("gemiddelde wachttijd"+averageAppointmentWaitingTime);
             
-            return averageAppointmentWaitingTime = sumWaitingTillApp/patients.length;
+            return averageAppointmentWaitingTime;
             
         }
         
@@ -565,25 +579,22 @@ public class Simulation {
     private double scanWaitingTimeUrgent(){ //performance measure 2
         double sumScanTime=0;
         double averageScanTime = 0;
-        
-        Patient[] urgentPatients = new Patient[1000];
-        
-        for(int i = 0 ; i<patients.length ; i++){
-            for(int j = 0 ; j<urgentPatients.length ; j++){
-                if(patients[i].getCategory().equals("Urgent"))
-                    urgentPatients[j] = patients[i];
+        int aantalUrgent=0;
+              
+        for(int i=0;i<totalNumberOfPatients;i++){
+            if(patients[i].getCategory().equals("Urgent")){
+                double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
+                sumScanTime+=waitingForScanTime;
+                System.out.println("number"+(i+1));
+                System.out.println("wait for scan urgent"+waitingForScanTime);
+                System.out.println("som van wachttijden"+ sumScanTime);
+                aantalUrgent++;
             }
             
         }
-        
-        for(int i=0;i<urgentPatients.length;i++){
-            
-            double waitingForScanTime= urgentPatients[i].getArrivaltime()-(urgentPatients[i].getDeparturetime()-urgentPatients[i].getServiceLength());
-            sumScanTime+=waitingForScanTime;
-        }
-        //HEB HIERVOOR "GETSCANTIME" GEBRUIKT, MAAR DAT MOET NOG AANGEPAST WORDEN
-        
-        return averageScanTime = sumScanTime/urgentPatients.length;
+        averageScanTime = sumScanTime/aantalUrgent;
+        System.out.println(averageScanTime);
+        return averageScanTime ;
     }
 
     
@@ -761,3 +772,4 @@ public class Simulation {
 
     
 }
+
