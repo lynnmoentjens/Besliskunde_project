@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package besliskunde_pc;
 
 /**
  *
@@ -15,10 +9,14 @@ public class Patient {
     private double appointmenttime;
     private double arrivaltime; 
     private double departuretime;
-    private int week;
-    private int day;
+    private int weekCall;
+    private int dayCall;
     private double serviceLength;
     private double scheduleTimeElective;
+    private int weekAppointment;
+    private int dayAppointment;
+    
+    
 
     public double getScheduleTimeElective() {
         return scheduleTimeElective;
@@ -76,20 +74,36 @@ public class Patient {
         this.departuretime = departuretime;
     }
 
-    public int getWeek() {
-        return week;
+    public int getWeekCall() {
+        return weekCall;
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public void setWeekCall(int weekCall) {
+        this.weekCall = weekCall;
     }
 
-    public int getDay() {
-        return day;
+    public int getDayCall() {
+        return dayCall;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDayCall(int dayCall) {
+        this.dayCall = dayCall;
+    }
+
+    public int getWeekAppointment() {
+        return weekAppointment;
+    }
+
+    public void setWeekAppointment(int weekAppointment) {
+        this.weekAppointment = weekAppointment;
+    }
+
+    public int getDayAppointment() {
+        return dayAppointment;
+    }
+
+    public void setDayAppointment(int dayAppointment) {
+        this.dayAppointment = dayAppointment;
     }
 
     

@@ -14,7 +14,7 @@ import java.util.Collections;
  */
 
 
-public class SimulationBailey {
+public class SimulationBench {
     private int week; 
     private int day;
     private double lengthDay;
@@ -301,25 +301,16 @@ public class SimulationBailey {
         
     }
     
-    public Patient setPatientDataCall(double serviceTimePrevious, double lengthDay,double timeMomentCalling, int day, int week, Patient nieuwePatient){
-        
-        //numberOfPatients=2; --> voor bij het testen
-        
+    public Patient setPatientDataCall(double scheduleTimePrevious, double lengthDay,double timeMomentCalling, int day, int week, Patient nieuwePatient){
+        double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
         nieuwePatient.setCalltime(timeMomentCalling);
         nieuwePatient.setCategory("Elective");
         
-        if (numberOfPatients == 2){
-            appointmentTime= serviceTimePrevious;
-            scheduleTimeElective = serviceTimePrevious;
-            scheduleTimeElective+=15;
-        }
-        else{
-            appointmentTime= serviceTimePrevious;
-            appointmentTime+=15;
-            scheduleTimeElective+=15;
-        }
+        scheduleTimeElective = scheduleTimePrevious;
+        scheduleTimeElective+=15;
+        appointmentTime=scheduleTimeElective-1.5;
         
-        while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
+        while(appointmentTime<=timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
             appointmentTime+=15;
             scheduleTimeElective+=15;
         }
@@ -327,70 +318,61 @@ public class SimulationBailey {
         nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
         nieuwePatient.setDayCall(day);
         //nieuwePatient.setWeekCall(week);
+        nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
         
         
-        //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBAILEY
+        //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE 1 KIEZEN
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
-            if(scheduleTimeElective==urgentSlotsForToday[i]){
+            if(appointmentTime==urgentSlotsForToday[i]){
                 appointmentTime+=15;
                 scheduleTimeElective+=15;
                 nieuwePatient.setAppointmenttime(appointmentTime);
                 nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
+                nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
             }
         }
         
-        //VANAF HIER FOUTEN MET DE DAGEN EN WEKEN, IN WELKE DAG EN WEEK WORDEN DE APPOINTMENTS GEMAAKT TOV HET BELLEN
-        
-        
-        
         //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
-        if(lengthDay!=240&&scheduleTimeElective>=540){ //NIET ZEKER OF DIT KLOPT
+        if(lengthDay!=240&&appointmentTime>=540){ 
             double appointmentNextDay=0;
-            double scheduledTimeNextDay=0;
-            appointmentNextDay=appointmentTime-525;
-            scheduledTimeNextDay=scheduleTimeElective-540;
+            appointmentNextDay=appointmentTime-540;
+            double scheduleTimeNextDay=0;
+            scheduleTimeNextDay=scheduleTimeElective-540;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
-            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
+            nieuwePatient.setScheduleTimeElective(scheduleTimeNextDay);
             nieuwePatient.setDayAppointment(day+1); 
             //nieuwePatient.setWeekAppointment(week);
+            nieuwePatient.setArrivaltime(appointmentNextDay+afwijkingArrivalTime);
             numberOfElectivesForTomorrow++;
         }
         
-        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (1)
-        if(lengthDay!=240&&(scheduleTimeElective==240||scheduleTimeElective==255||scheduleTimeElective==270||scheduleTimeElective==285)){ //alleen voor volle dagen
-            scheduleTimeElective=300; // volgende empty slot is na de namiddag
-            appointmentTime=225; 
-            nieuwePatient.setAppointmenttime(appointmentTime); 
+        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
+        if(lengthDay!=240&&(appointmentTime==240||appointmentTime==255||appointmentTime==270||appointmentTime==285)){
+            appointmentTime=300-1.5; // volgende empty slot is na de namiddag
+            scheduleTimeElective=300;
+            nieuwePatient.setAppointmenttime(appointmentTime);
             nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
+            nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
         } 
         
-        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (2)
-        if(lengthDay!=240&&(scheduleTimeElective==315)){ //DE SPRONG MOET OOK GEMAAKT WORDEN VOOR APPOINTMENTTIME
-            appointmentTime=300;
-            nieuwePatient.setAppointmenttime(appointmentTime);
-        }
-        
         //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG HALVE DAG IS
-        if(lengthDay==240&&scheduleTimeElective>=240){ //NIET ZEKER OF DIT KLOPT
+        if(lengthDay==240&&appointmentTime>=240){ 
             double appointmentNextDay=0;
-            double scheduledTimeNextDay=0;
-            appointmentNextDay=appointmentTime-225;
-            scheduledTimeNextDay=scheduleTimeElective-240;
-            
+            double scheduleTimeNextDay=0;
+            appointmentNextDay=appointmentTime-240;
+            scheduleTimeNextDay=scheduleTimeElective-240;
             nieuwePatient.setAppointmenttime(appointmentNextDay);
-            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
-            nieuwePatient.setDayAppointment(day+1);     
+            nieuwePatient.setScheduleTimeElective(scheduleTimeNextDay);
+            nieuwePatient.setDayAppointment(day+1);  
+            //nieuwePatient.setWeekAppointment(week);
+            nieuwePatient.setArrivaltime(appointmentNextDay+afwijkingArrivalTime);
             numberOfElectivesForTomorrow++;
         }
-        
-        //AANMAKEN ARRIVALTIME MET AFWIJKING
-        double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
-        nieuwePatient.setArrivaltime(nieuwePatient.getAppointmenttime()+afwijkingArrivalTime);
 
         return nieuwePatient;
     }

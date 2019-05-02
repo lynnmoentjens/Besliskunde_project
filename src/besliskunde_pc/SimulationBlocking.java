@@ -156,7 +156,7 @@ public class SimulationBlocking {
                     //numberOfAlreadyCallersThatDay++; //bekijken of dit nodig is
                     System.out.println("AppointmentTime"+appointmentTime);
                     
-                    nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, nieuwePatient); //onderaan 
+                    nieuwePatient= setPatientDataCall(appointmentTime, lengthDay, callTime, day, week, nieuwePatient); //onderaan 
                     
                     patients[totalNumberOfPatients-1]= nieuwePatient; // je begint op 0
                     
@@ -300,11 +300,13 @@ public class SimulationBlocking {
         
     }
     
-    public Patient setPatientDataCall(double scheduleTimePrevious, double lengthDay,double timeMomentCalling, int day, Patient nieuwePatient){
+    public Patient setPatientDataCall(double scheduleTimePrevious, double lengthDay,double timeMomentCalling, int day, int week, Patient nieuwePatient){
         
         //numberOfPatients=2; --> voor bij het testen
         
         nieuwePatient.setCalltime(timeMomentCalling);
+        nieuwePatient.setDayCall(day);
+        nieuwePatient.setWeekCall(week);
         nieuwePatient.setCategory("Elective");
         
         double rest = numberOfPatients%2;
@@ -333,26 +335,25 @@ public class SimulationBlocking {
         
         //double restTijd = scheduleTimePrevious%30;
         
-        while(appointmentTime<timeMomentCalling){
-            if(eerstePlaatsBlokjeVrij=true){//geen rest
+        while(appointmentTime<timeMomentCalling){ //KAN NOG INGEKORT WORDEN INDIEN NODIG
+            if(eerstePlaatsBlokjeVrij=false){//geen rest
                 scheduleTimeElective+=15;
-                appointmentTime+=15;
-                eerstePlaatsBlokjeVrij=false;
+                appointmentTime+=30;
+                eerstePlaatsBlokjeVrij=true;
             }
             else{//wel rest
-                scheduleTimeElective+=30;
-                appointmentTime+=30;
+                scheduleTimeElective+=15;
+                eerstePlaatsBlokjeVrij=false;
                 
             }
-            appointmentTime+=15;
-            scheduleTimeElective+=15;
+            
         }
         nieuwePatient.setAppointmenttime(appointmentTime);
         nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
-        nieuwePatient.setDay(day);
+        nieuwePatient.setDayAppointment(day);
         
         
-        //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBAILEY
+        //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBLOCKING
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE 1 KIEZEN
         
@@ -360,22 +361,38 @@ public class SimulationBlocking {
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
             if(scheduleTimeElective==urgentSlotsForToday[i]){
-                appointmentTime+=15;
+                if(eerstePlaatsBlokjeVrij=false){//geen rest
                 scheduleTimeElective+=15;
+                appointmentTime+=30;
+                eerstePlaatsBlokjeVrij=true;
+            }
+            else{//wel rest
+                scheduleTimeElective+=15;
+                eerstePlaatsBlokjeVrij=false;
+                
+            }
                 nieuwePatient.setAppointmenttime(appointmentTime);
                 nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
             }
         }
         
+        
+        //VANAF HIER NIET MEER AAN VERDER GEWERKT BIJ RULE 3 (BLOCKING) 
+        //FOUTEN INDIEN JE ENKELE DAGEN VERDER MOET GAAN
+        //MOET EERST NOG GEPROGRAMMEERD WORDEN
+        
         //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
         if(lengthDay!=240&&scheduleTimeElective>=540){ //NIET ZEKER OF DIT KLOPT
-            double appointmentNextDay=0;
-            double scheduledTimeNextDay=0;
-            appointmentNextDay=appointmentTime-525;
-            scheduledTimeNextDay=scheduleTimeElective-540;
+            
+            double appointmentNextDay=-30;
+            double scheduledTimeNextDay=-15;
+            appointmentNextDay=appointmentTime=0;
+            scheduledTimeNextDay=scheduleTimeElective=0;
+            
+            
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
-            nieuwePatient.setDay(day+1); 
+            nieuwePatient.setDayAppointment(day+1); 
             numberOfElectivesForTomorrow++;
         }
         
@@ -402,13 +419,14 @@ public class SimulationBlocking {
             
             nieuwePatient.setAppointmenttime(appointmentNextDay);
             nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
-            nieuwePatient.setDay(day+1);     
+            nieuwePatient.setDayAppointment(day+1);     
+            //nieuwePatient.setWeekAppointment(week);
             numberOfElectivesForTomorrow++;
         }
         
         //AANMAKEN ARRIVALTIME MET AFWIJKING
         double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
-        nieuwePatient.setArrivaltime(appointmentTime+afwijkingArrivalTime);
+        nieuwePatient.setArrivaltime(nieuwePatient.getAppointmenttime()+afwijkingArrivalTime);
 
         return nieuwePatient;
     }
@@ -417,8 +435,8 @@ public class SimulationBlocking {
         
         nieuwePatient.setCategory("Urgent");
         nieuwePatient.setArrivaltime(arrivalTime);
-        nieuwePatient.setDay(today);
-        nieuwePatient.setWeek(thisWeek);
+        nieuwePatient.setDayAppointment(today);
+        nieuwePatient.setWeekAppointment(thisWeek);
         
         //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
