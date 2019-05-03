@@ -297,7 +297,7 @@ public class Simulation {
             }
         }
         //nodige parameters op nul zetten
-           
+          
         System.out.println("UPDATE");
         System.out.println("MEASURE 1= gemiddelde appointmentWaitingTime Elect"+averageAppointmentWaitingTimeElectives());
         System.out.println("MEASURE 1= urgent gemiddelde scan waiting time"+scanWaitingTimeUrgent());
@@ -652,22 +652,30 @@ public class Simulation {
                 System.out.println("CallTime"+patients[i].getCalltime());
                 double waitingTillAppointment;
                 int amountOfDaysNext=0;
-                amountOfDaysNext=patients[i].getDayCall()-day;
+                amountOfDaysNext=day - patients[i].getDayCall();
+                System.out.println("day = " + day);
+                System.out.println("amountOfDaysNext = " + amountOfDaysNext);
                 int dag=patients[i].getDayCall();
+                System.out.println("dag = "+ dag);
                 if(amountOfDaysNext==0)
                 {
+                    System.out.println("if amount of days is zero");
                     waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
                 }
                 else{
+                    System.out.println("if amount of days next is not zero");
                     waitingTillAppointment=patients[i].getAppointmenttime(); // appointment time
                     dag--; 
                     
                     while(dag!=day){
+                        System.out.println("zit je hier vast??");
                         if(dag==4||dag==6){
                             waitingTillAppointment+= 1200;
+                            day--;
                         }
                         else{
                             waitingTillAppointment+= 900;
+                            day--;
                         }
                     }
                     if(dag==day){
