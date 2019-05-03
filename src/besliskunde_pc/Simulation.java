@@ -255,6 +255,7 @@ public class Simulation {
             }
         System.out.println("gaat naar departure");
         double departureTimeVorige=0;
+        double randomNumber;
         for(double i=0;i<=lastScheduledAppointment;i=i+15){ ///tijd overlopen
             //System.out.println(totalNumberOfPatients-numberOfPatients);
             System.out.println("laatste gescheduled"+ lastScheduledAppointment);
@@ -262,6 +263,7 @@ public class Simulation {
             System.out.println("totaal patienten die dag"+ numberOfPatients);
             System.out.println("verschil"+(totalNumberOfPatients-numberOfPatients));
             for(int j=(totalNumberOfPatients-numberOfPatients);j<totalNumberOfPatients;j++){ //aanpassing nog nodig voor electives die er morgen in zitten: op zich zou je die wel al de vorige dag kunnen berekenen // maar dan moet het aantal patienten wel elke dag op 0 beginnen en niet al op het aantal geschedulde
+                randomNumber= Math.random();
                 if(patients[j].getAppointmenttime()==i){
                     double appointmentTimeDeze;
                     appointmentTimeDeze = patients[j].getAppointmenttime();
@@ -289,9 +291,18 @@ public class Simulation {
                         patients[j].setDeparturetime(departureTime);
                         departureTimeVorige=departureTime;
                     }
+                    if(randomNumber<=0.02){
+                        System.out.println("niet komen opdagen");
+                        departureTime=appointmentTimeDeze; 
+                        patients[j].setDeparturetime(departureTime);
+                        departureTimeVorige=appointmentTimeDeze;
+                        patients[j].setArrivaltime(appointmentTimeDeze);
+                        patients[j].setServiceLength(0);
+                    }
                     System.out.println("Number"+(j+1));
                     System.out.println("appointmentTime"+patients[j].getAppointmenttime());
                     System.out.println("ArrivalTime"+patients[j].getArrivaltime());
+                    System.out.println("ServiceLength"+patients[j].getServiceLength());
                     System.out.println("DepartureTime"+patients[j].getDeparturetime());
                     System.out.println("________________________________________________");
                 }
