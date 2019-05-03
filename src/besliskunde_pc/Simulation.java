@@ -41,8 +41,8 @@ public class Simulation {
    // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
     private double timeNextUrgent;    
-    private String[] urgentSlotsOpenClosed; //ZEGGEN OF SLOTS OPEN ZIJN OF NIET
     private double timeArrived;
+    ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
    
     public void initialization(){
         
@@ -68,6 +68,8 @@ public class Simulation {
         //numberOfAlreadyCallersThatDay=0;
 
         lastScheduledAppointment=0;
+        
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
 }
     
     
@@ -314,6 +316,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
+            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
             
         }
         else if(today==3||today==5){
@@ -428,11 +431,15 @@ public class Simulation {
         //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
         if(e.getDay()!=4&&e.getDay()!=6&&(tijd==240||tijd==255||tijd==270||tijd==285)){
             tijd=300; // volgende empty slot is na de namiddag
+            System.out.println("vorige tijd"+ e.getTime());
                if(tijd<=e.getTime()){
                    tijd+=15;
                } 
             } 
-         e.setTime(tijd);
+        if(tijd<=e.getTime()){
+                   tijd+=15;}
+        System.out.println("vorige tijd"+ e.getTime());     
+        e.setTime(tijd);
         return e;
     } 
     
@@ -447,10 +454,10 @@ public class Simulation {
         nieuwePatient.setWeekAppointment(thisWeek);
         
         //KIEZEN WELKE STRATEGIE JE WILT GEBRUIKEN --> MANUEEL AANPASSEN
-        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL GEKOZEN
+        //STRATEGIE MANUEEL GEKOZEN
         
         System.out.println("laatste appointment"+scheduleTimeUrgent);
+        double vorigeTime= scheduleTimeUrgent;
         int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
         for(int i=0;i<urgentSlotsForToday.length;i++){
@@ -460,28 +467,31 @@ public class Simulation {
         boolean change=false;
         boolean changing=false;
         System.out.println(urgentSlotsForToday[0]);
-        while(change==false){
+        while(scheduleTimeUrgent== vorigeTime&&urgentSlotsForToday[urgentSlotsForToday.length-1]!=0){
             System.out.println("change "+change);
+            System.out.println("aantal slots"+ urgentSlotsForToday.length);
             for(int i=0;i<urgentSlotsForToday.length;i++){
                 System.out.println("Volgende tijd"+urgentSlotsForToday[i]);
-                if((urgentSlotsForToday[i]!=0)&&(urgentSlotsForToday[i]>arrivalTime)&&change==false){
-                    if(i!=0){
-                        System.out.println(urgentSlotsForToday[i-1]);
+                System.out.println("aankomst"+ arrivalTime);
+                System.out.println("verandering "+change);
+                if((urgentSlotsForToday[i]!=0)){
+                    System.out.println("verschillend van nul");
+                    if((urgentSlotsForToday[i]>=arrivalTime&&changing==false)){
+                        scheduleTimeUrgent=urgentSlotsForToday[i];
+                        System.out.println("nieuwe schedule "+scheduleTimeUrgent);
+                        urgentSlotsForToday[i]=0;
+                        System.out.println("de slot op 0 zetten"+ urgentSlotsForToday[i]);
+                        System.out.println("tijd" + scheduleTimeUrgent);                        
+                        changing=true;
+                        System.out.println("veranderd?"+changing);
                     }
-                    scheduleTimeUrgent=urgentSlotsForToday[i];
-                    urgentSlotsForToday[i]=0;
-                    System.out.println("de slot op 0 zetten"+ urgentSlotsForToday[i]);
-                    System.out.println("tijd" + scheduleTimeUrgent);
-                    System.out.println("veranderd?"+change);
-                    change=true;
-                    changing=true;
+                    else if(urgentSlotsForToday[i]<arrivalTime){
+                        urgentSlotsForToday[i]=0;
+                    }
                     
             } 
-                change=true;
         }} 
-        
-        
-        
+
         System.out.println(scheduleTimeUrgent);
         if(changing==false){
             if(scheduleTimeUrgent<540){
@@ -491,129 +501,9 @@ public class Simulation {
                 scheduleTimeUrgent+=15;
             }
         }
-            
         
-        //ZEG DAT ALLE URGENT SLOTS CLOSED ZIJN
-       /* urgentSlotsOpenClosed = new String[urgentSlotsForToday.length];
-        for(int i = 0; i<urgentSlotsForToday.length; i++){
-            urgentSlotsOpenClosed[i] = "Open";
-            System.out.println("urgentslot"+i+" :"+urgentSlotsForToday[i]);
-            System.out.println("open/closed:  "+urgentSlotsOpenClosed[i]);
-        }*/
-        
-        
-        //numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
-        //ALLEEN VOOR CONTROLEREN
-        changing=false;
-        change=false;
-        nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
-        
+        nieuwePatient.setAppointmenttime(scheduleTimeUrgent);        
         return nieuwePatient;
-             
-       /* System.out.println("aantal urgent slots"+urgentSlotsForToday.length);
-        System.out.println("vorigeScheduleTime"+scheduleTimeUrgent);
-        if(scheduleTimeUrgent<540){
-            while(change= false){
-              for(int j=0;j<urgentSlotsForToday.length;j++){
-                if(urgentSlotsForToday[j]!=0&&(urgentSlotsForToday[j]>arrivalTime)&&urgentSlotsForToday[j]>scheduleTimeUrgent){ //TIME AANGEPAST NAAR ARRIVALTIME
-                    System.out.println("volgende open slot"+urgentSlotsForToday[j]);
-                    scheduleTimeUrgent=urgentSlotsForToday[j];
-                    
-                    urgentSlotsForToday[j]=0;
-                    System.out.println(urgentSlotsForToday[j]=0);
-                }
-            }  
-            }
-        }
-        System.out.println("vorigeScheduleTime na for <540 "+scheduleTimeUrgent);
-        System.out.println("scheduleTimeUrgent"+scheduleTimeUrgent);
-        
-        
-        if((change=false)&&scheduleTimeUrgent>=540){
-            scheduleTimeUrgent+=15;
-        }
-        else if((change=false)&&scheduleTimeUrgent<540){
-            if(today==1||today==2||today==3||today==5){
-                scheduleTimeUrgent=540;
-            }
-            else if(today==4||today==6){
-                scheduleTimeUrgent=240;
-            }
-        }
-            
-            
-            nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
-            return nieuwePatient;
-    }*/
-        /*
-        if(numberOfUrgent==1){
-            if(arrivalTime<=15){
-                nieuwePatient.setAppointmenttime(15);
-                scheduleTimeUrgent=15;
-            }
-            else if(arrivalTime<=60){
-                nieuwePatient.setAppointmenttime(60);
-                scheduleTimeUrgent=60;
-            }
-            else if(arrivalTime>60){
-                if(today==1||today==2||today==3||today==5){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent=540;
-                }
-                else{
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent=240;
-                }
-            }
-            
-        }
-        else if(numberOfUrgent==2){
-            if(arrivalTime<=60&&scheduleTimeUrgent!=60){
-                nieuwePatient.setAppointmenttime(60);
-                scheduleTimeUrgent=60;
-            }
-            else if(arrivalTime>60){
-                if((scheduleTimeUrgent<540)&&(today==1||today==2||today==3||today==5)){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent=540;
-                }
-                else if((scheduleTimeUrgent<240)&&(today==4||today==6)){
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent=240;
-                }
-                if((scheduleTimeUrgent>540)&&(today==1||today==2||today==3||today==5)){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent+=15;
-                }
-                else if((scheduleTimeUrgent>240)&&(today==4||today==6)){
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent+=15;
-                }
-            }
-        }
-        else if(numberOfUrgent==3){
-            if((scheduleTimeUrgent<540)&&(today==1||today==2||today==3||today==5)){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent=540;
-                }
-                else if((scheduleTimeUrgent<240)&&(today==4||today==6)){
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent=240;
-                }
-                if((scheduleTimeUrgent>540)&&(today==1||today==2||today==3||today==5)){
-                nieuwePatient.setAppointmenttime(540);
-                scheduleTimeUrgent+=15;
-                }
-                else if((scheduleTimeUrgent>240)&&(today==4||today==6)){
-                nieuwePatient.setAppointmenttime(240);
-                scheduleTimeUrgent+=15;
-                }
-        }
-        else if(numberOfUrgent>3){
-            scheduleTimeUrgent+=15;
-            nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
-        }
-        return nieuwePatient;*/
     }
     
     public double determineServiceTime(String category){
@@ -907,18 +797,7 @@ public class Simulation {
     public int getNumberOfAlreadyCallersThatDay() {
         return numberOfAlreadyCallersThatDay;
     }
-
-    public void setNumberOfAlreadyCallersThatDay(int numberOfCallersThatDay) {
-        this.numberOfAlreadyCallersThatDay = numberOfCallersThatDay;
-    }*/
-
-    public String[] getUrgentSlotsOpenClosed() {
-        return urgentSlotsOpenClosed;
-    }
-
-    public void setUrgentSlotsOpenClosed(String[] urgentSlotsOpenClosed) {
-        this.urgentSlotsOpenClosed = urgentSlotsOpenClosed;
-    }
+*/
 
 
     
