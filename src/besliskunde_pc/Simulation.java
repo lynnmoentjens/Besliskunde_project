@@ -384,10 +384,10 @@ public class Simulation {
         
     public LastFilledSlotElective TestenInDieDagDieWeek(LastFilledSlotElective e, boolean update){
         double tijd= e.getTime();
-        if(update=true){ //nieuwe dag of nieuweWeek
+        if(update==true){ //nieuwe dag of nieuweWeek
             tijd=0;
         }
-        //else if(update=false){ // geen verandering gebeurt dus de dag van calling en week is zelfde als de appointment
+        else if(update==false){ // geen verandering gebeurt dus de dag van calling en week is zelfde als de appointment
             if( e.getDay()==day&&e.getWeek()==week) // zelfde dag en week
             {
                 while(tijd<=time){ 
@@ -395,7 +395,7 @@ public class Simulation {
                 }
             }
         //}
-        
+        }
         //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN
@@ -428,7 +428,9 @@ public class Simulation {
         //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
         if(e.getDay()!=4&&e.getDay()!=6&&(tijd==240||tijd==255||tijd==270||tijd==285)){
             tijd=300; // volgende empty slot is na de namiddag
-                
+               if(tijd<=e.getTime()){
+                   tijd+=15;
+               } 
             } 
          e.setTime(tijd);
         return e;
@@ -463,8 +465,12 @@ public class Simulation {
             for(int i=0;i<urgentSlotsForToday.length;i++){
                 System.out.println("Volgende tijd"+urgentSlotsForToday[i]);
                 if((urgentSlotsForToday[i]!=0)&&(urgentSlotsForToday[i]>arrivalTime)&&change==false){
+                    if(i!=0){
+                        System.out.println(urgentSlotsForToday[i-1]);
+                    }
                     scheduleTimeUrgent=urgentSlotsForToday[i];
                     urgentSlotsForToday[i]=0;
+                    System.out.println("de slot op 0 zetten"+ urgentSlotsForToday[i]);
                     System.out.println("tijd" + scheduleTimeUrgent);
                     System.out.println("veranderd?"+change);
                     change=true;
