@@ -20,12 +20,12 @@ public class UrgentSlots {
     public static ArrayList<int[]> getUrgentSlotsStrategy100(){
     
     //define here how many urgent slots a day and when
-        int[] day1 = new int[]{ 225,240, 540 }; // 3 urgent slots on day 1
-        int[] day2 = new int[]{ 225,240, 540 };
-        int[] day3 = new int[]{ 225,240, 540 };
-        int[] day4 = new int[]{ 240};
-        int[] day5 = new int[]{ 225,240, 540 };
-        int[] day6 = new int[]{ 240};
+        int[] day1 = new int[]{ 210,225, 525 }; // 3 urgent slots on day 1
+        int[] day2 = new int[]{ 210,225, 525 };
+        int[] day3 = new int[]{ 210,225, 525 };
+        int[] day4 = new int[]{ 225};
+        int[] day5 = new int[]{ 210,225, 525 };
+        int[] day6 = new int[]{ 225};
                
         ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
         urgentSlotsADay.add(day1);

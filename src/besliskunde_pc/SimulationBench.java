@@ -397,7 +397,7 @@ public class SimulationBench {
             urgentSlotsOpenClosed[i] = "Open";
         }
         
-        numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
+       // numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
         //ALLEEN VOOR CONTROLEREN
         int i= numberOfUrgent;
         
