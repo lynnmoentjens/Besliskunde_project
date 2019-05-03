@@ -1,3 +1,4 @@
+   
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -595,7 +596,7 @@ public class Simulation {
         int aantalUrgent=0;
               
         for(int i=0;i<totalNumberOfPatients;i++){
-            if(patients[i].getCategory().equals("Urgent")){
+        if((patients[i].getCategory().equals("Elective"))&&(patients[i].getServiceLength()!=0)){
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
                 sumScanTime+=waitingForScanTime;
                 System.out.println("number"+(i+1));
