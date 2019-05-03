@@ -300,7 +300,7 @@ public class Simulation {
           
         System.out.println("UPDATE");
         System.out.println("MEASURE 1= gemiddelde appointmentWaitingTime Elect"+averageAppointmentWaitingTimeElectives());
-        System.out.println("MEASURE 1= urgent gemiddelde scan waiting time"+scanWaitingTimeUrgent());
+        //System.out.println("MEASURE 1= urgent gemiddelde scan waiting time"+scanWaitingTimeUrgent());
         updateParametersAtEndOfDay(day, week);      
         }
         //berekeningen maken 
@@ -338,7 +338,8 @@ public class Simulation {
             callTime=0;
         }
         scheduleTimeUrgent=0;
-        urgentSlotsOpenClosed = null;
+        System.out.println("Dag upgedate");
+        
         
     }
     
@@ -457,6 +458,7 @@ public class Simulation {
         }
         
         boolean change=false;
+        boolean changing=false;
         System.out.println(urgentSlotsForToday[0]);
         while(change==false){
             System.out.println("change "+change);
@@ -468,14 +470,16 @@ public class Simulation {
                     System.out.println("tijd" + scheduleTimeUrgent);
                     System.out.println("veranderd?"+change);
                     change=true;
+                    changing=true;
                     
             } 
+                change=true;
         }} 
         
         
         
         System.out.println(scheduleTimeUrgent);
-        if(change==false){
+        if(changing==false){
             if(scheduleTimeUrgent<540){
                 scheduleTimeUrgent=540;
             }
@@ -496,6 +500,7 @@ public class Simulation {
         
         //numberOfUrgent = 1; //ALLEEN VOOR CONTROLEREN, ANDERS MOET DIT LIJNTJE WEG --> MAG NOOIT NUL ZIJN
         //ALLEEN VOOR CONTROLEREN
+        changing=false;
         change=false;
         nieuwePatient.setAppointmenttime(scheduleTimeUrgent);
         
@@ -652,10 +657,10 @@ public class Simulation {
                 System.out.println("CallTime"+patients[i].getCalltime());
                 double waitingTillAppointment;
                 int amountOfDaysNext=0;
-                amountOfDaysNext=day - patients[i].getDayCall();
+                amountOfDaysNext=patients[i].getDayAppointment() - patients[i].getDayCall();
                 System.out.println("day = " + day);
                 System.out.println("amountOfDaysNext = " + amountOfDaysNext);
-                int dag=patients[i].getDayCall();
+                int dag=patients[i].getDayAppointment();
                 System.out.println("dag = "+ dag);
                 if(amountOfDaysNext==0)
                 {
@@ -667,15 +672,15 @@ public class Simulation {
                     waitingTillAppointment=patients[i].getAppointmenttime(); // appointment time
                     dag--; 
                     
-                    while(dag!=day){
+                    while(amountOfDaysNext!=0){
                         System.out.println("zit je hier vast??");
                         if(dag==4||dag==6){
                             waitingTillAppointment+= 1200;
-                            day--;
+                            amountOfDaysNext--;
                         }
                         else{
                             waitingTillAppointment+= 900;
-                            day--;
+                            amountOfDaysNext--;
                         }
                     }
                     if(dag==day){
