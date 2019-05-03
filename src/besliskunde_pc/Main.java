@@ -62,7 +62,7 @@ public class Main {
         
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(1);
+        simulation1.Simulatie(2);
      
     
     

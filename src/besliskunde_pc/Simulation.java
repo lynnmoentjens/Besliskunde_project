@@ -52,23 +52,13 @@ public class Simulation {
         time=0.0;
         
         numberOfUrgent=0;
-        //numberOfUrgentInSystem=0;
         totalNumberOfPatients=0;
-        //numberOfElectivesArrived=0;
-        //numberOfElectivesInSystem=0;
         numberOfElectivesForTomorrow=0;
         numberOfPatients=0;
         timeNextUrgent = 0;
         callTime=0;
         scheduleTimeUrgent=0;
-        //arrivalTimeElective=0;
-        //departureTimeUrgent=5000;
-        //arrivalTimeUrgent wordt bepaalt begin van de dag
-        
-        //numberOfAlreadyCallersThatDay=0;
-
         lastScheduledAppointment=0;
-        
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
 }
     
@@ -77,14 +67,7 @@ public class Simulation {
         
         
         while(week<=amountOfWeeksSimulation){
-            /*//ophalen van de gegevens van de vorige dag
-            //apppointmentTimes
-            appointmentTime+=(numberOfElectivesForTomorrow*15);
-            numberOfPatients=numberOfElectivesForTomorrow; 
-            numberOfElectivesForTomorrow=0;
-            System.out.println("AppointmentTime door gisteren algepland:"+appointmentTime);
-            System.out.println("NumberOfPatientsThatDay al door vorige dag schedule"+numberOfPatients);
-            */
+
             //electives intercallingtime per dag berekening
             int amountOfElectivesCallingThatDay= Distributions.Poisson_distribution(28.345);
             double timeThatDayCalling=540;
@@ -143,7 +126,6 @@ public class Simulation {
             }
             
             System.out.println(arrayVanArrivalTimes.size());
-            //er is iets mis met deze array waardoor de urgents niet werken
             //System.out.println("Size van de array " + arrayVanArrivalTimes.size());
             System.out.println("aantalUrgentArrivingthatDay"+amountOfUrgentArrivingThatDay);
             for(int i=0;i<arrayVanArrivalTimes.size();i++){
@@ -192,20 +174,6 @@ public class Simulation {
                     } 
                     
                 }
-                
-                /*//departureTimeUrgent
-                else if((departureTimeUrgent<callTime)&&(departureTimeUrgent<arrivalTimeUrgent)&&(departureTimeUrgent<arrivalTimeElective)&&(departureTimeUrgent<departureTimeElective)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
-                //anneleen
-                
-                
-                }
-                //departureTimeElective
-                else if((departureTimeElective<callTime)&&(departureTimeElective<arrivalTimeElective)&&(departureTimeElective<arrivalTimeUrgent)&&(departureTimeElective<departureTimeUrgent)){  //Jus: hierna komt een departure van een patient --> Signavio: "Departure event"
-                //anneleen 
-                
-                
-                }*/
-                //arrivalTimeUrgent
                 else if((numberOfUrgent<arrayVanArrivalTimes.size())&&(arrivalTimeUrgent<callTime)){
                     
                     time= arrivalTimeUrgent; 
@@ -241,14 +209,7 @@ public class Simulation {
                         arrivalTimeUrgent=Double.POSITIVE_INFINITY;
                     }
                 }
-                //arrivalTimeElective
-                /*else if((arrivalTimeElective<callTime)&&(arrivalTimeElective<departureTimeElective)&&(arrivalTimeElective<arrivalTimeUrgent)&&(arrivalTimeElective<departureTimeUrgent)){
-                    numberOfElectivesArrived++;
-                    int rightNumber= numberOfElectives-numberOfAlreadyCallersThatDay+numberOfElectivesArrived;
-                    electivePatients[rightNumber].setArrivaltime(arrivalTimeElective);
-                    double interarrivalTime= Distributions.Poisson_distribution(28.345);   
-                    arrivalTimeUrgent = time+interarrivalTime;
-                }*/
+
               if(arrivalTimeUrgent==Double.POSITIVE_INFINITY&&callTime==Double.POSITIVE_INFINITY){
                   beidendoubleinfinity=true;
               }
@@ -607,13 +568,6 @@ public class Simulation {
             
         }
             
-            //double ServiceTime= (electivePatients[i].getDeparturetime()-electivePatients[i-1].getDeparturetime());
-            //double waitingAfterAppointment= electivePatients[i-1].getDeparturetime()-electivePatients[i].getAppointmenttime(); 
-            //if(waitingAfterAppointment<0){
-            //    waitingAfterAppointment=0;
-            //sumDelays+=waitingAfterAppointment; 
-            //System.out.println(sumWaitingTillApp);
-            //System.out.println(sumDelays); 
             System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
             averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
             System.out.println("gemiddelde wachttijd"+averageAppointmentWaitingTime);
@@ -723,38 +677,6 @@ public class Simulation {
         this.numberOfUrgent = numberOfUrgent;
     }
 
-    /*public int getNumberOfUrgentInSystem() {
-        return numberOfUrgentInSystem;
-    }
-
-    public void setNumberOfUrgentInSystem(int numberOfUrgentInSystem) {
-        this.numberOfUrgentInSystem = numberOfUrgentInSystem;
-    }
-
-    public int getNumberOfElectives() {
-        return numberOfElectives;
-    }
-
-    public void setNumberOfElectives(int numberOfElectives) {
-        this.numberOfElectives = numberOfElectives;
-    }
-
-    public int getNumberOfElectivesArrived() {
-        return numberOfElectivesArrived;
-    }
-
-    public void setNumberOfElectivesArrived(int numberOfElectivesArrived) {
-        this.numberOfElectivesArrived = numberOfElectivesArrived;
-    }
-
-    public int getNumberOfElectivesInSystem() {
-        return numberOfElectivesInSystem;
-    }
-
-    public void setNumberOfElectivesInSystem(int numberOfElectivesInSystem) {
-        this.numberOfElectivesInSystem = numberOfElectivesInSystem;
-    }*/
-
     public double getCallTime() {
         return callTime;
     }
@@ -772,45 +694,11 @@ public class Simulation {
         this.scheduleTimeUrgent = scheduleTimeUrgent;
     }
 
-    /*public double getArrivalTimeElective() {
-        return arrivalTimeElective;
-    }
-
-    public void setArrivalTimeElective(double arrivalTimeElective) {
-        this.arrivalTimeElective = arrivalTimeElective;
-    }*/
-
     public double getArrivalTimeUrgent() {
         return arrivalTimeUrgent;
     }
 
     public void setArrivalTimeUrgent(double arrivalTimeUrgent) {
         this.arrivalTimeUrgent = arrivalTimeUrgent;
-    }
-
-    /*public double getDepartureTimeElective() {
-        return departureTimeElective;
-    }
-
-    public void setDepartureTimeElective(double departureTimeElective) {
-        this.departureTimeElective = departureTimeElective;
-    }
-
-    public double getDepartureTimeUrgent() {
-        return departureTimeUrgent;
-    }
-
-    public void setDepartureTimeUrgent(double departureTimeUrgent) {
-        this.departureTimeUrgent = departureTimeUrgent;
-    }
-
-
-    public int getNumberOfAlreadyCallersThatDay() {
-        return numberOfAlreadyCallersThatDay;
-    }
-*/
-
-
-    
+    }    
 }
-
