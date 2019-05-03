@@ -575,6 +575,8 @@ public class Simulation {
             return averageAppointmentWaitingTime;
             
         }
+    
+  
     private double averageScanWaitingTime(){
         double averageWaitingTime=0;
         double waitingTime=0;
