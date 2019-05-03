@@ -300,12 +300,10 @@ public class Simulation {
           
         System.out.println("UPDATE");
         System.out.println("MEASURE 1= gemiddelde appointmentWaitingTime Elect"+averageAppointmentWaitingTimeElectives());
-        //System.out.println("MEASURE 1= urgent gemiddelde scan waiting time"+scanWaitingTimeUrgent());
+        System.out.println("MEASURE 2= urgent gemiddelde scan waiting time"+scanWaitingTimeUrgent());
         updateParametersAtEndOfDay(day, week);      
         }
-        //berekeningen maken 
-       /* makeCalculationsElectives();
-        makeCalculationsUrgent();*/
+        
        
     }
     
