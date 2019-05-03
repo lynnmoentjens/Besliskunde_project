@@ -40,8 +40,9 @@ public class Simulation {
    
    // private int numberOfAlreadyCallersThatDay;
     private double lastScheduledAppointment;
-    
+    private double timeNextUrgent;    
     private String[] urgentSlotsOpenClosed; //ZEGGEN OF SLOTS OPEN ZIJN OF NIET
+    private double timeArrived;
    
     public void initialization(){
         
@@ -57,7 +58,7 @@ public class Simulation {
         //numberOfElectivesInSystem=0;
         numberOfElectivesForTomorrow=0;
         numberOfPatients=0;
-        
+        timeNextUrgent = 0;
         callTime=0;
         scheduleTimeUrgent=0;
         //arrivalTimeElective=0;
@@ -96,11 +97,17 @@ public class Simulation {
             if(day==4||day==6){
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(1.25);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
-                    double randomgetal;
-                    randomgetal = Math.random()*lengthDay;
-                    if (randomgetal <= 240){
-                    arrayVanArrivalTimes.add(randomgetal);
-                    }
+                    int getal = (int) (Math.random() * (1000));
+                    double randomgetal = (double) getal/1000;
+                    timeArrived = -(Math.log(1-randomgetal))/amountOfUrgentArrivingThatDay;
+                    timeArrived = timeArrived * 60;
+                    timeNextUrgent = timeNextUrgent + timeArrived;
+                   
+                    arrayVanArrivalTimes.add(timeNextUrgent);
+                    
+                    if (i == amountOfUrgentArrivingThatDay){
+                        timeArrived = 0;
+                    } 
                 }
                 Collections.sort(arrayVanArrivalTimes);
                 if(amountOfUrgentArrivingThatDay==0){
@@ -113,10 +120,16 @@ public class Simulation {
             else{
                 amountOfUrgentArrivingThatDay= Distributions.Poisson_distribution(2.5);
                 for(int i=0;i<amountOfUrgentArrivingThatDay;i++){
-                    double randomgetal;
-                    randomgetal = Math.random()*lengthDay;
-                    if (randomgetal <= 540){
-                    arrayVanArrivalTimes.add(randomgetal);
+                    int getal = (int) (Math.random() * (1000));
+                    double randomgetal = (double) getal/1000;
+                    timeArrived = -(Math.log(1-randomgetal))/amountOfUrgentArrivingThatDay;
+                    timeArrived = timeArrived*60;
+                    timeNextUrgent = timeNextUrgent + timeArrived;
+                    
+                    arrayVanArrivalTimes.add(timeNextUrgent);
+                    
+                    if (i == amountOfUrgentArrivingThatDay){
+                        timeArrived = 0;
                     }
                 }
                 Collections.sort(arrayVanArrivalTimes);
@@ -126,6 +139,7 @@ public class Simulation {
                     arrivalTimeUrgent=arrayVanArrivalTimes.get(0);
                 }
             }
+            
             System.out.println(arrayVanArrivalTimes.size());
             //er is iets mis met deze array waardoor de urgents niet werken
             //System.out.println("Size van de array " + arrayVanArrivalTimes.size());
