@@ -372,8 +372,8 @@ public class Simulation {
         //}
         }
         //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
-        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN
+        /*ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN*/
         
         int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
@@ -523,47 +523,54 @@ public class Simulation {
                 System.out.println("CallTime"+patients[i].getCalltime());
                 double waitingTillAppointment;
                 int amountOfDaysNext=0;
-                amountOfDaysNext=patients[i].getDayAppointment() - patients[i].getDayCall();
-                System.out.println("day = " + day);
-                System.out.println("amountOfDaysNext = " + amountOfDaysNext);
-                int dag=patients[i].getDayAppointment();
-                System.out.println("dag = "+ dag);
-                if(amountOfDaysNext==0)
-                {
-                    System.out.println("if amount of days is zero");
-                    waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
+                if(patients[i].getWeekCall()==patients[i].getWeekAppointment()){
+                    amountOfDaysNext=patients[i].getDayAppointment() - patients[i].getDayCall();
+                    System.out.println("day = " + day);
+                    System.out.println("amountOfDaysNext = " + amountOfDaysNext);
+                    int dag=patients[i].getDayAppointment();
+                    System.out.println("dag = "+ dag);
+                    if(amountOfDaysNext==0)
+                    {
+                        System.out.println("if amount of days is zero");
+                        waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
+                    }
+                    else{
+                        System.out.println("if amount of days next is not zero");
+                        waitingTillAppointment=patients[i].getAppointmenttime(); // appointment time
+                        dag--; 
+
+                        while(amountOfDaysNext!=0){
+                            System.out.println("zit je hier vast??");
+                            if(dag==4||dag==6){
+                                waitingTillAppointment+= 1200;
+                                amountOfDaysNext--;
+                            }
+                            else{
+                                waitingTillAppointment+= 900;
+                                amountOfDaysNext--;
+                            }
+                        }
+                        if(dag==day){
+                            if(day==4||day==6)
+                            {
+                                waitingTillAppointment+=(240-patients[i].getCalltime());
+                            }
+                            else{
+                                waitingTillAppointment+=(540-patients[i].getCalltime());
+                            }
+                        }
+                    }
+
+                    System.out.println("Wachttijd deze patient"+waitingTillAppointment);
+                    sumWaitingTillApp+=waitingTillAppointment;
+                    System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+                    numberOfElectives++;
+                    
                 }
                 else{
-                    System.out.println("if amount of days next is not zero");
-                    waitingTillAppointment=patients[i].getAppointmenttime(); // appointment time
-                    dag--; 
                     
-                    while(amountOfDaysNext!=0){
-                        System.out.println("zit je hier vast??");
-                        if(dag==4||dag==6){
-                            waitingTillAppointment+= 1200;
-                            amountOfDaysNext--;
-                        }
-                        else{
-                            waitingTillAppointment+= 900;
-                            amountOfDaysNext--;
-                        }
-                    }
-                    if(dag==day){
-                        if(day==4||day==6)
-                        {
-                            waitingTillAppointment+=(240-patients[i].getCalltime());
-                        }
-                        else{
-                            waitingTillAppointment+=(540-patients[i].getCalltime());
-                        }
-                    }
                 }
                 
-                System.out.println("Wachttijd deze patient"+waitingTillAppointment);
-                sumWaitingTillApp+=waitingTillAppointment;
-                System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
-                numberOfElectives++;
             }
             
         }
