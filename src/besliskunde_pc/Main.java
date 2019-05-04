@@ -5,7 +5,7 @@
  */
 package besliskunde_pc;
 
-import com.opencsv.CSVWriter;
+//import com.opencsv.CSVWriter; --> WAS EEN FOUTMELDING
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
