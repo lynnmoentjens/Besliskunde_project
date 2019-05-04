@@ -5,7 +5,11 @@
  */
 package besliskunde_pc;
 
+import com.opencsv.CSVWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.io.File;
 
 /**
  *
@@ -16,14 +20,57 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
 
-        // 1. EXPONENTIAL DISTRIBUTION
-        /*
-        double getal=1.25;
-        System.out.println(Distributions.Exponential_distribution(getal));
-        */
+      
+        
+        //CODE VOOR NAAR EXCEL
+        /*        
+          ArrayList<Double> arrayVanCallTimes = new ArrayList<>();
+            
+            double callTime = 0;
+            double interCallingTime;
+            
+            for(int i = 0; i < 40; i++){
+            interCallingTime = (Distributions.Exponential_distribution(28.345))*540;
+            callTime = callTime + interCallingTime;    
+                if(callTime <540) {
+                    arrayVanCallTimes.add(callTime);    
+                }
+            
+            int amountOfElectivesCallingThatDay = arrayVanCallTimes.size();
+            System.out.println("Arraysize: " + arrayVanCallTimes.size());
+            }
+            
+            for(int i = 0; i < arrayVanCallTimes.size(); i++){  
+                System.out.println("Call time " + arrayVanCallTimes.get(i));
+            }
+            
+            //WRITEN 
+            String csv = "data.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            
+            //kolomnamen
+            String[] header = new String[1];
+            header[0] = "Arrival times";
+            writer.writeNext(header);
+            
+            //rijen
+            String[] line = new String[header.length];
+            for(int i = 0; i < arrayVanCallTimes.size(); i++){
+                line[0] = Double.toString(arrayVanCallTimes.get(i));
+                line[0] = line[0].replace(".", ",");
+                writer.writeNext(line);
+            }
+            
+            writer.close();
+            System.out.println("CSV gemaakt");
+            
+            */
+        
+        
+        
 
         
        // 2. SIMULATIE URGENT SLOTS rule 1--> WERKT! bij first come first serve wordt er rekening gehouden met wanneer de urgent slots vallen!
