@@ -4,19 +4,22 @@ package besliskunde_pc;
  * @author jwpennem
  */
 public class Patient {
+    
     private String category;
+    
+    private double serviceLength;
+    
     private double calltime;
     private double appointmenttime;
     private double arrivaltime; 
     private double departuretime;
+    private double scheduleTimeElective; //VOOR RULE 2, 3 EN 4
+    
     private int weekCall;
     private int dayCall;
-    private double serviceLength;
-    private double scheduleTimeElective;
+    
     private int weekAppointment;
     private int dayAppointment;
-    
-    
 
     public double getScheduleTimeElective() {
         return scheduleTimeElective;

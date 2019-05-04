@@ -35,7 +35,7 @@ public class Simulation {
     private double arrivalTimeUrgent;
     //private double departureTimeElective;
     //private double departureTimeUrgent; 
-    LastFilledSlotElective laatsteSlot=new LastFilledSlotElective(-15,1,1);
+    LastFilledSlotElectiveRule1 laatsteSlot=new LastFilledSlotElectiveRule1(-15,1,1);
 
    
    // private int numberOfAlreadyCallersThatDay;
@@ -357,7 +357,7 @@ public class Simulation {
         return nieuwePatient;
         }
         
-    public LastFilledSlotElective TestenInDieDagDieWeek(LastFilledSlotElective e, boolean update){
+    public LastFilledSlotElectiveRule1 TestenInDieDagDieWeek(LastFilledSlotElectiveRule1 e, boolean update){
         double tijd= e.getTime();
         if(update==true){ //nieuwe dag of nieuweWeek
             tijd=0;

@@ -9,12 +9,12 @@ package besliskunde_pc;
  *
  * @author aelaurey
  */
-public class LastFilledSlotElective {
+public class LastFilledScheduledSlotElectiveRule234 {
     private double time;
     private int week;
     private int day;
 
-    public LastFilledSlotElective(double time, int week, int day) {
+    public LastFilledScheduledSlotElectiveRule234(double time, int week, int day) {
         this.time = time;
         this.week = week;
         this.day = day;

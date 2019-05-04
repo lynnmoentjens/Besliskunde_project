@@ -59,11 +59,11 @@ public class Main {
         
         
         //4. SIMULATIE RULE 1 ALLES    
-        
+        /*
         Simulation simulation1=new Simulation();
         simulation1.initialization();
         simulation1.Simulatie(2);
-     
+     */
     
     
         // 5. simulatie RULE 1 van appointment met overslaan middag --> WERKT!
@@ -90,6 +90,12 @@ public class Main {
         System.out.println(patient1.getCategory());
         */
        
+        //7. SIMULATIE RULE BENCHING ALLES    
+        
+        SimulationBench simulation1=new SimulationBench();
+        simulation1.initialization();
+        simulation1.Simulatie(2);
+        
         
         //VOORBEELDEN DISTRIBUTIES    
         /*  System.out.println("Besliskunde project");
