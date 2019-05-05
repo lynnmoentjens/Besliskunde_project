@@ -27,39 +27,20 @@ public class Main {
         
         //CODE VOOR NAAR EXCEL
         /*        
-          ArrayList<Double> arrayVanCallTimes = new ArrayList<>();
-            
-            double callTime = 0;
-            double interCallingTime;
-            
-            for(int i = 0; i < 40; i++){
-            interCallingTime = (Distributions.Exponential_distribution(28.345))*540;
-            callTime = callTime + interCallingTime;    
-                if(callTime <540) {
-                    arrayVanCallTimes.add(callTime);    
-                }
-            
-            int amountOfElectivesCallingThatDay = arrayVanCallTimes.size();
-            System.out.println("Arraysize: " + arrayVanCallTimes.size());
-            }
-            
-            for(int i = 0; i < arrayVanCallTimes.size(); i++){  
-                System.out.println("Call time " + arrayVanCallTimes.get(i));
-            }
-            
-            //WRITEN 
-            String csv = "data.csv";
+                      
+            //WRITEN ELECTIVE WT
+            String csv = "dataElectives.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
             
             //kolomnamen
             String[] header = new String[1];
-            header[0] = "Arrival times";
+            header[0] = "Waiting times electives";
             writer.writeNext(header);
             
             //rijen
             String[] line = new String[header.length];
-            for(int i = 0; i < arrayVanCallTimes.size(); i++){
-                line[0] = Double.toString(arrayVanCallTimes.get(i));
+            for(int i = 0; i <  simulation1.WTElectives.size(); i++){
+                line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
                 writer.writeNext(line);
             }
@@ -67,7 +48,25 @@ public class Main {
             writer.close();
             System.out.println("CSV gemaakt");
             
+        
+            //WRITEN URGENT WT
+            String csv = "dataUrgents.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            
+            //kolomnamen
+            String[] header = new String[1];
+            header[0] = "Waiting times urgents";
+            writer.writeNext(header);
+        
+            //rijen
+            String[] line = new String[header.length];
+            for(int i = 0; i < simulation1.WTUrgents.size(); i++){
+                line[0] = Double.toString(simulation1.WTUrgents.get(i));
+                line[0] = line[0].replace(".", ",");
+                writer.writeNext(line);
+            }
             */
+        
         
         
         
