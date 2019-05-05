@@ -11,11 +11,122 @@ import java.util.ArrayList;
  *
  * @author Lynn
  */
-public class UrgentSlots {
+public class UrgentSlots {    
     
-    //kan je zo afhankelijk van welke strategie je wilt de arrays ophalen 
-    //en hou je toch al de mogelijke strategieen bij
-    //hier staan enkele voorbeelden van mogelijke strategieen:
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //TO TEST 10 urgent time slots + Strategy 1, FCFS
+    public static ArrayList<int[]> testSignificanceSlots10(){
+        
+        int[] day1 = new int[]{ 225, 525 }; 
+        int[] day2 = new int[]{ 225, 525 };
+        int[] day3 = new int[]{ 225, 525 };
+        int[] day4 = new int[]{ 225 };
+        int[] day5 = new int[]{ 225, 525 };
+        int[] day6 = new int[]{ 225 };
+               
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day2);
+        urgentSlotsADay.add(day3);
+        urgentSlotsADay.add(day4);
+        urgentSlotsADay.add(day5);
+        urgentSlotsADay.add(day6);
+        
+        return urgentSlotsADay;
+    }
+    //TO TEST 12 urgent time slots + Strategy 1, FCFS
+    public static ArrayList<int[]> testSignificanceSlots12(){
+        
+        int[] day1 = new int[]{ 210, 225, 525 }; 
+        int[] day2 = new int[]{ 225, 525 };
+        int[] day3 = new int[]{ 210, 225, 525 };
+        int[] day4 = new int[]{ 225 };
+        int[] day5 = new int[]{ 225, 525 };
+        int[] day6 = new int[]{ 225 };
+               
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day2);
+        urgentSlotsADay.add(day3);
+        urgentSlotsADay.add(day4);
+        urgentSlotsADay.add(day5);
+        urgentSlotsADay.add(day6);
+        
+        return urgentSlotsADay;
+    }
+    
+    //TO TEST 14 urgent time slots + Strategy 1, FCFS
+    public static ArrayList<int[]> testSignificanceSlots14(){
+        
+        int[] day1 = new int[]{ 210, 225, 525 }; 
+        int[] day2 = new int[]{ 210, 225, 525 };
+        int[] day3 = new int[]{ 210, 225, 525 };
+        int[] day4 = new int[]{ 225 };
+        int[] day5 = new int[]{ 210, 225, 525 };
+        int[] day6 = new int[]{ 225 };
+               
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day2);
+        urgentSlotsADay.add(day3);
+        urgentSlotsADay.add(day4);
+        urgentSlotsADay.add(day5);
+        urgentSlotsADay.add(day6);
+        
+        return urgentSlotsADay;
+    }
+    
+    //TO TEST 16 urgent time slots + Strategy 1, FCFS
+    public static ArrayList<int[]> testSignificanceSlots16(){
+        
+        int[] day1 = new int[]{ 210, 225, 525 }; 
+        int[] day2 = new int[]{ 210, 225, 525 };
+        int[] day3 = new int[]{ 210, 225, 525 };
+        int[] day4 = new int[]{ 210, 225 };
+        int[] day5 = new int[]{ 210, 225, 525 };
+        int[] day6 = new int[]{ 210, 225 };
+               
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day2);
+        urgentSlotsADay.add(day3);
+        urgentSlotsADay.add(day4);
+        urgentSlotsADay.add(day5);
+        urgentSlotsADay.add(day6);
+        
+        return urgentSlotsADay;
+    }
+    
+     //TO TEST 16 urgent time slots + Strategy 1, FCFS
+    public static ArrayList<int[]> testSignificanceSlots18(){
+        
+        int[] day1 = new int[]{ 210, 225, 510, 525 }; 
+        int[] day2 = new int[]{ 210, 225, 525 };
+        int[] day3 = new int[]{ 210, 225, 510, 525 };
+        int[] day4 = new int[]{ 210, 225 };
+        int[] day5 = new int[]{ 210, 225, 525 };
+        int[] day6 = new int[]{ 210, 225 };
+               
+        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day1);
+        urgentSlotsADay.add(day2);
+        urgentSlotsADay.add(day3);
+        urgentSlotsADay.add(day4);
+        urgentSlotsADay.add(day5);
+        urgentSlotsADay.add(day6);
+        
+        return urgentSlotsADay;
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
     
     public static ArrayList<int[]> getUrgentSlotsStrategy100(){
     
@@ -43,7 +154,7 @@ public class UrgentSlots {
     public static ArrayList<int[]> getUrgentSlotsStrategy1(){
     
     //define here how many urgent slots a day and when
-        int[] day1 = new int[]{ 240,540 }; 
+        int[] day1 = new int[]{ 225,540 }; 
         int[] day2 = new int[]{ 240,540 };
         int[] day3 = new int[]{ 240,540 };
         int[] day4 = new int[]{ 240};
