@@ -116,7 +116,9 @@ public class Simulation {
                     timeArrived = timeArrived * 60;
                     timeNextUrgent = timeNextUrgent + timeArrived;
                    
+                    if (timeNextUrgent < 240){
                     arrayVanArrivalTimes.add(timeNextUrgent);
+                    }
                     
                     if (i == amountOfUrgentArrivingThatDay){
                         timeArrived = 0;
@@ -139,7 +141,9 @@ public class Simulation {
                     timeArrived = timeArrived*60;
                     timeNextUrgent = timeNextUrgent + timeArrived;
                     
+                    if (timeNextUrgent < 540){
                     arrayVanArrivalTimes.add(timeNextUrgent);
+                    }
                     
                     if (i == amountOfUrgentArrivingThatDay){
                         timeArrived = 0;
