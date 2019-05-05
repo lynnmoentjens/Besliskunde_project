@@ -46,7 +46,9 @@ public class Simulation {
     private double timeArrived;
     ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
     ArrayList <Double> interArrival = new ArrayList();
-   
+    ArrayList<Double> WTUrgents = new ArrayList<>();
+    ArrayList<Double> WTElectives = new ArrayList<>();
+    
     public void initialization(){
         
         week=1;
@@ -611,6 +613,8 @@ public class Simulation {
         }
             
             System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+            //1 lange array om te printen in CSV
+            WTElectives.add(sumWaitingTillApp);
             averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
             System.out.println("gemiddelde wachttijd"+averageAppointmentWaitingTime);
             
@@ -641,6 +645,8 @@ public class Simulation {
         for(int i=0;i<totalNumberOfPatients;i++){
             if(patients[i].getCategory().equals("Urgent")){
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
+                //1 lange array om dan te printen in CSV
+                WTUrgents.add(waitingForScanTime);
                 sumScanTime+=waitingForScanTime;
                 System.out.println("number"+(i+1));
                 System.out.println("wait for scan urgent"+waitingForScanTime);
