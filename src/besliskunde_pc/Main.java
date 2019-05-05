@@ -106,11 +106,11 @@ public class Main {
         
         
         //4. SIMULATIE RULE 1 ALLES    
-        /*
+        
         Simulation simulation1=new Simulation();
         simulation1.initialization();
         simulation1.Simulatie(2);
-     */
+     
     
     
         // 5. simulatie RULE 1 van appointment met overslaan middag --> WERKT!
@@ -145,9 +145,9 @@ public class Main {
         
         //8. SIMULATIE RULE BAILEY ALLES    
         
-        SimulationBailey simulation1=new SimulationBailey();
+        /*SimulationBailey simulation1=new SimulationBailey();
         simulation1.initialization();
-        simulation1.Simulatie(2);
+        simulation1.Simulatie(2);*/
         
         
         //VOORBEELDEN DISTRIBUTIES    
