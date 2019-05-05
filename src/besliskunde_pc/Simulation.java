@@ -29,6 +29,8 @@ public class Simulation {
     private int numberOfElectivesForTomorrow;
     private int numberOfPatients;
     private int numberOfElectivesHaveCalled;
+    private int totalNumberOfElectives;
+    private int totalNumberOfUrgents;
    
     
     private double callTime;
@@ -64,6 +66,8 @@ public class Simulation {
         timeNextUrgent = 0;
         callTime=0;
         scheduleTimeUrgent=0;
+        totalNumberOfElectives = 0;
+        totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
         urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
         numberOfElectivesHaveCalled=0;
@@ -186,6 +190,7 @@ public class Simulation {
                     totalNumberOfPatients++; //over het hele programma/alle weken
                     //numberOfElectivesInSystem++;
                     numberOfPatients++; // per dag 
+                    totalNumberOfElectives++;
                     System.out.println("numberof patients = " + numberOfPatients);
                     System.out.println("total = " + totalNumberOfPatients);
                     Patient nieuwePatient=new Patient();
@@ -219,6 +224,7 @@ public class Simulation {
                     numberOfUrgent++;
                     numberOfPatients++;
                     totalNumberOfPatients++;
+                    totalNumberOfUrgents++;
                     System.out.println("totalUrgentThatday="+numberOfUrgent);
                     System.out.println("totalThatday="+numberOfPatients);
                     System.out.println("total="+totalNumberOfPatients);
@@ -623,6 +629,81 @@ public class Simulation {
             
         }
     
+     private double [] runningAverageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
+        
+        double sumWaitingTillApp=0;
+        double averageAppointmentWaitingTime = 0;
+        int numberOfElectives=0;
+        double [] appointmentWaitingTimeElectives = new double[totalNumberOfElectives];
+        //double sumDelays=0;
+        System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+        //Aanpassing nodig --> moet electives alleen zijn 
+        for(int i=0;i<totalNumberOfPatients;i++){
+            if(patients[i].getCategory().equals("Elective")){
+                System.out.println("--------------------------------------");
+                System.out.println("Patient "+(i+1));
+                System.out.println("Appointmenttime"+patients[i].getAppointmenttime());
+                System.out.println("CallTime"+patients[i].getCalltime());
+                double waitingTillAppointment;
+                int amountOfDaysNext=0;
+                if(patients[i].getWeekCall()==patients[i].getWeekAppointment()){
+                    amountOfDaysNext=patients[i].getDayAppointment() - patients[i].getDayCall();
+                    System.out.println("day = " + day);
+                    System.out.println("amountOfDaysNext = " + amountOfDaysNext);
+                    int dag=patients[i].getDayAppointment();
+                    System.out.println("dag = "+ dag);
+                    if(amountOfDaysNext==0)
+                    {
+                        System.out.println("if amount of days is zero");
+                        waitingTillAppointment= patients[i].getAppointmenttime()- patients[i].getCalltime();
+                    }
+                    else{
+                        System.out.println("if amount of days next is not zero");
+                        waitingTillAppointment=patients[i].getAppointmenttime(); // appointment time
+                        dag--; 
+
+                        while(amountOfDaysNext!=0){
+                            System.out.println("zit je hier vast??");
+                            if(dag==4||dag==6){
+                                waitingTillAppointment+= 1200;
+                                amountOfDaysNext--;
+                            }
+                            else{
+                                waitingTillAppointment+= 900;
+                                amountOfDaysNext--;
+                            }
+                        }
+                        if(dag==day){
+                            if(day==4||day==6)
+                            {
+                                waitingTillAppointment+=(240-patients[i].getCalltime());
+                            }
+                            else{
+                                waitingTillAppointment+=(540-patients[i].getCalltime());
+                            }
+                        }
+                    }
+
+                    System.out.println("Wachttijd deze patient"+waitingTillAppointment);
+                    sumWaitingTillApp+=waitingTillAppointment;
+                    System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
+                    numberOfElectives++;
+                    averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
+                    appointmentWaitingTimeElectives[i] = averageAppointmentWaitingTime;
+                    
+                }
+                else{
+                    
+                }
+                
+            }
+            
+        }
+                        
+            return appointmentWaitingTimeElectives;
+            
+        }
+    
   
     private double averageScanWaitingTime(){
         double averageWaitingTime=0;
@@ -637,6 +718,33 @@ public class Simulation {
         averageWaitingTime=waitingTime/amountOfElectives;
         return averageWaitingTime;
     }
+    private double [] averageScanWaitingTimeElective(){
+        double averageWaitingTime=0;
+        double waitingTime=0;
+        int amountOfElectives=0;
+        double [] arrayScanWaitingTimeElective = new double[totalNumberOfElectives];
+        for(int i=0;i<totalNumberOfPatients;i++){
+            if(patients[i].getCategory().equals("Elective")){
+                waitingTime+=(patients[i].getDeparturetime()-patients[i].getServiceLength())-patients[i].getArrivaltime();
+                amountOfElectives++;
+                averageWaitingTime=waitingTime/amountOfElectives; 
+                arrayScanWaitingTimeElective[i] = averageWaitingTime;
+            }
+        }
+        
+        return arrayScanWaitingTimeElective;
+    }
+    
+    private double calculateVarianceScanWaitingTimeElective(){
+        double sum = 0;
+        for(int i = 0; i < totalNumberOfElectives; i++){
+           sum = sum + (averageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent())*(averageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent());
+           
+        }
+        double totalVarianceScanWaitingTimeElective = sum/totalNumberOfUrgents;
+        return totalVarianceScanWaitingTimeElective;
+   }
+    
     
     private double scanWaitingTimeUrgent(){ //performance measure 2
         double sumScanTime=0;
@@ -660,6 +768,44 @@ public class Simulation {
         System.out.println(averageScanTime);
         return averageScanTime ;
     }
+    
+    private double [] averageScanWaitingTimeUrgent(){ //performance measure 2
+        double sumScanTime=0;
+        double averageScanTime = 0;
+        int aantalUrgent=0;
+        double[] arrayWaitingTimeUrgent = new double[totalNumberOfUrgents];
+              
+        for(int i=0;i<totalNumberOfPatients;i++){
+            if(patients[i].getCategory().equals("Urgent")){
+                double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
+                //1 lange array om dan te printen in CSV
+                WTUrgents.add(waitingForScanTime);
+                sumScanTime+=waitingForScanTime;
+                System.out.println("number"+(i+1));
+                System.out.println("wait for scan urgent"+waitingForScanTime);
+                System.out.println("som van wachttijden"+ sumScanTime);
+                aantalUrgent++;
+                averageScanTime = sumScanTime/aantalUrgent;
+                arrayWaitingTimeUrgent[i] = averageScanTime;
+            }
+            
+        }
+        
+        
+        return arrayWaitingTimeUrgent ;
+    }
+    
+     
+   private double calculateVarianceScanWaitingTimeUrgent(){
+        double sum = 0;
+        for(int i = 0; i < totalNumberOfUrgents; i++){
+           sum = sum + (averageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent())*(averageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent());
+           
+        }
+        double totalVarianceScanWaitingTimeUrgent = sum/totalNumberOfUrgents;
+        return totalVarianceScanWaitingTimeUrgent;
+   }
+
 
     
     private int overtimeRequired(){ // minder belangrijk --> used to break ties
