@@ -567,6 +567,7 @@ public class Simulation {
         double sumWaitingTillApp=0;
         double averageAppointmentWaitingTime = 0;
         int numberOfElectives=0;
+        double waitingTillAppointment=0;
         //double sumDelays=0;
         System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
         // alleen die waarvan de appointment time en day, week vandaag zijn 
@@ -577,7 +578,7 @@ public class Simulation {
                 System.out.println("Patient "+(i+1));
                 System.out.println("Appointmenttime"+patients[i].getAppointmenttime());
                 System.out.println("CallTime"+patients[i].getCalltime());
-                double waitingTillAppointment=0;
+                
                 numberOfElectives++;
                 /*int amountOfDaysNext=0;
                 if(patients[i].getWeekCall()==patients[i].getWeekAppointment()){
@@ -679,6 +680,7 @@ public class Simulation {
             System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
             //1 lange array om te printen in CSV
             WTElectives.add(sumWaitingTillApp);
+            System.out.println("aantal Electives berkeneing"+numberOfElectives);
             averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
             System.out.println("gemiddelde wachttijd"+averageAppointmentWaitingTime);
             
