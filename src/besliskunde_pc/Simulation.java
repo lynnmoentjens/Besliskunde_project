@@ -120,9 +120,6 @@ public class Simulation {
                     arrayVanArrivalTimes.add(timeNextUrgent);
                     }
                     
-                    if (i == amountOfUrgentArrivingThatDay){
-                        timeArrived = 0;
-                    } 
                 }
                 Collections.sort(arrayVanArrivalTimes);
                 if(amountOfUrgentArrivingThatDay==0){
@@ -145,9 +142,6 @@ public class Simulation {
                     arrayVanArrivalTimes.add(timeNextUrgent);
                     }
                     
-                    if (i == amountOfUrgentArrivingThatDay){
-                        timeArrived = 0;
-                    }
                 }
                 Collections.sort(arrayVanArrivalTimes);
                 if(amountOfUrgentArrivingThatDay==0){
@@ -324,6 +318,7 @@ public class Simulation {
     private void updateParametersAtEndOfDay(int today, int thisWeek){
         day++;
         time=0;
+        timeArrived=0;
         if(today==6){
             week++;
             lengthDay=540; 
