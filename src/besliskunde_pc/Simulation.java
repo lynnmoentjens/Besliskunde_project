@@ -46,16 +46,8 @@ public class Simulation {
     private double timeArrived;
     ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
     ArrayList <Double> interArrival = new ArrayList();
-    ArrayList<Double> WTUrgents = new ArrayList<>();
-
-    public ArrayList<Double> getWTUrgents() {
-        return WTUrgents;
-    }
-
-    public ArrayList<Double> getWTElectives() {
-        return WTElectives;
-    }
-    ArrayList<Double> WTElectives = new ArrayList<>();
+    public ArrayList<Double> WTUrgents = new ArrayList<>();
+    public ArrayList<Double> WTElectives = new ArrayList<>();
     
     
     public void initialization(){
