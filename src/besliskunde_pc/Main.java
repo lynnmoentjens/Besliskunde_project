@@ -111,7 +111,6 @@ public class Main {
         simulation1.Simulatie(2);
      
     
-    
         // 5. simulatie RULE 1 van appointment met overslaan middag --> WERKT!
         /* Patient patient1=new Patient();
         Simulation simulatie1= new Simulation();
