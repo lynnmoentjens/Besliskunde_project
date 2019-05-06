@@ -779,7 +779,7 @@ public class Simulation {
         averageWaitingTime=waitingTime/amountOfElectives;
         return averageWaitingTime;
     }
-    private double [] averageScanWaitingTimeElective(){
+    private double [] runningAverageScanWaitingTimeElective(){
         double averageWaitingTime=0;
         double waitingTime=0;
         int amountOfElectives=0;
@@ -799,7 +799,7 @@ public class Simulation {
     private double calculateVarianceScanWaitingTimeElective(){
         double sum = 0;
         for(int i = 0; i < totalNumberOfElectives; i++){
-           sum = sum + (averageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent())*(averageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent());
+           sum = sum + (runningAverageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent());
            
         }
         double totalVarianceScanWaitingTimeElective = sum/totalNumberOfUrgents;
@@ -830,7 +830,7 @@ public class Simulation {
         return averageScanTime ;
     }
     
-    private double [] averageScanWaitingTimeUrgent(){ //performance measure 2
+    private double [] runningAverageScanWaitingTimeUrgent(){ //performance measure 2
         double sumScanTime=0;
         double averageScanTime = 0;
         int aantalUrgent=0;
@@ -869,7 +869,7 @@ public class Simulation {
    private double calculateVarianceScanWaitingTimeUrgent(){
         double sum = 0;
         for(int i = 0; i < totalNumberOfUrgents; i++){
-           sum = sum + (averageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent())*(averageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent());
+           sum = sum + (runningAverageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent());
            
         }
         double totalVarianceScanWaitingTimeUrgent = sum/totalNumberOfUrgents;
