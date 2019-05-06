@@ -5,7 +5,7 @@
  */
 package besliskunde_pc;
 
-//import com.opencsv.CSVWriter; --> WAS EEN FOUTMELDING
+import com.opencsv.CSVWriter; 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,9 +24,12 @@ public class Main {
         // TODO code application logic here
 
       
+        Simulation simulation1=new Simulation();
+        simulation1.initialization();
+        simulation1.Simulatie(100);
         
         //CODE VOOR NAAR EXCEL
-        /*        
+             
                       
             //WRITEN ELECTIVE EN URGENT WT
             String csv1 = "data.csv";
@@ -43,17 +46,17 @@ public class Main {
             for(int i = 0; i <  simulation1.WTElectives.size(); i++){
                 line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
-                if(WTUrgent.get(i) != NULL){
+                
                 line[1] = Double.toString(simulation1.WTUrgents.get(i));
                 line[1] = line[1].replace(".", ",");
-                }
+                
                 writer.writeNext(line);
             }
             
             writer.close();
             System.out.println("CSV gemaakt");
             
-        
+        /*
             //WRITEN SERVICE LENGTH VOOR CONTROL VARIATE
             String csv3 = "dataServiceLength.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv3));
@@ -111,10 +114,6 @@ public class Main {
         
         //4. SIMULATIE RULE 1 ALLES    
         
-        Simulation simulation1=new Simulation();
-        simulation1.initialization();
-        simulation1.Simulatie(2);
-     
     
         // 5. simulatie RULE 1 van appointment met overslaan middag --> WERKT!
         /* Patient patient1=new Patient();
