@@ -5,6 +5,7 @@
  */
 package besliskunde_pc;
 
+import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -209,6 +210,7 @@ public class Simulation {
                     System.out.println("Appointment Day vorige patient"+laatsteSlot.getDay());
                     nieuwePatient.setWeekCall(week);
                     nieuwePatient.setDayCall(day);
+                    System.out.println("DE DAG!!!!!!"+ nieuwePatient.getDayCall());
                     nieuwePatient.setCalltime(callTime);
                     nieuwePatient.setCategory("Elective");
                     nieuwePatient= setPatientDataCall(lengthDay, callTime, day, nieuwePatient); //onderaan 
@@ -351,15 +353,18 @@ public class Simulation {
         day++;
         time=0;
         timeArrived=0;
-        if(today==6){
+        if(day>=7){
             week++;
             lengthDay=540; 
             day=1;
             urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
-            callTime=Double.POSITIVE_INFINITY;
+            callTime=0;
+            
+            
+            
             
         }
-        else if(today==3||today==5){
+        else if(day==4||day==6){
             lengthDay=240; 
             callTime=0;
             
@@ -378,6 +383,7 @@ public class Simulation {
         numberOfElectivesHaveCalled=0;
         
         scheduleTimeUrgent=0;
+        System.out.println("De Dag is nu "+day);
         System.out.println("DAG UPGEDATE");
     }
     
@@ -432,7 +438,7 @@ public class Simulation {
          System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
         ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy100();
-        int[] urgentSlotsForToday = urgenteSlots.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
@@ -963,3 +969,4 @@ public class Simulation {
         this.arrivalTimeUrgent = arrivalTimeUrgent;
     }    
 }
+
