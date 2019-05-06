@@ -343,100 +343,6 @@ public class SimulationBailey {
         
     }
     
-    /*public Patient setPatientDataCalla(double serviceTimePrevious, double lengthDay,double timeMomentCalling, int day, int week, Patient nieuwePatient){
-        
-        //numberOfPatients=2; --> voor bij het testen
-        
-        nieuwePatient.setCalltime(timeMomentCalling);
-        nieuwePatient.setCategory("Elective");
-        
-        if (numberOfPatients == 2){
-            appointmentTime= serviceTimePrevious;
-            scheduleTimeElective = serviceTimePrevious;
-            scheduleTimeElective+=15;
-        }
-        else{
-            appointmentTime= serviceTimePrevious;
-            appointmentTime+=15;
-            scheduleTimeElective+=15;
-        }
-        
-        while(appointmentTime<timeMomentCalling){ // als je vandaag plant moet het sowieso na het huidige uur zijn 
-            appointmentTime+=15;
-            scheduleTimeElective+=15;
-        }
-        nieuwePatient.setAppointmenttime(appointmentTime);
-        nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
-        nieuwePatient.setDayCall(day);
-        //nieuwePatient.setWeekCall(week);
-        
-        
-        //KIJKEN OF ER URGENTS SLOTS ZIJN VOOR DE KLASSE SIMULATIONBAILEY
-        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE 1 KIEZEN
-        
-        int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
-        
-        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
-            if(scheduleTimeElective==urgentSlotsForToday[i]){
-                appointmentTime+=15;
-                scheduleTimeElective+=15;
-                nieuwePatient.setAppointmenttime(appointmentTime);
-                nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
-            }
-        }
-        
-        //VANAF HIER FOUTEN MET DE DAGEN EN WEKEN, IN WELKE DAG EN WEEK WORDEN DE APPOINTMENTS GEMAAKT TOV HET BELLEN
-        
-        
-        
-        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
-        if(lengthDay!=240&&scheduleTimeElective>=540){ //NIET ZEKER OF DIT KLOPT
-            double appointmentNextDay=0;
-            double scheduledTimeNextDay=0;
-            appointmentNextDay=appointmentTime-525;
-            scheduledTimeNextDay=scheduleTimeElective-540;
-            nieuwePatient.setAppointmenttime(appointmentNextDay);
-            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
-            nieuwePatient.setDayAppointment(day+1); 
-            //nieuwePatient.setWeekAppointment(week);
-            numberOfElectivesForTomorrow++;
-        }
-        
-        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (1)
-        if(lengthDay!=240&&(scheduleTimeElective==240||scheduleTimeElective==255||scheduleTimeElective==270||scheduleTimeElective==285)){ //alleen voor volle dagen
-            scheduleTimeElective=300; // volgende empty slot is na de namiddag
-            appointmentTime=225; 
-            nieuwePatient.setAppointmenttime(appointmentTime); 
-            nieuwePatient.setScheduleTimeElective(scheduleTimeElective);
-        } 
-        
-        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG (2)
-        if(lengthDay!=240&&(scheduleTimeElective==315)){ //DE SPRONG MOET OOK GEMAAKT WORDEN VOOR APPOINTMENTTIME
-            appointmentTime=300;
-            nieuwePatient.setAppointmenttime(appointmentTime);
-        }
-        
-        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG HALVE DAG IS
-        if(lengthDay==240&&scheduleTimeElective>=240){ //NIET ZEKER OF DIT KLOPT
-            double appointmentNextDay=0;
-            double scheduledTimeNextDay=0;
-            appointmentNextDay=appointmentTime-225;
-            scheduledTimeNextDay=scheduleTimeElective-240;
-            
-            nieuwePatient.setAppointmenttime(appointmentNextDay);
-            nieuwePatient.setScheduleTimeElective(scheduledTimeNextDay);
-            nieuwePatient.setDayAppointment(day+1);     
-            numberOfElectivesForTomorrow++;
-        }
-        
-        //AANMAKEN ARRIVALTIME MET AFWIJKING
-        double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
-        nieuwePatient.setArrivaltime(nieuwePatient.getAppointmenttime()+afwijkingArrivalTime);
-
-        return nieuwePatient;
-    }*/
-    
     
     public Patient setPatientDataCall(double lengthDay,double timeMomentCalling, int day, Patient nieuwePatient){
         double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
@@ -477,30 +383,19 @@ public class SimulationBailey {
         nieuwePatient.setScheduleTimeElective(laatsteSlotScheduled.getTime());
         System.out.println("schedule time patient"+ nieuwePatient.getScheduleTimeElective());
         
+        //NU AL APPOINTED DAG EN WEEK INGEVEN
+        
         
         //PART 2: APPOINTED TIME
         
         System.out.println("Part 2 setPatientDataCall: appointed time");
-        System.out.println("laastste slot Appointed week + dag: "+laatsteSlotAppointed.getWeek()+" + "+laatsteSlotAppointed.getDay());
-        System.out.println("dag"+ day);
+        
         boolean updateApp=false;
-        if(week==laatsteSlotAppointed.getWeek()){ // als je inzelfde week zit maar al een dag bent opgeschoven
-            if(day> laatsteSlotAppointed.getDay()){
-                laatsteSlotAppointed.setDay(day);
-                updateApp=true;
-            }
-        }
-        else if(week> laatsteSlotAppointed.getWeek()){ // als we al verder zijn dan de week dat we hebben laatst gescheduled
-            laatsteSlotAppointed.setWeek(week);
-            updateApp=true;
-            
-        }
-        System.out.println("upgedate week "+ laatsteSlotAppointed.getWeek());
-        System.out.println("upgedate dag"+ laatsteSlotAppointed.getDay());
+        
         laatsteSlotAppointed = TestenInDieDagDieWeekAppointed(laatsteSlotAppointed, updateApp);
         updateApp=false;
 
-        System.out.println("upgedate"+ updateApp);
+        
         nieuwePatient.setWeekAppointment(laatsteSlotAppointed.getWeek());
         System.out.println("appointmnet week patient"+ nieuwePatient.getWeekAppointment());
         nieuwePatient.setDayAppointment(laatsteSlotAppointed.getDay());
@@ -517,66 +412,26 @@ public class SimulationBailey {
     
     //VOOR APPOINTED TIME
     public LastFilledAppointedSlotElectiveRule234 TestenInDieDagDieWeekAppointed(LastFilledAppointedSlotElectiveRule234 e, boolean updateApp){
-        double tijd= e.getTime();
         
-        if(updateApp==true){ //nieuwe dag of nieuweWeek
+        double tijd= -1;
+        int dagScheduled = laatsteSlotScheduled.getDay();
+        int weekScheduled = laatsteSlotScheduled.getWeek(); // APPOINTED EN SCHEDULED MOETEN TOCH ALTIJD OP DEZELFDE DAG VALLEN
+        
+        System.out.println("dagScheduled = "+dagScheduled);
+        System.out.println("weekScheduled = "+weekScheduled);
+        
+        if(laatsteSlotScheduled.getTime()==0 || laatsteSlotScheduled.getTime()==15){
             tijd=0;
-            aangepast = true;
         }
-        else if(aangepast=true){ //tweede patient van de dag krijgt ook tijd = 0, vanaf dan pas begint het optellen
-            tijd+=0;
-            aangepast = false;
-        }
-        else if(updateApp==false){ // geen verandering gebeurt dus de dag van calling en week is zelfde als de appointment
-            if( e.getDay()==day&&e.getWeek()==week) // zelfde dag en week
-            {
-                while(tijd<=time){ 
-                    tijd+=15;
-                }
-            }
-        //}
-        }
-        //KIJKEN OF ER URGENTS SLOTS IN DE WEG ZIJN
-        ArrayList<int[]> urgentSlotsADay = new ArrayList<int[]>();
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100(); //STRATEGIE MANUEEL KIEZEN
-        
-        int[] urgentSlotsForToday = urgentSlotsADay.get(day);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
-        
-        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
-            if(tijd==urgentSlotsForToday[i]){
-                    tijd+=15;
-                }
-            }
-        //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
-        if(e.getDay()!=4&&e.getDay()!=6&&tijd>=540){ 
-            e.setDay((e.getDay()+1));
-            tijd=0;
-                
-            }
-        else if((e.getDay()==4||e.getDay()==6)&&tijd>240){
-            if(day!=6){
-                e.setDay((e.getDay()+1));
-                tijd=0;
-            }
-            else{
-                e.setDay(1);
-                e.setWeek((e.getWeek()+1));
-                tijd=0;
-            }
+        else{
+            tijd=laatsteSlotScheduled.getTime()-15;
         }
         
-        //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
-        if(e.getDay()!=4&&e.getDay()!=6&&(tijd==240||tijd==255||tijd==270||tijd==285)){
-            tijd=300; // volgende empty slot is na de namiddag
-            System.out.println("vorige tijd"+ e.getTime());
-                if(tijd<=e.getTime()){
-                   tijd+=15;
-               } 
-            } 
-        if(tijd<=e.getTime()){
-            tijd+=15;}
-        System.out.println("vorige tijd"+ e.getTime());     
+        
+        e.setDay(dagScheduled);
+        e.setWeek(weekScheduled);
         e.setTime(tijd);
+        
         return e;
     } 
     
@@ -640,6 +495,18 @@ public class SimulationBailey {
         return e;
     } 
     
+    public int numberOfPatientsAppointedOnSpecificDay(int day, int week){
+        int numberOfPatientsAlreadyAppointedThatDay=0;
+        
+        for(int i = 0; i< numberOfPatients-1; i++){
+            if(patients[i].getCategory().equalsIgnoreCase("Elective")){
+                if(patients[i].getWeekAppointment()==week && patients[i].getDayAppointment()==day){
+                    numberOfPatientsAlreadyAppointedThatDay++;
+                }
+            }
+        }
+        return numberOfPatientsAlreadyAppointedThatDay;
+    }
     
     public Patient setPatientDataUrgentArrival(double arrivalTime, int today, int thisWeek, Patient nieuwePatient){
         
