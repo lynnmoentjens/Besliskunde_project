@@ -357,7 +357,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy100();
+            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
             callTime=0;
             
             
@@ -672,7 +672,9 @@ public class Simulation {
                     
                   sumWaitingTillApp+=waitingTillAppointment;  
                   //1 array met waiting times
+                  if(week == 2 && day == 6){
                   WTElectives.add(waitingTillAppointment);
+                  }
                   patients[i].setWaitingTimeElective(waitingTillAppointment);
                   System.out.println("Som tijd tot appointment: nog niet uit for en if"+sumWaitingTillApp);  
                 }
@@ -816,7 +818,9 @@ public class Simulation {
             if(patients[i].getCategory().equals("Urgent")){
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
                 //1 lange array om dan te printen in CSV
-                WTUrgents.add(waitingForScanTime);
+                if(week==2 && day==6){
+                        WTUrgents.add(waitingForScanTime);
+                }
                 sumScanTime+=waitingForScanTime;
                 System.out.println("number"+(i+1));
                 System.out.println("wait for scan urgent"+waitingForScanTime);
