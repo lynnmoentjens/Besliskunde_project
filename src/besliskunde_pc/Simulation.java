@@ -665,6 +665,9 @@ public class Simulation {
                     
                     
                   sumWaitingTillApp+=waitingTillAppointment;  
+                  //1 array met waiting times
+                  WTElectives.add(waitingTillAppointment);
+                  patients[i].setWaitingTimeElective(waitingTillAppointment);
                   System.out.println("Som tijd tot appointment: nog niet uit for en if"+sumWaitingTillApp);  
                 }
             System.out.println("Som tijd tot appointment: nog niet uit for"+sumWaitingTillApp);
@@ -673,8 +676,6 @@ public class Simulation {
         // }
             
             System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
-            //1 lange array om te printen in CSV
-            WTElectives.add(sumWaitingTillApp);
             System.out.println("aantal Electives berkeneing"+numberOfElectives);
             averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
             System.out.println("gemiddelde wachttijd"+averageAppointmentWaitingTime);
@@ -834,6 +835,7 @@ public class Simulation {
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
                 //1 lange array om dan te printen in CSV
                 WTUrgents.add(waitingForScanTime);
+                patients[i].setWaitingTimeUrgent(waitingForScanTime);
                 sumScanTime+=waitingForScanTime;
                 System.out.println("number"+(i+1));
                 System.out.println("wait for scan urgent"+waitingForScanTime);
@@ -848,6 +850,14 @@ public class Simulation {
         
         return arrayWaitingTimeUrgent ;
     }
+    
+   private ArrayList<Double> controlvariable(){
+       ArrayList<Double> serviceLength = new ArrayList<>();
+       for(int i=0; i < totalNumberOfPatients; i++){
+           serviceLength.add(patients[i].getServiceLength());
+       }
+       return serviceLength;
+   } 
     
      
    private double calculateVarianceScanWaitingTimeUrgent(){
