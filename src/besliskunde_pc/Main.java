@@ -28,13 +28,14 @@ public class Main {
         //CODE VOOR NAAR EXCEL
         /*        
                       
-            //WRITEN ELECTIVE WT
-            String csv = "dataElectives.csv";
-            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            //WRITEN ELECTIVE EN URGENT WT
+            String csv1 = "data.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv1));
             
             //kolomnamen
-            String[] header = new String[1];
+            String[] header = new String[2];
             header[0] = "Waiting times electives";
+            header[1] = "Waiting times urgents";
             writer.writeNext(header);
             
             //rijen
@@ -42,6 +43,10 @@ public class Main {
             for(int i = 0; i <  simulation1.WTElectives.size(); i++){
                 line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
+                if(WTUrgent.get(i) != NULL){
+                line[1] = Double.toString(simulation1.WTUrgents.get(i));
+                line[1] = line[1].replace(".", ",");
+                }
                 writer.writeNext(line);
             }
             
@@ -49,22 +54,22 @@ public class Main {
             System.out.println("CSV gemaakt");
             
         
-            //WRITEN URGENT WT
-            String csv = "dataUrgents.csv";
-            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            //WRITEN SERVICE LENGTH VOOR CONTROL VARIATE
+            String csv3 = "dataServiceLength.csv";
+            CSVWriter writer = new CSVWriter(new FileWriter(csv3));
             
             //kolomnamen
             String[] header = new String[1];
-            header[0] = "Waiting times urgents";
+            header[0] = "Service lengths";
             writer.writeNext(header);
-        
+           
             //rijen
             String[] line = new String[header.length];
-            for(int i = 0; i < simulation1.WTUrgents.size(); i++){
-                line[0] = Double.toString(simulation1.WTUrgents.get(i));
+            for(int i = 0; i < simulation1.serviceLength.size(); i++){
+                line[0] = Double.toString(simulation1.serviceLength.get(i));
                 line[0] = line[0].replace(".", ",");
                 writer.writeNext(line);
-            }
+        
             */
         
         
