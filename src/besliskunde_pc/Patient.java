@@ -14,6 +14,25 @@ public class Patient {
     private double arrivaltime; 
     private double departuretime;
     private double scheduleTimeElective; //VOOR RULE 2, 3 EN 4
+
+    public double getWaitingTimeElective() {
+        return waitingTimeElective;
+    }
+
+    public void setWaitingTimeElective(double waitingTimeElective) {
+        this.waitingTimeElective = waitingTimeElective;
+    }
+
+    public double getWaitingTimeUrgent() {
+        return waitingTimeUrgent;
+    }
+
+    public void setWaitingTimeUrgent(double waitingTimeUrgent) {
+        this.waitingTimeUrgent = waitingTimeUrgent;
+    }
+    
+    private double waitingTimeElective;
+    private double waitingTimeUrgent;
     
     private int weekCall;
     private int dayCall;
