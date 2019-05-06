@@ -26,34 +26,48 @@ public class Main {
       
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(100);
+        simulation1.Simulatie(2);
         
         //CODE VOOR NAAR EXCEL
              
-                      
-            //WRITEN ELECTIVE EN URGENT WT
-            String csv1 = "data.csv";
+            //WRITEN ELECTIVE WT
+            String csv1 = "dataElectives.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv1));
             
             //kolomnamen
-            String[] header = new String[2];
-            header[0] = "Waiting times electives";
-            header[1] = "Waiting times urgents";
+            String[] header = new String[1];
+            header[0] = "Elective waiting times";
             writer.writeNext(header);
             
             //rijen
             String[] line = new String[header.length];
-            for(int i = 0; i <  simulation1.WTElectives.size(); i++){
+            for(int i = 0; i < simulation1.WTElectives.size(); i++){
                 line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
-                
-                line[1] = Double.toString(simulation1.WTUrgents.get(i));
-                line[1] = line[1].replace(".", ",");
-                
                 writer.writeNext(line);
             }
             
             writer.close();
+            System.out.println("CSV gemaakt");
+            
+            //WRITEN URGENT WT
+            String csv2 = "dataUrgents.csv";
+            CSVWriter writer2 = new CSVWriter(new FileWriter(csv2));
+            
+            //kolomnamen
+            String[] header2 = new String[1];
+            header2[0] = "Urgent waiting times";
+            writer2.writeNext(header2);
+            
+            //rijen
+            String[] line2 = new String[header2.length];
+            for(int i = 0; i < simulation1.WTUrgents.size(); i++){
+                line2[0] = Double.toString(simulation1.WTUrgents.get(i));
+                line2[0] = line2[0].replace(".", ",");
+                writer2.writeNext(line2);
+            }
+            
+            writer2.close();
             System.out.println("CSV gemaakt");
             
         /*
