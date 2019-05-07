@@ -862,7 +862,7 @@ public class Simulation {
                         som = som + patients[i].getWaitingTimeUrgent();
                     }
                     weekGemiddelde = som/patienten;
-                    gemiddeldesUrgents.add(weekGemiddelde);
+                    gemiddeldesUrgents.set(j, weekGemiddelde);
                     }
         }
         }
@@ -884,7 +884,7 @@ public class Simulation {
                         som = som + patients[i].getWaitingTimeElective();
                     }
                     weekGemiddelde = som/patienten;
-                    gemiddeldesElectives.add(weekGemiddelde);
+                    gemiddeldesElectives.set(j, weekGemiddelde);
                     }
         }
         }
