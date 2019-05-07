@@ -70,7 +70,7 @@ public class Simulation {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots14();
+        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -794,6 +794,15 @@ public class Simulation {
             return appointmentWaitingTimeElectives;
             
         }
+     
+    public double calculateVarianceAppointmentWaitingTimeElective(){
+        double sum = 0;
+        for (int i = 0; i < totalNumberOfElectives; i++){
+        sum = sum + (runningAverageAppointmentWaitingTimeElectives().get(i) - averageAppointmentWaitingTimeElectives())*(runningAverageAppointmentWaitingTimeElectives().get(i)-averageAppointmentWaitingTimeElectives());
+    }
+        double totalVarianceAppointmentWaitingTimeElective = sum/totalNumberOfElectives;
+        return totalVarianceAppointmentWaitingTimeElective;
+    }
     
   
     private double averageScanWaitingTime(){
@@ -890,7 +899,7 @@ public class Simulation {
         return arrayWaitingTimeUrgent ;
     }
     
-   private ArrayList<Double> controlvariable(){
+   public ArrayList<Double> controlvariable(){
        ArrayList<Double> serviceLength = new ArrayList<>();
        for(int i=0; i < totalNumberOfPatients; i++){
            serviceLength.add(patients[i].getServiceLength());
@@ -899,7 +908,7 @@ public class Simulation {
    } 
     
      
-   private double calculateVarianceScanWaitingTimeUrgent(){
+   public double calculateVarianceScanWaitingTimeUrgent(){
         double sum = 0;
         for(int i = 0; i < totalNumberOfUrgents; i++){
            sum = sum + (runningAverageScanWaitingTimeUrgent().get(i) - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeUrgent().get(i) - scanWaitingTimeUrgent());

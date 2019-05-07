@@ -52,6 +52,7 @@ public class Main {
             
             writer.close();
             System.out.println("CSV1 gemaakt");
+            System.out.println("De elective variantie is: " + simulation1.calculateVarianceScanWaitingTimeElective());
             
             
             //RUNNING AVERAGES
@@ -97,6 +98,7 @@ public class Main {
             
             writer2.close();
             System.out.println("CSV3 gemaakt");
+            System.out.println("De urgent variantie is: " + simulation1.calculateVarianceScanWaitingTimeUrgent());
             
             
             //RUNNING AVERAGE
