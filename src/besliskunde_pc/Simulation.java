@@ -692,12 +692,12 @@ public class Simulation {
             
         }
     
-     private double [] runningAverageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
+     public ArrayList<Double> runningAverageAppointmentWaitingTimeElectives(){ // performance measure 1 --> average appointment waiting time elective
         
         double sumWaitingTillApp=0;
         double averageAppointmentWaitingTime = 0;
         int numberOfElectives=0;
-        double [] appointmentWaitingTimeElectives = new double[totalNumberOfElectives];
+        ArrayList<Double> appointmentWaitingTimeElectives = new ArrayList<>();
         //double sumDelays=0;
         System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
         //Aanpassing nodig --> moet electives alleen zijn 
@@ -752,7 +752,7 @@ public class Simulation {
                     System.out.println("Som tijd tot appointment"+sumWaitingTillApp);
                     numberOfElectives++;
                     averageAppointmentWaitingTime = sumWaitingTillApp/numberOfElectives;
-                    appointmentWaitingTimeElectives[i] = averageAppointmentWaitingTime;
+                    appointmentWaitingTimeElectives.add(averageAppointmentWaitingTime);
                     
                 }
                 else{
@@ -781,11 +781,12 @@ public class Simulation {
         averageWaitingTime=waitingTime/amountOfElectives;
         return averageWaitingTime;
     }
+    
     private double [] runningAverageScanWaitingTimeElective(){
         double averageWaitingTime=0;
         double waitingTime=0;
         int amountOfElectives=0;
-        double [] arrayScanWaitingTimeElective = new double[totalNumberOfElectives];
+        double [] arrayScanWaitingTimeElective = new double[1000000000];
         for(int i=0;i<totalNumberOfPatients;i++){
             if(patients[i].getCategory().equals("Elective")){
                 waitingTime+=(patients[i].getDeparturetime()-patients[i].getServiceLength())-patients[i].getArrivaltime();
@@ -798,7 +799,7 @@ public class Simulation {
         return arrayScanWaitingTimeElective;
     }
     
-    private double calculateVarianceScanWaitingTimeElective(){
+    public double calculateVarianceScanWaitingTimeElective(){
         double sum = 0;
         for(int i = 0; i < totalNumberOfElectives; i++){
            sum = sum + (runningAverageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeElective()[i] - scanWaitingTimeUrgent());
@@ -834,11 +835,11 @@ public class Simulation {
         return averageScanTime ;
     }
     
-    private double [] runningAverageScanWaitingTimeUrgent(){ //performance measure 2
+    public ArrayList<Double> runningAverageScanWaitingTimeUrgent(){ //performance measure 2
         double sumScanTime=0;
         double averageScanTime = 0;
         int aantalUrgent=0;
-        double[] arrayWaitingTimeUrgent = new double[totalNumberOfUrgents];
+        ArrayList<Double> arrayWaitingTimeUrgent = new ArrayList<>();
               
         for(int i=0;i<totalNumberOfPatients;i++){
             if(patients[i].getCategory().equals("Urgent")){
@@ -852,7 +853,7 @@ public class Simulation {
                 System.out.println("som van wachttijden"+ sumScanTime);
                 aantalUrgent++;
                 averageScanTime = sumScanTime/aantalUrgent;
-                arrayWaitingTimeUrgent[i] = averageScanTime;
+                arrayWaitingTimeUrgent.add(averageScanTime);
             }
             
         }
@@ -873,7 +874,7 @@ public class Simulation {
    private double calculateVarianceScanWaitingTimeUrgent(){
         double sum = 0;
         for(int i = 0; i < totalNumberOfUrgents; i++){
-           sum = sum + (runningAverageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeUrgent()[i] - scanWaitingTimeUrgent());
+           sum = sum + (runningAverageScanWaitingTimeUrgent().get(i) - scanWaitingTimeUrgent())*(runningAverageScanWaitingTimeUrgent().get(i) - scanWaitingTimeUrgent());
            
         }
         double totalVarianceScanWaitingTimeUrgent = sum/totalNumberOfUrgents;
