@@ -672,7 +672,7 @@ public class Simulation {
                     
                   sumWaitingTillApp+=waitingTillAppointment;  
                   //1 array met waiting times
-                  if(week == 100 && day == 6){
+                  if(week == 200 && day == 6){
                   WTElectives.add(waitingTillAppointment);
                   }
                   patients[i].setWaitingTimeElective(waitingTillAppointment);
@@ -856,7 +856,7 @@ public class Simulation {
             if(patients[i].getCategory().equals("Urgent")){
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
                 //1 lange array om dan te printen in CSV
-                if(week==100 && day==6){
+                if(week==200 && day==6){
                         WTUrgents.add(waitingForScanTime);
                 }
                 sumScanTime+=waitingForScanTime;
