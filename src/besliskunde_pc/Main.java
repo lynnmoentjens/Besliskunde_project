@@ -30,6 +30,8 @@ public class Main {
         
         //CODE VOOR NAAR EXCEL
              
+            
+        
             //WRITEN ELECTIVE WT
             String csv1 = "dataElectives.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv1));
@@ -45,10 +47,33 @@ public class Main {
                 line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
                 writer.writeNext(line);
-            }
+            }    
             
             writer.close();
             System.out.println("CSV gemaakt");
+            
+            
+            //RUNNING AVERAGES
+            String csvB = "dataElectivesRA.csv";
+            CSVWriter schrijver = new CSVWriter(new FileWriter(csvB));
+            
+            //kolomnamen
+            String[] hoofd = new String[1];
+            hoofd[0] = "Running average electives";
+            schrijver.writeNext(hoofd);
+            
+            String[] lijn = new String[hoofd.length];
+            for(int i = 0; i < simulation1.runningAverageAppointmentWaitingTimeElectives().size(); i++){
+                lijn[0] = Double.toString(simulation1.runningAverageAppointmentWaitingTimeElectives().get(i));
+                lijn[0] = lijn[0].replace(".", ",");  
+                
+                schrijver.writeNext(lijn);
+            }
+            
+            schrijver.close();
+            System.out.println("CSV gemaakt");
+            
+            
             
             //WRITEN URGENT WT
             String csv2 = "dataUrgents.csv";
@@ -70,6 +95,28 @@ public class Main {
             writer2.close();
             System.out.println("CSV gemaakt");
             
+            
+            //RUNNING AVERAGE
+            String csvD = "dataUrgentsRA.csv";
+            CSVWriter schrijver2 = new CSVWriter(new FileWriter(csvD));
+            
+            //kolomnamen
+            String[] hoofd2 = new String[1];
+            hoofd2[0] = "Running average electives";
+            schrijver2.writeNext(hoofd2);
+            
+            String[] lijn2 = new String[hoofd2.length];
+            for(int i = 0; i < simulation1.runningAverageScanWaitingTimeUrgent().size(); i++){
+                lijn2[0] = Double.toString(simulation1.runningAverageScanWaitingTimeUrgent().get(i));
+                lijn2[0] = lijn2[0].replace(".", ",");  
+                
+                schrijver2.writeNext(lijn2);
+            }
+            
+            schrijver2.close();
+            System.out.println("CSV gemaakt");
+            
+            
         /*
             //WRITEN SERVICE LENGTH VOOR CONTROL VARIATE
             String csv3 = "dataServiceLength.csv";
@@ -90,8 +137,56 @@ public class Main {
             */
         
         
+        /*
+        SimulationBailey simulation2 = new SimulationBailey();
+        simulation2.initialization();
+        simulation2.Simulatie(2);
+        
+        //CODE VOOR NAAR EXCEL
+             
+            //WRITEN ELECTIVE WT
+            String csv3 = "dataElectivesBailey.csv";
+            CSVWriter writer3 = new CSVWriter(new FileWriter(csv3));
+            
+            //kolomnamen
+            String[] header3 = new String[1];
+            header3[0] = "Elective waiting times";
+            writer3.writeNext(header3);
+            
+            //rijen
+            String[] line3 = new String[header3.length];
+            for(int i = 0; i < simulation2.WTElectives.size(); i++){
+                line3[0] = Double.toString(simulation2.WTElectives.get(i));
+                line3[0] = line3[0].replace(".", ",");
+                writer3.writeNext(line3);
+            }
+            
+            writer3.close();
+            System.out.println("CSV gemaakt");
+            
+            //WRITEN URGENT WT
+            String csv4 = "dataUrgentsBailey.csv";
+            CSVWriter writer4 = new CSVWriter(new FileWriter(csv4));
+            
+            //kolomnamen
+            String[] header4 = new String[1];
+            header4[0] = "Urgent waiting times";
+            writer4.writeNext(header4);
+            
+            //rijen
+            String[] line4 = new String[header4.length];
+            for(int i = 0; i < simulation2.WTUrgents.size(); i++){
+                line4[0] = Double.toString(simulation2.WTUrgents.get(i));
+                line4[0] = line4[0].replace(".", ",");
+                writer4.writeNext(line4);
+            }
+            
+            writer4.close();
+            System.out.println("CSV gemaakt");
         
         
+        
+        */
 
         
        // 2. SIMULATIE URGENT SLOTS rule 1--> WERKT! bij first come first serve wordt er rekening gehouden met wanneer de urgent slots vallen!
