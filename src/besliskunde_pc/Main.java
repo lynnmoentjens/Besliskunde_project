@@ -26,7 +26,7 @@ public class Main {
       
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(2);
+        simulation1.Simulatie(100);
         
         //CODE VOOR NAAR EXCEL
              
@@ -43,6 +43,7 @@ public class Main {
             
             //rijen
             String[] line = new String[header.length];
+            System.out.println("Size WTElectives: "+ simulation1.WTElectives.size());
             for(int i = 0; i < simulation1.WTElectives.size(); i++){
                 line[0] = Double.toString(simulation1.WTElectives.get(i));
                 line[0] = line[0].replace(".", ",");
@@ -50,7 +51,7 @@ public class Main {
             }    
             
             writer.close();
-            System.out.println("CSV gemaakt");
+            System.out.println("CSV1 gemaakt");
             
             
             //RUNNING AVERAGES
@@ -71,7 +72,7 @@ public class Main {
             }
             
             schrijver.close();
-            System.out.println("CSV gemaakt");
+            System.out.println("CSV2 gemaakt");
             
             
             
@@ -86,14 +87,16 @@ public class Main {
             
             //rijen
             String[] line2 = new String[header2.length];
+            System.out.println("Size WTUrgents: "+ simulation1.WTUrgents.size());
             for(int i = 0; i < simulation1.WTUrgents.size(); i++){
                 line2[0] = Double.toString(simulation1.WTUrgents.get(i));
                 line2[0] = line2[0].replace(".", ",");
+                
                 writer2.writeNext(line2);
             }
             
             writer2.close();
-            System.out.println("CSV gemaakt");
+            System.out.println("CSV3 gemaakt");
             
             
             //RUNNING AVERAGE
@@ -114,7 +117,7 @@ public class Main {
             }
             
             schrijver2.close();
-            System.out.println("CSV gemaakt");
+            System.out.println("CSV4 gemaakt");
             
             
         /*
