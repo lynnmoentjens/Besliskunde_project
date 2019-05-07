@@ -26,7 +26,7 @@ public class Main {
       
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(100);
+        simulation1.Simulatie(200);
         
         //CODE VOOR NAAR EXCEL
              
