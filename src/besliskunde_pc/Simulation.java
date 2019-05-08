@@ -674,7 +674,7 @@ public class Simulation {
                     
                   sumWaitingTillApp+=waitingTillAppointment;  
                   //1 array met waiting times
-                  if(week == 3 && day == 6){
+                  if(week == 800 && day == 6){
                     WTElectives.add(waitingTillAppointment);
                   }
                   patients[i].setWaitingTimeElective(waitingTillAppointment);
@@ -857,7 +857,7 @@ public class Simulation {
         double som = 0;
         int patienten = 0;
         double weekGemiddelde = 0;
-        for(int j = 1; j <= 3; j++){
+        for(int j = 1; j <= 800; j++){
             for(int i=0;i<totalNumberOfPatients;i++){
             if(patients[i].getCategory().equals("Urgent")){
                 
