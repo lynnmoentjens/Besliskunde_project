@@ -70,7 +70,7 @@ public class Simulation {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+        urgentSlotsADay = UrgentSlots.testSignificanceSlots18();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -357,7 +357,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+            urgentSlotsADay = UrgentSlots.testSignificanceSlots18();
             callTime=0;
             
             
@@ -437,7 +437,7 @@ public class Simulation {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots14();
+        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots18();
         int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
@@ -850,20 +850,28 @@ public class Simulation {
     public ArrayList<Double> gemiddeldesBerekenenPerWeekUrgents(){
         ArrayList<Double> gemiddeldesUrgents = new ArrayList<>();
         double som = 0;
-        double patienten = 0;
+        int patienten = 0;
         double weekGemiddelde = 0;
-        for(int i=0;i<totalNumberOfPatients;i++){
-            if(patients[i].getCategory().equals("Urgent")){
+        for(int j = 1; j <= 200; j++){
+            som = 0;
+            patienten = 0;
+            for(int i=0;i<totalNumberOfPatients;i++){
+            
+                if(patients[i].getCategory().equals("Urgent")){
                 double waitingForScanTime= patients[i].getDeparturetime()-patients[i].getServiceLength()-patients[i].getArrivaltime();
                 //1 lange array om dan te printen in CSV
-                for(int j = 0; j < 200; j++){
+                
                     if((patients[i].getWeekAppointment()==j)){
                         patienten++;
                         som = som + patients[i].getWaitingTimeUrgent();
                     }
-                    weekGemiddelde = som/patienten;
-                    gemiddeldesUrgents.set(j, weekGemiddelde);
+                    if(i == totalNumberOfPatients){
+                    weekGemiddelde = (double) som/patienten;
+                    System.out.println(weekGemiddelde);
+                    gemiddeldesUrgents.add(weekGemiddelde);
                     }
+            }
+            
         }
         }
         return gemiddeldesUrgents; 
@@ -873,19 +881,27 @@ public class Simulation {
     public ArrayList<Double> gemiddeldesBerekenenPerWeekElectives(){
         ArrayList<Double> gemiddeldesElectives = new ArrayList<>();
         double som = 0;
-        double patienten = 0;
+        int patienten = 0;
         double weekGemiddelde = 0;
-        for(int i=0;i<totalNumberOfPatients;i++){
-            if(patients[i].getCategory().equals("Elective")){
+        for(int j = 1; j <= 200; j++){
+            som = 0;
+            patienten = 0;
+            
+            for(int i=0;i<totalNumberOfPatients;i++){
+                if(patients[i].getCategory().equals("Elective")){
                 
-                for(int j = 0; j < 200; j++){
                     if((patients[i].getWeekAppointment()==j)){
                         patienten++;
                         som = som + patients[i].getWaitingTimeElective();
                     }
-                    weekGemiddelde = som/patienten;
-                    gemiddeldesElectives.set(j, weekGemiddelde);
+                    
+                    if(i == totalNumberOfPatients){
+                    weekGemiddelde = (double) som/patienten;
+                    System.out.println(weekGemiddelde);
+                    gemiddeldesElectives.add(weekGemiddelde);
                     }
+                    }
+            
         }
         }
         return gemiddeldesElectives; 

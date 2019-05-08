@@ -5,6 +5,8 @@
  */
 package besliskunde_pc;
 
+
+
 import com.opencsv.CSVWriter; 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,7 +54,6 @@ public class Main {
             
             writer.close();
             System.out.println("CSV1 gemaakt");
-            System.out.println("De elective variantie is: " + simulation1.calculateVarianceScanWaitingTimeElective());
             
             
             //RUNNING AVERAGES
@@ -98,7 +99,6 @@ public class Main {
             
             writer2.close();
             System.out.println("CSV3 gemaakt");
-            System.out.println("De urgent variantie is: " + simulation1.calculateVarianceScanWaitingTimeUrgent());
             
             
             //RUNNING AVERAGE
@@ -107,7 +107,7 @@ public class Main {
             
             //kolomnamen
             String[] hoofd2 = new String[1];
-            hoofd2[0] = "Running average electives";
+            hoofd2[0] = "Running average urgents";
             schrijver2.writeNext(hoofd2);
             
             String[] lijn2 = new String[hoofd2.length];
@@ -121,6 +121,31 @@ public class Main {
             schrijver2.close();
             System.out.println("CSV4 gemaakt");
             
+            
+            //CORRELATION BEREKENEN
+            String corr = "Correlation.csv";
+            CSVWriter corrCSV = new CSVWriter(new FileWriter(corr));
+            
+            //kolomnamen
+            String[] hoofding = new String[2];
+            hoofding[0] = "Week gemiddelde electives";
+            hoofding[1] = "Week gemiddelde urgents";
+            corrCSV.writeNext(hoofding);
+            
+            String[] regel = new String[hoofding.length];
+            for(int i = 0; i < simulation1.runningAverageScanWaitingTimeUrgent().size(); i++){
+                regel[0] = Double.toString(simulation1.gemiddeldesBerekenenPerWeekElectives().get(i));
+                regel[0] = regel[0].replace(".", ",");  
+                regel[1] = Double.toString(simulation1.gemiddeldesBerekenenPerWeekUrgents().get(i));
+                regel[1] = regel[1].replace(".", ",");  
+                
+                corrCSV.writeNext(regel);
+            }
+            
+            corrCSV.close();
+            System.out.println("Correlations gemaakt");    
+        
+        
             
         /*
             //WRITEN SERVICE LENGTH VOOR CONTROL VARIATE
