@@ -70,7 +70,7 @@ public class Simulation {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots14();
+        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -357,7 +357,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.testSignificanceSlots14();
+            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
             callTime=0;
             
             
@@ -437,7 +437,7 @@ public class Simulation {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots14();
+        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
         int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
@@ -674,7 +674,7 @@ public class Simulation {
                     
                   sumWaitingTillApp+=waitingTillAppointment;  
                   //1 array met waiting times
-                  if(week == 3 && day == 6){
+                  if(week == 800 && day == 6){
                     WTElectives.add(waitingTillAppointment);
                   }
                   patients[i].setWaitingTimeElective(waitingTillAppointment);
@@ -857,7 +857,7 @@ public class Simulation {
         double som = 0;
         int patienten = 0;
         double weekGemiddelde = 0;
-        for(int j = 1; j <= 3; j++){
+        for(int j = 1; j <= 800; j++){
             for(int i=0;i<totalNumberOfPatients;i++){
             if(patients[i].getCategory().equals("Urgent")){
                 
@@ -892,7 +892,7 @@ public class Simulation {
         int patienten = 0;
         double weekGemiddelde = 0;
         double wachttijd=0;
-        for(int j = 1; j <= 3; j++){ //weken
+        for(int j = 1; j <= 800; j++){ //weken
             som = 0;
             patienten = 0;
             for(int i=0;i<totalNumberOfPatients;i++){
@@ -928,7 +928,7 @@ public class Simulation {
             if(patients[i].getCategory().equals("Urgent")){
                 double waitingForScanTime= patients[i].getAppointmenttime()-patients[i].getArrivaltime();
                 //1 lange array om dan te printen in CSV
-                if(week==3 && day==6){
+                if(week==800 && day==6){
                     
                         WTUrgents.add(waitingForScanTime);
                 }
