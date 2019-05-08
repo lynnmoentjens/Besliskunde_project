@@ -25,10 +25,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
 
-      
+      /*
+        SimulationBench simulation1 = new SimulationBench();
+        simulation1.initialization();
+        simulation1.Simulatie(3);
+        */
+        
+        
+        
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(800);
+        simulation1.Simulatie(3);
         
         //CODE VOOR NAAR EXCEL
              
@@ -121,7 +128,7 @@ public class Main {
             schrijver2.close();
             System.out.println("CSV4 gemaakt");
             
-            
+           
            //CORRELATION BEREKENEN
             String corr = "Correlation.csv";
             CSVWriter corrCSV = new CSVWriter(new FileWriter(corr));
@@ -132,7 +139,7 @@ public class Main {
             corrCSV.writeNext(hoofding);
             
             String[] regel = new String[hoofding.length];
-            for(int i = 0; i < simulation1.runningAverageScanWaitingTimeUrgent().size(); i++){
+            for(int i = 0; i < simulation1.gemiddeldesBerekenenPerWeekElectives().size(); i++){
                 regel[0] = Double.toString(simulation1.gemiddeldesBerekenenPerWeekElectives().get(i));
                 regel[0] = regel[0].replace(".", ",");  
                 
@@ -141,7 +148,6 @@ public class Main {
             
             corrCSV.close();
             System.out.println("Correlations1 gemaakt");  
-            
             
             String corr2 = "Correlation2.csv";
             CSVWriter corrCSV2 = new CSVWriter(new FileWriter(corr2));
@@ -152,7 +158,7 @@ public class Main {
             corrCSV.writeNext(hoofding2);
             
             String[] regel2 = new String[hoofding2.length];
-            for(int i = 0; i < simulation1.runningAverageScanWaitingTimeUrgent().size(); i++){            
+            for(int i = 0; i < simulation1.gemiddeldesBerekenenPerWeekUrgents().size(); i++){            
                 regel2[0] = Double.toString(simulation1.gemiddeldesBerekenenPerWeekUrgents().get(i));
                 regel2[0] = regel2[0].replace(".", ",");  
             
