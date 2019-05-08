@@ -852,7 +852,7 @@ public class Simulation {
    }
     
     
-    public void gemiddeldesBerekenenPerWeekUrgents(){
+    public ArrayList<Double> gemiddeldesBerekenenPerWeekUrgents(){
         ArrayList<Double> gemiddeldesUrgents = new ArrayList<>();
         double som = 0;
         int patienten = 0;
@@ -882,7 +882,7 @@ public class Simulation {
         patienten = 0;
         
         }
-        //return gemiddeldesUrgents;
+        return gemiddeldesUrgents;
     }
     
     

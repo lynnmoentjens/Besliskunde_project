@@ -28,7 +28,7 @@ public class Main {
       
         Simulation simulation1=new Simulation();
         simulation1.initialization();
-        simulation1.Simulatie(1000);
+        simulation1.Simulatie(800);
         
         //CODE VOOR NAAR EXCEL
              
@@ -122,7 +122,7 @@ public class Main {
             System.out.println("CSV4 gemaakt");
             
             
-            /*//CORRELATION BEREKENEN
+           //CORRELATION BEREKENEN
             String corr = "Correlation.csv";
             CSVWriter corrCSV = new CSVWriter(new FileWriter(corr));
             
@@ -161,7 +161,7 @@ public class Main {
             
             corrCSV2.close();
             System.out.println("Correlations2 gemaakt");  
-        */
+        
         
            
             
