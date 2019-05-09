@@ -33,7 +33,7 @@ public class Main {
         
         
         
-        Simulation simulation1=new Simulation();
+        SimulationBlocking simulation1=new SimulationBlocking();
         simulation1.initialization();
         simulation1.Simulatie(800);
         

@@ -70,7 +70,7 @@ public class Simulation {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with10slots();
+        urgentSlotsADay = UrgentSlots.testSignificanceSlots12();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -357,7 +357,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with10slots();
+            urgentSlotsADay = UrgentSlots.testSignificanceSlots12();
             callTime=0;
             
             
@@ -437,9 +437,9 @@ public class Simulation {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy3with10slots();
+        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots12();
         System.out.println("dag "+laatsteSlot.getDay());
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         System.out.println("dag laatste elective "+ (laatsteSlot.getDay()));
                         for(int i=0;i<urgentSlotsForToday.length;i++){
@@ -515,7 +515,7 @@ public class Simulation {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         System.out.println("dag urgent"+today);
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
         for(int i=0;i<urgentSlotsForToday.length;i++){

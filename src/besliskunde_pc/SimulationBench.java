@@ -228,10 +228,15 @@ public class SimulationBench {
                         nieuwePatient.setAppointmenttime((nieuwePatient.getAppointmenttime()+15));
                         
                         ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
-                        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
+                        System.out.println("DAG Nadien app"+nieuwePatient.getDayAppointment());
+                        for(int j=0;j<urgentSlotsForToday.length;j++)
+                        {
+                            System.out.println("urgentslots"+urgentSlotsForToday[j]);
+                        } 
+                                        for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
                         //System.out.println(" slot urgent "+(i+1)+": "+urgentSlotsForToday[i]);
                             if(nieuwePatient.getAppointmenttime()==urgentSlotsForToday[i]){
                                 //System.out.println("Gelijk");
@@ -514,7 +519,13 @@ public class SimulationBench {
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
         ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        
+        System.out.println("DAG app "+laatsteSlot.getDay());
+        for(int j=0;j<urgentSlotsForToday.length;j++)
+        {
+            System.out.println("urgentslots"+urgentSlotsForToday[j]);
+        }
         
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
@@ -586,10 +597,12 @@ public class SimulationBench {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
+        System.out.println("DAG urgent "+today);
+        
         for(int i=0;i<urgentSlotsForToday.length;i++){
-            //System.out.println(urgentSlotsForToday[i]);
+            System.out.println(urgentSlotsForToday[i]);
         }
         
         boolean change=false;

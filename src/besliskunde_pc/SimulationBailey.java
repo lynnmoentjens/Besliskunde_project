@@ -230,7 +230,7 @@ public class SimulationBailey {
                         //System.out.println("wat het nu is app" +nieuwePatient.getAppointmenttime());
                         
                         ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy2with10slots();
-                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
                         System.out.println("dag laatste elective app in 2e loop schedule "+ (laatsteSlot.getDay()));
                         for(int i=0;i<urgentSlotsForToday.length;i++){
