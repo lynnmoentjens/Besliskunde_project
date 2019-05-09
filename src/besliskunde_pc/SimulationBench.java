@@ -220,15 +220,15 @@ public class SimulationBench {
                     else{
                         nieuwePatient.setScheduleTimeElective(0);
                     }
-                    System.out.println("eerste waarde schedule"+nieuwePatient.getScheduleTimeElective());
-                    System.out.println("calltime "+ nieuwePatient.getCalltime());
-                    System.out.println("eerste waarde appointment"+nieuwePatient.getAppointmenttime());
+                    //System.out.println("eerste waarde schedule"+nieuwePatient.getScheduleTimeElective());
+                    //System.out.println("calltime "+ nieuwePatient.getCalltime());
+                    //System.out.println("eerste waarde appointment"+nieuwePatient.getAppointmenttime());
                    
-                    while(nieuwePatient.getScheduleTimeElective()<nieuwePatient.getCalltime()){
+                    while((nieuwePatient.getDayAppointment()==nieuwePatient.getDayCall())&&nieuwePatient.getScheduleTimeElective()<nieuwePatient.getCalltime()){
                         nieuwePatient.setAppointmenttime((nieuwePatient.getAppointmenttime()+15));
                         
                         ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+                        int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
                         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
@@ -285,10 +285,10 @@ public class SimulationBench {
                     laatsteSlot.setWeek(nieuwePatient.getWeekAppointment());
                     double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
                     nieuwePatient.setArrivaltime(nieuwePatient.getScheduleTimeElective()+afwijkingArrivalTime);
-                    System.out.println("Patient "+totalNumberOfPatients);
-                    System.out.println(" scheduleTime "+ nieuwePatient.getScheduleTimeElective());
-                    System.out.println(" appointmentTime "+nieuwePatient.getAppointmenttime());
-                    System.out.println(" arrivalTime" + nieuwePatient.getArrivaltime());
+                    //System.out.println("Patient "+totalNumberOfPatients);
+                    //System.out.println(" scheduleTime "+ nieuwePatient.getScheduleTimeElective());
+                    //System.out.println(" appointmentTime "+nieuwePatient.getAppointmenttime());
+                    //System.out.println(" arrivalTime" + nieuwePatient.getArrivaltime());
                     
                     //System.out.println("AppointmentTime Deze patient"+laatsteSlot.getTime());
                     //System.out.println("Appointment Week Deze patient "+laatsteSlot.getWeek());
@@ -514,7 +514,7 @@ public class SimulationBench {
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
         ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
@@ -586,7 +586,7 @@ public class SimulationBench {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
         for(int i=0;i<urgentSlotsForToday.length;i++){
             //System.out.println(urgentSlotsForToday[i]);

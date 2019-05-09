@@ -5,7 +5,6 @@
  */
 package besliskunde_pc;
 
-import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -70,7 +69,7 @@ public class SimulationBailey {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy2with10slots();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -81,8 +80,9 @@ public class SimulationBailey {
         
         while(week<=amountOfWeeksSimulation){
              // calltimes van electives genereren:
-             //System.out.println("DAG:"+day);
+             System.out.println("DAG:"+day);
              //System.out.println("WEEK: "+week );
+             
             if(day!=6){
                double interarrival = 0;
                 double tijd=0;
@@ -220,16 +220,22 @@ public class SimulationBailey {
                     else{
                         nieuwePatient.setScheduleTimeElective(0);
                     }
-                    System.out.println("eerste waarde schedule"+nieuwePatient.getScheduleTimeElective());
-                    System.out.println("calltime "+ nieuwePatient.getCalltime());
-                    System.out.println("eerste waarde appointment"+nieuwePatient.getAppointmenttime());
+                    //System.out.println("eerste waarde schedule"+nieuwePatient.getScheduleTimeElective());
+                    //System.out.println("calltime "+ nieuwePatient.getCalltime());
+                    //System.out.println("eerste waarde appointment"+nieuwePatient.getAppointmenttime());
                    
-                    while(nieuwePatient.getScheduleTimeElective()<nieuwePatient.getCalltime()){
+                    while((nieuwePatient.getDayAppointment()==nieuwePatient.getDayCall())&&nieuwePatient.getScheduleTimeElective()<nieuwePatient.getCalltime()){
+                        //System.out.println("de scheduletime is voor de callTime");
                         nieuwePatient.setAppointmenttime((nieuwePatient.getAppointmenttime()+15));
+                        //System.out.println("wat het nu is app" +nieuwePatient.getAppointmenttime());
                         
-                        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
+                        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy2with10slots();
                         int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
+                        System.out.println("dag laatste elective app in 2e loop schedule "+ (laatsteSlot.getDay()));
+                        for(int i=0;i<urgentSlotsForToday.length;i++){
+                            System.out.println("de urgent slots van die dag"+urgentSlotsForToday[i]);
+                        }
         
                         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
                         //System.out.println(" slot urgent "+(i+1)+": "+urgentSlotsForToday[i]);
@@ -237,9 +243,9 @@ public class SimulationBailey {
                                 //System.out.println("Gelijk");
                                 nieuwePatient.setAppointmenttime((nieuwePatient.getAppointmenttime()+15));
                             }
-                        //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
+                        //System.out.println("De appointmentTime is nu: "+ nieuwePatient.getAppointmenttime());
                         }
-                        //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
+                        //System.out.println("De appointmentTime is nu: "+ nieuwePatient.getAppointmenttime());
          
                         //APPOINTMENT OP VOLGENDE VOLLE DAG ZETTEN INDIEN VANDAAG VOLLE DAG IS
                     if(nieuwePatient.getDayAppointment()!=4&&nieuwePatient.getDayAppointment()!=6&&nieuwePatient.getAppointmenttime()>=540){ 
@@ -263,14 +269,14 @@ public class SimulationBailey {
 
                         }
                         nieuwePatient.setAppointmenttime(0);
-                         //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
+                        //System.out.println("De appointmentTime is nu: "+ nieuwePatient.getAppointmenttime());
 
                         }
         
                     //BIJ VOLLE DAGEN GEEN AFSPRAKEN TIJDENS DE MIDDAG
                     if((nieuwePatient.getDayAppointment()!=4||nieuwePatient.getDayAppointment()!=6)&&(nieuwePatient.getAppointmenttime()==240||nieuwePatient.getAppointmenttime()==255||nieuwePatient.getAppointmenttime()==270||nieuwePatient.getAppointmenttime()==285)){
                         nieuwePatient.setAppointmenttime(300); // volgende empty slot is na de namiddag
-                        //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
+                        //System.out.println("De appointmentTime is nu: "+ nieuwePatient.getAppointmenttime());
                     } 
                         
                     if(nieuwePatient.getAppointmenttime()!=0){
@@ -281,14 +287,15 @@ public class SimulationBailey {
                     }     
                     }
                     laatsteSlot.setTime(nieuwePatient.getAppointmenttime());
+                    //System.out.println("deze tijd"+laatsteSlot.getTime());
                     laatsteSlot.setDay(nieuwePatient.getDayAppointment());
                     laatsteSlot.setWeek(nieuwePatient.getWeekAppointment());
                     double afwijkingArrivalTime = Distributions.Normal_distribution(0, 2.5);
                     nieuwePatient.setArrivaltime(nieuwePatient.getScheduleTimeElective()+afwijkingArrivalTime);
-                    System.out.println("Patient "+totalNumberOfPatients);
-                    System.out.println(" scheduleTime "+ nieuwePatient.getScheduleTimeElective());
-                    System.out.println(" appointmentTime "+nieuwePatient.getAppointmenttime());
-                    System.out.println(" arrivalTime" + nieuwePatient.getArrivaltime());
+                    //System.out.println("Patient "+totalNumberOfPatients);
+                    //System.out.println(" scheduleTime "+ nieuwePatient.getScheduleTimeElective());
+                    //System.out.println(" appointmentTime "+nieuwePatient.getAppointmenttime());
+                    //System.out.println(" arrivalTime" + nieuwePatient.getArrivaltime());
                     
                     //System.out.println("AppointmentTime Deze patient"+laatsteSlot.getTime());
                     //System.out.println("Appointment Week Deze patient "+laatsteSlot.getWeek());
@@ -433,7 +440,7 @@ public class SimulationBailey {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy2with10slots();
             callTime=0;
             
             
@@ -513,9 +520,14 @@ public class SimulationBailey {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
+        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy2with10slots();
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        
+        System.out.println("dag laatste elective app eerste app "+ (laatsteSlot.getDay()));
+        for(int i=0;i<urgentSlotsForToday.length;i++){
+            System.out.println("de urgent slots van die dag"+urgentSlotsForToday[i]);
+        }
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
         //System.out.println(" slot urgent "+(i+1)+": "+urgentSlotsForToday[i]);
@@ -586,10 +598,14 @@ public class SimulationBailey {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        System.out.println("dag schedulen urgents"+(today));
+        
+        
+        
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
         for(int i=0;i<urgentSlotsForToday.length;i++){
-            //System.out.println(urgentSlotsForToday[i]);
+            System.out.println(urgentSlotsForToday[i]);
         }
         
         boolean change=false;

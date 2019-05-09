@@ -70,7 +70,7 @@ public class Simulation {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with10slots();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -357,7 +357,7 @@ public class Simulation {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with10slots();
             callTime=0;
             
             
@@ -437,9 +437,14 @@ public class Simulation {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy3with10slots();
+        System.out.println("dag "+laatsteSlot.getDay());
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
+        System.out.println("dag laatste elective "+ (laatsteSlot.getDay()));
+                        for(int i=0;i<urgentSlotsForToday.length;i++){
+                            System.out.println("de urgent slots van die dag"+urgentSlotsForToday[i]);
+                        }
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
         //System.out.println(" slot urgent "+(i+1)+": "+urgentSlotsForToday[i]);
@@ -510,10 +515,11 @@ public class Simulation {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        System.out.println("dag urgent"+today);
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
         for(int i=0;i<urgentSlotsForToday.length;i++){
-            //System.out.println(urgentSlotsForToday[i]);
+            System.out.println(urgentSlotsForToday[i]);
         }
         
         boolean change=false;
