@@ -42,7 +42,7 @@ public class Main {
             
         
             //WRITEN ELECTIVE WT
-            String csv1 = "dataElectives.csv";
+            String csv1 = "dataElectives_S3_14slots_blocking.csv";
             CSVWriter writer = new CSVWriter(new FileWriter(csv1));
             
             //kolomnamen
@@ -64,7 +64,7 @@ public class Main {
             
             
             //RUNNING AVERAGES
-            String csvB = "dataElectivesRA.csv";
+            String csvB = "dataElectivesRA_S3_14slots_blocking.csv";
             CSVWriter schrijver = new CSVWriter(new FileWriter(csvB));
             
             //kolomnamen
@@ -86,7 +86,7 @@ public class Main {
             
             
             //WRITEN URGENT WT
-            String csv2 = "dataUrgents.csv";
+            String csv2 = "dataUrgents_S3_14slots_blocking.csv";
             CSVWriter writer2 = new CSVWriter(new FileWriter(csv2));
             
             //kolomnamen
@@ -109,7 +109,7 @@ public class Main {
             
             
             //RUNNING AVERAGE
-            String csvD = "dataUrgentsRA.csv";
+            String csvD = "dataUrgentsRA_S3_14slots_blocking.csv";
             CSVWriter schrijver2 = new CSVWriter(new FileWriter(csvD));
             
             //kolomnamen
@@ -130,7 +130,7 @@ public class Main {
             
            
            //CORRELATION BEREKENEN
-            String corr = "Correlation.csv";
+            String corr = "Correlation_S3_14slots_blocking.csv";
             CSVWriter corrCSV = new CSVWriter(new FileWriter(corr));
             
             //kolomnamen
@@ -149,7 +149,7 @@ public class Main {
             corrCSV.close();
             System.out.println("Correlations1 gemaakt");  
             
-            String corr2 = "Correlation2.csv";
+            String corr2 = "Correlation2_S3_14slots_blocking.csv";
             CSVWriter corrCSV2 = new CSVWriter(new FileWriter(corr2));
             
             //kolomnamen

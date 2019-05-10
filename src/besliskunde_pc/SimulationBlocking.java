@@ -5,7 +5,6 @@
  */
 package besliskunde_pc;
 
-import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -70,7 +69,7 @@ public class SimulationBlocking {
         totalNumberOfElectives = 0;
         totalNumberOfUrgents = 0;
         lastScheduledAppointment=0;
-        urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+        urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with14slots();
         numberOfElectivesHaveCalled=0;
         
 }
@@ -81,8 +80,9 @@ public class SimulationBlocking {
         
         while(week<=amountOfWeeksSimulation){
              // calltimes van electives genereren:
-             //System.out.println("DAG:"+day);
+             System.out.println("DAG:"+day);
              //System.out.println("WEEK: "+week );
+             
             if(day!=6){
                double interarrival = 0;
                 double tijd=0;
@@ -235,7 +235,7 @@ public class SimulationBlocking {
                     while((nieuwePatient.getDayAppointment()==nieuwePatient.getDayCall())&&nieuwePatient.getScheduleTimeElective()<nieuwePatient.getCalltime()){
                         nieuwePatient.setAppointmenttime((nieuwePatient.getAppointmenttime()+15));
                         
-                        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
+                        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy3with14slots();
                         int[] urgentSlotsForToday = urgenteSlots.get(nieuwePatient.getDayAppointment());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
                         System.out.println("nieuwe patient day app "+ nieuwePatient.getDayAppointment());
@@ -308,7 +308,6 @@ public class SimulationBlocking {
                     
                     
                     //einde blocking
-                    
                     
                     
                     //System.out.println("AppointmentTime Deze patient"+laatsteSlot.getTime());
@@ -454,7 +453,7 @@ public class SimulationBlocking {
             week++;
             lengthDay=540; 
             day=1;
-            urgentSlotsADay = UrgentSlots.testSignificanceSlots10();
+            urgentSlotsADay = UrgentSlots.getUrgentSlotsStrategy3with14slots();
             callTime=0;
             
             
@@ -534,12 +533,13 @@ public class SimulationBlocking {
             }
          //System.out.println("De appointmentTime is nu: "+ laatsteSlot.getTime());
 
-        ArrayList<int[]> urgenteSlots= UrgentSlots.testSignificanceSlots10();
-        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay());  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
         
-        System.out.println("nieuwe patient day app "+ laatsteSlot.getDay());
-        for(int j=0; j<urgentSlotsForToday.length;j++ ){
-            System.out.println(urgentSlotsForToday[j]);
+        ArrayList<int[]> urgenteSlots= UrgentSlots.getUrgentSlotsStrategy3with14slots();
+        int[] urgentSlotsForToday = urgenteSlots.get(laatsteSlot.getDay()-1);  //OPMERKING: MOET NOG CONTROLEREN OF HET DAY-1 IS OF GEWOON DAY!
+        
+        System.out.println("dag laatste elective app eerste app "+ (laatsteSlot.getDay()));
+        for(int i=0;i<urgentSlotsForToday.length;i++){
+            System.out.println("de urgent slots van die dag"+urgentSlotsForToday[i]);
         }
         
         for(int i = 0 ; i<urgentSlotsForToday.length ; i++){
@@ -611,9 +611,12 @@ public class SimulationBlocking {
         
         //System.out.println("laatste appointment"+scheduleTimeUrgent);
         double vorigeTime= scheduleTimeUrgent;
-        int[] urgentSlotsForToday = urgentSlotsADay.get(today);
+        int[] urgentSlotsForToday = urgentSlotsADay.get(today-1);
+        System.out.println("dag schedulen urgents"+(today));
+        
+        
+        
         //System.out.println("lengte urgentslosts"+urgentSlotsForToday.length);
-        System.out.println(" dag" + today);
         for(int i=0;i<urgentSlotsForToday.length;i++){
             System.out.println(urgentSlotsForToday[i]);
         }
